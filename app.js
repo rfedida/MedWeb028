@@ -30,9 +30,9 @@ app.use(function(req, res, next)
 app.use(express.static(__dirname + '\\public'));
 
 app.use('/', routes);
-app.use('/api/agam', agamRoutes);
-app.use('/api/med', medRoutes);
-app.use('/api/infrastructure', infrastructureRoutes);
+app.use('/agam', agamRoutes);
+app.use('/med', medRoutes);
+app.use('/infrastructure', infrastructureRoutes);
 app.use('/crud', crud);
 
 
