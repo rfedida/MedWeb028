@@ -1,7 +1,8 @@
 var medApp = angular.module('medApp', ["ngMaterial"]);
-medApp.controller('medController',['$scope', '$http', function ($scope, $http){
+medApp.controller('medController',['$scope', '$http', 'loginCardService',
+ function ($scope, $http, loginCardService){
 
-   
+   loginCardService.showLoginCard();
     $scope.data = "try";
 }]);
 
@@ -18,11 +19,6 @@ angular.module('medApp').config(function($provide, $httpProvider){
 
     $httpProvider.interceptors.push("ErrorInterceptor");
 });
-
-angular.module("medApp").controller("mainController", function($http, $scope, loginCardService)
-{
-    loginCardService.showLoginCard();
-})
 
 
 

@@ -3,6 +3,7 @@ var path = require('path');
 var routes = require('./routes/index');
 var agamRoutes = require('./routes/agam');  
 var medRoutes = require('./routes/med');
+var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
 
 
@@ -34,6 +35,8 @@ app.use(express.static(__dirname + '\\public'));
 app.use('/', routes);
 app.use('/agam', agamRoutes);
 app.use('/med', medRoutes);
+app.use('/infrastructure', infrastructureRoutes);
+
 
 // Listening to port 9000
 var port = process.env.PORT || 9000;
