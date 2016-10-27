@@ -12,27 +12,29 @@ var app = express();
 
 app.use(function(req, res, next)
 {
-    var loginDetails = {};
-    var isLoggedOn = true;
-    console.log("req address : " + req.originalUrl);
-    console.log("check if user logged on");
+    next();
+    // var loginDetails = {};
+    // var isLoggedOn = true;
+    // console.log("req address : " + req.originalUrl);
+    // console.log("check if user logged on");
 
-    if (isLoggedOn)
-    {
-        next();
-    }
-    else
-    {
-        res.status(401).send();
-    }
+    // if (isLoggedOn)
+    // {
+    //     next();
+    // }
+    // else
+    // {
+    //     res.status(401).send();
+    // }
 });
 
 app.use(express.static(__dirname + '\\public'));
 
 app.use('/', routes);
-app.use('/api/agam', agamRoutes);
-app.use('/api/med', medRoutes);
-app.use('/api/infrastructure', infrastructureRoutes);
+app.use('/agam', agamRoutes);
+app.use('/med', medRoutes);
+app.use('/infrastructure', infrastructureRoutes);
+
 app.use('/crud', crud);
 
 
