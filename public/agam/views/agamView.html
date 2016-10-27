@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="..\..\components\leaflet\dist\leaflet.css">
 
 </head>
-<body ng-controller="musicController" style="overflow-x : hidden">
+<body ng-controller="statisticController" style="overflow-x : hidden">
   <img ng-src="..\..\common\img\banner.jpg" width="101%">
   <div class="row"  width="100%">
    <div class="col-md-4">
         <leaflet width="104%" height="843"></leaflet>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
         <div class="row" style="background: gray">
               <span class="col-md-4">    
             <button type="button" class="btn btn-warning"><< צפה בפרטים</button>
@@ -64,9 +64,12 @@
                </ul>
             </nav>
         </div>
-        <div>
-            <nvd3 options='options' data='data'></nvd3>
-         </div>
+        <table>
+            <tr>
+                <td> <nvd3 options='options' data='data'></nvd3></td>
+                <td> <nvd3 options='options' data='data2'></nvd3></td>
+            </tr>
+        </table>
     </div>
   </div>
 </body>
