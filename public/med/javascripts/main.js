@@ -6,8 +6,8 @@ function($routeProvider){
 		.when('/', {
 		templateUrl: "/med/views/view0.html"
 		})
-		.when('/view1', {
-		templateUrl: "/med/views/view1.html"
+		.when('/injInfo', {
+		templateUrl: "/med/views/injInfo.html"
 		})
 		.when('/view2', {
 		templateUrl: "/med/views/view2.html"

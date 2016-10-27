@@ -2,7 +2,12 @@
 <html ng-app ="medApp">
     <head>
 	<meta charset="utf-8">
-      <script src="/components/angular/angular.min.js">  
+
+        <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">
+      <link href="/components/bootstrap/css/bootstrap-toggle.min.css" rel="stylesheet">
+       <link href="/med/css/injInfo.css" rel="stylesheet">
+      
+       <script src="/components/angular/angular.min.js">  
         </script>
          <script src="/components/angular/angular-route.min.js"">  
         </script>
@@ -12,11 +17,16 @@
         </script>
         <script src="/med/javascripts/main.js"> 
         </script>
-        <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.css">
+        <script src="/med/javascripts/injInfo.js"> 
+        </script>
+        
+       
+        <script src="/components/bootstrap/js/bootstrap-toggle.min.js"></script>   
+      
+        
     </head>
 
     <body ng-controller="GIL">
-
         <div ng-view></div>
     </body>
 </html>
