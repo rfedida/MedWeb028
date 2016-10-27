@@ -1,10 +1,10 @@
-var app = angular.module("medApp", ["ngRoute"]);
+var app = angular.module("medApp", ["ngRoute","angularModalService"]);
 
 app.config(['$routeProvider', 
 function($routeProvider){
 	$routeProvider
 		.when('/', {
-		templateUrl: "/med/views/view0.html"
+		templateUrl: "/med/views/tmz.html"
 		})
 		.when('/injInfo', {
 		templateUrl: "/med/views/injInfo.html"
