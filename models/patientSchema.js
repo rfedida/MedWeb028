@@ -68,12 +68,12 @@ var patientSchema = new mongoose.Schema({
 			timestamp: Number
 		}]
 	},
-	Stations: [{
+	Stations: [{		
 		receptionTime: {type: Date, default: Date.now},
 		stationId: String,
 		leavingDate: {type: Date}
 	}]
-});
+}, {collection: 'Patients'});
 
 var Patient = mongoose.model("Patient", patientSchema);
 module.exports = Patient;
