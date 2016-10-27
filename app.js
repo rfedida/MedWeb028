@@ -37,13 +37,10 @@ app.use(function(req, res, next)
     //     res.status(401).send();
     // }
 });
-<<<<<<< HEAD
 app.use(express.static(__dirname + '\\public'));
-=======
+
 
 app.use(express.static(__dirname + '/public'));
-
->>>>>>> 4158f028d146ae7ee80507b8fbf95f2494685492
 app.use('/', routes);
 app.use('/agam', agamRoutes);
 app.use('/med', medRoutes);
