@@ -35,16 +35,21 @@ app.use('/', routes);
 app.use('/agam', agamRoutes);
 app.use('/med', medRoutes);
 
-// Connect to mongoDB
-//mongoose.connect('mongodb://150.0.0.228:27017/medicineDB');
-
-module.exports = app;
-
-
-
 // Listening to port 9000
 var port = process.env.PORT || 9000;
 app.listen(port, function() {
     console.log('Listening on ' + port);
 });
+
+// Connect to mongoDB
+mongoose.connect('mongodb://150.0.0.228:27017/medicineDB');
+
+// Getting the data from the db
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(){
+    console.log("connect to mongo");
+});
+
+module.exports = app;
 
