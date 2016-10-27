@@ -5,6 +5,7 @@ var agamRoutes = require('./routes/agam');
 var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
+var crud = require('./routes/crud');
 
 
 var app = express();
@@ -32,6 +33,7 @@ app.use('/', routes);
 app.use('/api/agam', agamRoutes);
 app.use('/api/med', medRoutes);
 app.use('/api/infrastructure', infrastructureRoutes);
+app.use('/crud', crud);
 
 
 // Listening to port 9000
@@ -41,7 +43,7 @@ app.listen(port, function() {
 });
 
 // Connect to mongoDB
-mongoose.connect('mongodb://150.0.0.228:27017/medicineDB');
+mongoose.connect('mongodb://150.0.0.56:27017/DB');
 
 // Getting the data from the db
 var db = mongoose.connection;
