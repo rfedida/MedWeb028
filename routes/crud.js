@@ -54,14 +54,34 @@ crudRouter.get('/patients/:id', function(req, res,next) {
     }});
 });
 
-crudRouter.delete('/patients/:id', function (req, res, next) {
-    Patient.findOneAndRemove({"id": req.params.id}, function(err, unit) {
+crudRouter.get('/patients/units/:unitId', function(req, res,next) {
+    Patient.find({"CurrentStation" : req.params.id}, {"braceletId "},  function(err, patients) {
         if (err) {
             res.send(err);
         } else {
-            res.send({"message": "Patient data deleted.", "id": unit.id});
-        }
-    });
+            res.send();
+        }    
+    })
 });
+
+// crudRouter.get('/units/:id', function(req, res,next) {
+//     Patient.findOne({"id": req.params.id, "name", function(err, patient) {
+//         if (err) {
+//             res.send(err);
+//         } else {
+//             res.send(patient);
+//         }
+//     }});
+// });
+
+// crudRouter.delete('/patients/:id', function (req, res, next) {
+//     Patient.findOneAndRemove({"id": req.params.id}, function(err, unit) {
+//         if (err) {
+//             res.send(err);
+//         } else {
+//             res.send({"message": "Patient data deleted.", "id": unit.id});
+//         }
+//     });
+// });
 
 module.exports = crudRouter;
