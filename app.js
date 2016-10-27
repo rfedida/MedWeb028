@@ -6,6 +6,7 @@ var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
 var crud = require('./routes/crud');
+
 var app = express();
 app.use(function(req, res, next)
 {
@@ -21,13 +22,29 @@ app.use(function(req, res, next)
     {
         res.status(401).send();
     }
+    next();
+    // var loginDetails = {};
+    // var isLoggedOn = true;
+    // console.log("req address : " + req.originalUrl);
+    // console.log("check if user logged on");
+
+    // if (isLoggedOn)
+    // {
+    //     next();
+    // }
+    // else
+    // {
+    //     res.status(401).send();
+    // }
 });
 app.use(express.static(__dirname + '\\public'));
 app.use('/', routes);
-app.use('/api/agam', agamRoutes);
+app.use('/agam', agamRoutes);
 app.use('/api/med', medRoutes);
 app.use('/api/infrastructure', infrastructureRoutes);
 app.use('/crud', crud);
+
+
 // Listening to port 9000
 var port = process.env.PORT || 9000;
 app.listen(port, function() {
