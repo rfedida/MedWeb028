@@ -2,7 +2,7 @@ before_script:
     
 rspec:
     script:
-        pwd
-        npm set registry http://150.0.0.53
-        npm install
-        npm start
+        - pwd
+        - npm set registry http://150.0.0.53
+        - npm install
+        - npm start
