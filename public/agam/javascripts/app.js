@@ -41,4 +41,32 @@ myApp.controller('statisticController', function musicController($scope, $http) 
             y: 49
         }
     ];
+
+    $scope.data2 = [
+        {
+            key: 'תלול מסלול',
+            y: 7
+        },
+        {
+            key: 'ירי',
+            y: 36
+        },
+        {
+            key: 'אב"כ',
+            y: 8
+        },
+        {
+            key: 'כוויה',
+            y: 49
+        },
+        {
+            key: 'שאיפה',
+            y: 49
+        },
+        {
+            key: 'תאונת דרכים',
+            y: 49
+        }
+
+    ];
 });
