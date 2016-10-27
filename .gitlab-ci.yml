@@ -5,4 +5,5 @@ rspec:
         - pwd
         - npm set registry http://150.0.0.53
         - npm install
-        - npm start
+        - forever stopall
+        - forever start app.js
