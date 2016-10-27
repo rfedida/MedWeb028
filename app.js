@@ -5,6 +5,7 @@ var agamRoutes = require('./routes/agam');
 var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
+var crud = require('./routes/crud');
 
 
 var app = express();
@@ -32,6 +33,7 @@ app.use('/', routes);
 app.use('/api/agam', agamRoutes);
 app.use('/api/med', medRoutes);
 app.use('/api/infrastructure', infrastructureRoutes);
+app.use('/crud', crud);
 
 
 // Listening to port 9000
