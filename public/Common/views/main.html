@@ -1,18 +1,28 @@
 main
 <!DOCTYPE html>
-<html ng-app="medApp">
+<html >
 <head>
     <meta charset="UTF-8">
     <title>רפואה שלמה</title>
-    <script src="angular.js" type="text/javascript"></script>
-    <script src="app.js" type="text/javascript"></script>
+    <script src="/Components/angular/angular.js" type="text/javascript"></script>
+    <script src="/Components/angular/angular-animate.js" type="text/javascript"></script>
+    <script src="/Components/angular/angular-aria.js" type="text/javascript"></script>
+    <script src="/Components/angular/angular-messages.js" type="text/javascript"></script>
+
+    <script src="/Components/angular-material/angular-material/angular-material.js" type="text/javascript"></script>    
+    <link rel="stylesheet" href="/Components/angular-material/angular-material/angular-material.css">
+
+    <script src="/Common/javascripts/main.js" type="text/javascript"></script>
+    <script src="/Common/javascripts/LoginCardService.js" type="text/javascript"></script>
     <!--<script src="..\javascripts\d3\d3.js" type="text/javascript"></script>
     <script src="..\javascripts\nvd3\build\nv.d3.js" type="text/javascript"></script>
     <script src="..\javascripts\angular-nvd3\src\angular-nvd3.js" type="text/javascript"></script>
     <link rel="stylesheet" href="..\javascripts\nvd3\build\nv.d3.css">-->
 </head>
 
-<body ng-controller="musicController">
-    
+<body ng-app="medApp" >
+    <div ng-controller="mainController">        
+        <button ng-click = "cl()">BOOM!!</button>
+    </div>
 </body>
 </html>

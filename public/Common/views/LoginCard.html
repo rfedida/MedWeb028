@@ -1,0 +1,47 @@
+<md-dialog aria-label="LOGIN">
+    <md-toolbar>
+        <div class = "md-toolbar-tools">
+            LOGIN            
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class = "md-dialog-content">
+            <md-input-container>
+                <label>
+                    Username
+                </label>
+                <input type = "text" ng-model = "loginDetails.username">                
+            </md-input-container>
+
+            <md-input-container>
+                <label>
+                    Password
+                </label>
+                <input type = "password" ng-model = "loginDetails.password">                
+            </md-input-container>
+        </div>
+
+        <div layout = "row" layout-align ="space-around">
+            <md-progress-circular md-mode = "intermidiate"
+                                  md-diameter = "40"
+                                  ng-disabled = "!loginDetails.isLoading">
+            </md-progress-circular>
+        </div>
+      
+        <div>
+            <md-toolbar class = "md-warn" ng-show = "loginError">
+                <div class = "md-toolbar-tools">
+                    <div class = "md-flex">
+                        Invalid username or password
+                    </div>
+                </div>
+            </md-toolbar>
+        </div>
+      
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout = "row">
+        <md-button ng-click = "login()">LOGIN</button>
+    </md-dialog-actions>
+</md-dialog>
