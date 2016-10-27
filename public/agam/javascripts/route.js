@@ -15,7 +15,7 @@ myApp.config(function($routeProvider){
             controller : "useOfDrugsCtrl"
         })
 
-        .when("/tonnage" , {
+        .when("/Occupation" , {
             templateUrl : "/agam/views/tonnage.html",
             controller : "statisticController"
         })
