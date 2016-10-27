@@ -61,11 +61,17 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
         } else {
             var result = []; 
             patients.forEach(function(patient){
-                var newPatient = {"braceletId" : undefined,
+                var newPatient = {
+                                    "braceletId" : patient.braceletId,
                                     "temperatures" : undefined,
                                     "storations" : undefined,
                                     "bloodPressures" : undefined,
                                     "heartbeat" : undefined };
+                
+                // sort each array
+                arrayToSort.sort(function(a,b) {
+                    //return parseFloat() - parseFloat
+                })
 
             })
             res.send();
