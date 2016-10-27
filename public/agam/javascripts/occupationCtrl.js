@@ -1,4 +1,4 @@
-myApp.controller('useOfDrugsCtrl', function($scope, $http) {
+myApp.controller('occupationController', function($scope, $http) {
 
     $scope.colorArray = ['gray','#660000'];
     
@@ -40,7 +40,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
         }        
     };
 
-    $http.get('/Occupation', {
+    $http.get('/Occupation/', {
         params: {
             userHirarchy: "1_1_1" // TODO: Change to the real one from the scope when available
         }
