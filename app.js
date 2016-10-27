@@ -41,7 +41,7 @@ app.listen(port, function() {
 });
 
 // Connect to mongoDB
-mongoose.connect('mongodb://150.0.0.228:27017/medicineDB');
+mongoose.connect('mongodb://150.0.0.56:27017/DB');
 
 // Getting the data from the db
 var db = mongoose.connection;
