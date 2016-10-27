@@ -1,5 +1,5 @@
 var myApp = angular.module('myApp', ['nvd3', 'leaflet-directive']);
-myApp.controller('musicController', function musicController($scope, $http) {
+myApp.controller('statisticController', function musicController($scope, $http) {
     $scope.options = {
         chart:
         {
