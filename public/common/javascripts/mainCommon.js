@@ -11,7 +11,12 @@ angular.module('medApp').config(function($provide, $httpProvider){
         return {
             responseError : function(rejection)
             {
-                console.log(rejection);
+                if (rejection.status == 401)
+                {
+                    loginCardService.showLoginCard();
+                    console.log(rejection);
+                }
+                
                 return $q.reject(rejection);
             }
         };

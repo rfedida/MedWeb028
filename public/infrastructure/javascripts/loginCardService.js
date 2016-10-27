@@ -4,7 +4,7 @@ angular.module('medApp').service("loginCardService", function($mdDialog)
         $mdDialog.show({
             clickOutsideToClose : false,
             preserveScope : true,
-            templateUrl : "common/views/loginCard.html",
+            templateUrl : "infrastructure/views/loginCard.html",
             controller : function($scope, $mdDialog, $http)
             {
                 $scope.loginError = false;

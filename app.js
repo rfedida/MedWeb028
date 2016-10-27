@@ -15,6 +15,23 @@ var app = express();
 
 app.use(function(req, res, next)
 {
+    var url = req.originalUrl;
+    if (url === "/" ||
+        url.startsWith("/agam/views") ||
+        url.startsWith("/agam/javascripts")||
+        url.startsWith("/common/views") ||
+        url.startsWith("/common/javascripts")||
+        url.startsWith("/components/views") ||
+        url.startsWith("/components/javascripts")||
+        url.startsWith("/infrastructure/views") ||
+        url.startsWith("/infrastructure/javascripts")||
+        url.startsWith("/med/views") ||
+        url.startsWith("/med/javascripts")||
+        url.startsWith("/infrastructure/login"))
+    {
+        next();
+    }
+
     var loginDetails = {};
     var isLoggedOn = true;
     console.log("req address : " + req.originalUrl);
