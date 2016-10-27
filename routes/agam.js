@@ -5,7 +5,7 @@ var graphOccupation = require('../server/agam/OccupationControl.js');
 
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname,'..\\public\\agam\\views\\agamView.html'));
+  res.sendFile(path.join(__dirname,'../public/agam/views/agamView.html'));
 });
 
 router.get('/Occupation/:userHirarchy', function(req, res, next){
