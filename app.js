@@ -9,10 +9,6 @@ var mongoose = require('mongoose');
 
 var app = express();
 
-// app.use(express.cookieParser());
-// app.use(express.session({secret : "123"}));
-
-
 app.use(function(req, res, next)
 {
     var loginDetails = {};
@@ -33,9 +29,9 @@ app.use(function(req, res, next)
 app.use(express.static(__dirname + '\\public'));
 
 app.use('/', routes);
-app.use('/agam', agamRoutes);
-app.use('/med', medRoutes);
-app.use('/infrastructure', infrastructureRoutes);
+app.use('/api/agam', agamRoutes);
+app.use('/api/med', medRoutes);
+app.use('/api/infrastructure', infrastructureRoutes);
 
 
 // Listening to port 9000
