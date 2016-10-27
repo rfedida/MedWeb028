@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var patientSchema = new mongoose.Schema({
 	braceletId: Number,
 	CurrentStation: String,
+	LastUpdate: Date,
 	generalData: {
 		emergency: {
 			type: Number,
