@@ -3,15 +3,40 @@ var path = require('path');
 var routes = require('./routes/index');
 var agamRoutes = require('./routes/agam');  
 var medRoutes = require('./routes/med');
+var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
+
 
 var app = express();
 
-app.use(express.static(__dirname + '//public'));
+// app.use(express.cookieParser());
+// app.use(express.session({secret : "123"}));
+
+
+app.use(function(req, res, next)
+{
+    var loginDetails = {};
+    var isLoggedOn = true;
+    console.log("req address : " + req.originalUrl);
+    console.log("check if user logged on");
+
+    if (isLoggedOn)
+    {
+        next();
+    }
+    else
+    {
+        res.status(401).send();
+    }
+});
+
+app.use(express.static(__dirname + '\\public'));
 
 app.use('/', routes);
 app.use('/agam', agamRoutes);
 app.use('/med', medRoutes);
+app.use('/infrastructure', infrastructureRoutes);
+
 
 // Listening to port 9000
 var port = process.env.PORT || 9000;
