@@ -1,39 +1,76 @@
 myApp.controller('numOfTreatsCtrl', function($scope, $http) {
 
-    $http.get("/crud/units").then(function(response){
-        var data = response.data;
-         $scope.dataVygon = [
+    $http.get("/crud/units/1_1_1_1").then(function(response){
+        var treatments = response.data.Treatments;
+        //Object {id: "1", Standard: 59, Stock: 59}
+
+        $scope.dataVygon = [
             {
-                key: 'במלאי',
-                y: 8
-            },
-            {
-                key: 'שימוש',
-                y: 50
+                key: 'אין נתונים להציג',
+                x: [[]]
             }
         ];
 
         $scope.dataHosemOrakim = [
             {
-                key: 'במלאי',
-                y: 33
-            },
+                key: 'אין נתונים להציג',
+                x: [[]]
+            }
+        ];
+        $scope.dataNekezHaze = [
             {
-                key: 'שימוש',
-                y: 50
+                key: 'אין נתונים להציג',
+                x: [[]]
             }
         ];
 
-        $scope.dataNekezHaze = [
+        $scope.mlay;
+
+        for (i=0; i<treatments.length; i++)
+        {
+            if (treatments[i].id == 10)
             {
-                key: 'במלאי',
-                y: 67
-            },
-            {
-                key: 'שימוש',
-                y: 36
+                $scope.mlay = treatments[i].Standard - treatments[i].Stock;
+                $scope.dataVygon = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock
+                    }
+                ];
             }
-        ];
+            else if (treatments[i].id == 5) // Assumming it means 'c.a.t'
+            {
+                $scope.mlay = treatments[i].Standard - treatments[i].Stock;
+                $scope.dataHosemOrakim = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock
+                    }
+                ];
+            }
+            else if (treatments[i].id == 4)
+            {
+                $scope.mlay = treatments[i].Standard - treatments[i].Stock;
+                $scope.dataNekezHaze = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock
+                    }
+                ];
+            }
+        }
     })
 
     $scope.colorArray = ['gray','#660000'];
@@ -67,7 +104,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     bottom: 5,
                     left: 0
                 }
-            } 
+            },
+            noData:"אין נתונים"
         }        
     };   
 });
