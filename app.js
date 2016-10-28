@@ -6,6 +6,9 @@ var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
 var crud = require('./routes/crud');
+var dgram = require('dgram');
+var Buffer = require('buffer').Buffer;
+var udpServer = dgram.createSocket('udp4');
 
 var app = express();
 app.use(function(req, res, next)
@@ -59,4 +62,27 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(){
     console.log("connected to mongo");
 });
+
+// UDP Server
+udpServer.on('error', (err) => {
+    console.log('UDP server error' + err);
+});
+
+udpServer.on('message', (msg, rinfo) => {
+    console.log(msg);
+    var buf = new Buffer(4);
+    buf.write("Nave");
+    udpServer.send(buf, 0, buf.length, rinfo.port, rinfo.address, (err)=> {
+        if(err) {
+            console.log(err);
+        }
+    });
+});
+
+udpServer.on('listening', () => {
+    console.log("UDP server is listening");
+});
+
+udpServer.bind(9001);
+
 module.exports = app;
