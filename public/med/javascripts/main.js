@@ -1,19 +1,23 @@
-var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle"]);
+var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize"]);
+app.remote="";
 
-
-app.config(['$routeProvider',
-    function ($routeProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: "/med/views/tmz.html"
-            })
-            .when('/injInfo', {
-                templateUrl: "/med/views/injInfo.html"
-            })
-            .when('/medSchema', {
-                templateUrl: "/med/views/medSchema.html"
-            });
-    }]);
+app.config(['$routeProvider', '$sceDelegateProvider',
+function($routeProvider, $sceDelegateProvider){
+    $sceDelegateProvider.resourceUrlWhitelist([
+        'http://127.0.0.1:9000/**',
+        'self'
+    ]);
+    $routeProvider
+		.when('/', {
+		templateUrl: app.remote + "/med/views/tmz.html"
+		})
+		.when('/injInfo', {
+		templateUrl: app.remote + "/med/views/injInfo.html"
+		})
+		.when('/medSchema', {
+		templateUrl: app.remote + "/med/views/medSchema.html"
+		});
+}]);
 
 
 angular.module("medApp").factory('medAppFactory', function ($http) {
