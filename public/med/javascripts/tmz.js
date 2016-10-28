@@ -1,5 +1,5 @@
 
-angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService', function($scope, ModalService)  {
+angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService', '$sce', function($scope, ModalService, $sce)  {
 
   $scope.woundeds = [
     {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"urgent", date:"26/10/2016", time:"11:15"},
@@ -20,8 +20,9 @@ angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalSe
 $scope.complexResult = null;
 $scope.showComplex = function() {
 
+    var url = $sce.getTrustedResourceUrl(app.remote + "/med/views/modalTmz.html");
     ModalService.showModal({
-      templateUrl: "/med/views/modalTmz.html",
+      templateUrl: url,
       controller: "ComplexController",
       inputs: {
         title: "פצוע חדש"
