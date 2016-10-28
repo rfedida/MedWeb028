@@ -40,25 +40,21 @@ myApp.controller('occupationController', function($scope, $http) {
         }        
     };
 
-    $http.get('/Occupation/', {
-        params: {
-            userHirarchy: "1_1_1" // TODO: Change to the real one from the scope when available
-        }
-    }).success(function(response){
-        var jsonFull = response.data;
-        var jsonOne = jsonFull[0];
-        var jsonTwo = jsonFull[1];
+    $http.get('/agam/Occupation/'+'1_1_1'
+    ).success(function(response){
+        var jsonOne = response[0];
+        var jsonTwo = response[1];
 
-        if (jsonOne != {})
+       /* if (jsonOne.isEmpty() != true)
         {
             document.getElementById("graphOne").hidden.value = false;
             $scope.dataOne = jsonOne;
-        }
-        if (jsonTwo != {})
-        {
-            document.getElementById("graphTwo").hidden.value = false;
+        }*/
+        /*if (jsonTwo.isEmpty() != true)
+        {*/
+           // document.getElementById("graphTwo").innerHTML.hidden = false;
             $scope.dataTwo = jsonTwo;
-        }
+        //  }
 
     });
 });

@@ -1,6 +1,6 @@
 var Patient = require('../../models/patientSchema');
 
- var  getOcupationAmoutGraph = function(hirarchCode){
+ var  getOcupationAmoutGraph = function(hirarchCode, callback){
      var jsonDataOne = {};
       var jsonDataTwo = {};
      var jsonDataFull = {};
@@ -85,7 +85,7 @@ var Patient = require('../../models/patientSchema');
         {
             // Get all the taagads in the hirarchy
             Patient.aggregate(
-                [{"$match": {"CurrentStation" : {"$regex": "/^" + hirarchCode + ".{2}$/"}}},
+                [{"$match": {"CurrentStation" : {"$regex": "^" + hirarchCode + ".{2}$"}}},
                 {"$group" : {
                     "_id" : {"Station": "$CurrentStation",
                         "Emergency": "$generalData.emergency"},
@@ -118,6 +118,7 @@ var Patient = require('../../models/patientSchema');
                    var key = element._id; 
                    jsonDataTwo[key] = {'key': element._id, values : element.values};
                    createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                   callback(jsonDataFull);
                 }, this);
             });
 
@@ -145,7 +146,7 @@ var Patient = require('../../models/patientSchema');
             break;
     }
 
-    return (jsonDataFull);
+    
 }
 
 function createFullJson(one, two, full)
