@@ -1,0 +1,16 @@
+<table ng-controller="statisticController">
+    <thead>
+        <tr align="center">
+            <td><h3>מנגנון פגיעה</h3></td>
+            <td><h3>מיקום פגיעה</h3></td>
+         </tr>
+    </thead>
+    <tr>
+        <td> <nvd3 options='pieChartOptions' data='injuryMechanismData'></nvd3></td>
+        <td> <nvd3 options='pieChartOptions' data='injuryLocationData'></nvd3></td>
+    </tr>
+ <!--   <tr>
+        <td> <nvd3 options='lineChartOptions' data='injuryLocationData'></nvd3></td>
+        <td> <nvd3 options='lineChartOptions' data='injuryTypeData'></nvd3></td>
+    </tr>-->
+</table>

@@ -1,0 +1,97 @@
+@font-face {
+        font-family: "alef";
+        src: url(Alef-Regular.ttf);
+}
+
+.btn-dead {
+    background-color: black;
+    color: white;
+}
+
+.btn-dead:hover {
+    background-color: dimgray;
+    color: white;
+}
+
+body {
+    direction: rtl;
+    font-family: "alef";
+}
+
+.headBar{    
+    margin-bottom: 5px;
+    margin-top: 5px;
+    height: 80px;
+}
+
+.border-right {
+    border-right: 1px solid lightgray;
+}
+
+.status {
+    height: 80px;
+    padding: 18px;
+}
+
+.btnStatus {
+    height: 45px;
+    border-radius: 15px;
+    font-size: large;
+}
+
+h4 small {
+    font-size: 18px;
+}
+
+.redColor{
+    color: red;
+}
+
+.greenColor{
+    color: green;
+}
+
+.component{
+    border-width: 0.2px;
+    border-color: lightgray;
+    border-style: solid;
+    border-radius: 15px;    
+    background-color: whitesmoke;
+}
+
+.basicInfo{
+    height: 400px;
+    padding: 10px;
+}
+
+.dataRow {
+    margin-top: 15px;
+}
+
+.toggle{
+    border-radius: 15px;
+    
+}
+
+label{
+    font-size: 15px;
+}
+
+.humanImg{
+    height: 350px;
+    width: 360px;
+    margin-top: 10px;
+}
+
+.btnEmergency.active{
+    background-color: #d9534f;
+    color: #fff;
+    border-color: #d43f3a
+}
+
+.btnNotEmergency.active{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+
+}
