@@ -65,5 +65,14 @@ h4 small {
 }
 
 .dataRow {
-    margin-top: 10px;
+    margin-top: 15px;
+}
+
+.toggle{
+    border-radius: 15px;
+    
+}
+
+label{
+    font-size: 15px;
 }
