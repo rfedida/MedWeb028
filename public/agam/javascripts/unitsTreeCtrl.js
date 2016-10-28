@@ -15,13 +15,15 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
               labelSelected: "a8"
           }
     }
-
-    (function()
-    {
+    
+    $scope.units = [];
+    $scope.loadUnits = function(){
         $http.get('/crud/units').success(function(data){
             $scope.units = data;
         });
-    }());
+    };
+
+    $scope.loadUnits();
 
     $scope.dataForTheTree = 
       [

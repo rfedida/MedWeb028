@@ -12,14 +12,13 @@ var unitSchema = new mongoose.Schema({
 		id: String,
 		Standard: Number,
 		Stock: Number
-	}],
-	Max_Capacity: Number,
-	Doctors_num: Number,
-	//location: {
-		 //type: Point,
-		 //coordinates: [0, 1]} 
-});
 
-var Unit = mongoose.model('Unit', unitSchema);
+	}],	
+	Max_Capacity: Number,
+	Doctors_num: Number
+	// location: { type: Point, coordinates: [Number]} ?
+}, {collection: 'Units'});
+
+var Unit = mongoose.model('Units', unitSchema);
 
 module.exports = Unit;
