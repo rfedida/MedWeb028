@@ -1,17 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var auth = require("server/infrastructure/authentication");
-
+var auth = require("../server/infrastructure/BL/authentication");
+//var nodeSession = require("node-session");
 
 /* GET home page of med. */
-router.get('/login', function(req, res, next) 
+router.post('/login', function(req, res, next) 
 {
-    auth.login(req.username, req.password)
+    auth.login(req.body.username.toString(), req.body.password.toString(), req)
     .then(function(user)
     {
-        res.ok(user.token);
-      // save token on session
+        var seesionObject = {};
+        seesionObject[user.hash] = user;
+        req.session[user.hash] = user;
+        res.send(user.hash);
     })
     .catch(function(error)
     {

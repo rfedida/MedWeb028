@@ -1,16 +1,26 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var path = require('path');
 var routes = require('./routes/index');
 var agamRoutes = require('./routes/agam');  
 var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
-
+var cookieParser = require("cookie-parser");
+var session = require("express-session");
 
 var app = express();
 
-// app.use(express.cookieParser());
-// app.use(express.session({secret : "123"}));
+app.use(session({secret : "keyboard cat",
+                 resave : true,
+                 saveUninitialized : true,
+                 cookie : {}}));
+
+app.use(cookieParser());
+//app.use(express.session({secret : "123"}));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 
 app.use(function(req, res, next)
@@ -21,8 +31,7 @@ app.use(function(req, res, next)
         url.startsWith("/agam/javascripts")||
         url.startsWith("/common/views") ||
         url.startsWith("/common/javascripts")||
-        url.startsWith("/components/views") ||
-        url.startsWith("/components/javascripts")||
+        url.startsWith("/components") ||
         url.startsWith("/infrastructure/views") ||
         url.startsWith("/infrastructure/javascripts")||
         url.startsWith("/med/views") ||
@@ -31,19 +40,21 @@ app.use(function(req, res, next)
     {
         next();
     }
-
-    var loginDetails = {};
-    var isLoggedOn = true;
-    console.log("req address : " + req.originalUrl);
-    console.log("check if user logged on");
-
-    if (isLoggedOn)
-    {
-        next();
-    }
     else
     {
-        res.status(401).send();
+        var loginDetails = {};
+        var isLoggedOn = req.cookies.hash != null && req.session[req.cookies.hash] != null;
+        console.log("req address : " + req.originalUrl);
+        console.log("check if user logged on");
+
+        if (isLoggedOn)
+        {
+            next();
+        }
+        else
+        {
+            res.status(401).send();
+        }
     }
 });
 
@@ -62,7 +73,7 @@ app.listen(port, function() {
 });
 
 // Connect to mongoDB
-mongoose.connect('mongodb://150.0.0.228:27017/medicineDB');
+mongoose.connect('mongodb://150.0.0.56:27017/DB');
 
 // Getting the data from the db
 var db = mongoose.connection;

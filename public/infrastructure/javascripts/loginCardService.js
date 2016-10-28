@@ -1,4 +1,4 @@
-angular.module('medApp').service("loginCardService", function($mdDialog)
+angular.module('medApp').service("loginCardService", function($mdDialog, $cookies)
 {
     function showLoginCard(){
         $mdDialog.show({
@@ -12,12 +12,13 @@ angular.module('medApp').service("loginCardService", function($mdDialog)
                 $scope.login = function()
                 {
                     $scope.loginError = false;
-                                        
-                    $http.post("/Infrastructure/Login", $scope.loginDetails)
-                    .success(function(data){
+                                                            
+                    $http.post("/infrastructure/login", $scope.loginDetails)
+                    .success(function(data, status, headers, config){
+                        $cookies.put("hash", data);
                         $mdDialog.hide();
                     })
-                    .error(function(data){
+                    .error(function(data, status, headers, config){
                         $scope.loginError = true;
                     });
                 }

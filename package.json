@@ -6,8 +6,13 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
     "express": "^4.14.1",
+    "express-session": "^1.14.1",
     "mongoose": "^4.6.3",
+    "node-session": "^1.2.1",
     "nodemon": "^1.11.0"
   }
 }
