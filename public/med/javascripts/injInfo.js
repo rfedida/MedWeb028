@@ -3,12 +3,9 @@ var app = angular.module("medApp").controller('InjuredController', ['$scope', 'm
         $scope.injured = medAppFactory.currentInjured;
         $scope.InjuryMechanismType = medAppFactory.InjuryMechanismType;
 
-        $scope.check = 0;
-
-        $scope.SaveInj = function SaveInj() {
-            $http.post('/med/saveInj', {"name": "shir"}  );
+        $scope.SaveInj = function() 
+        {
+            $http.post('/med/saveInj', {injData: $scope.injured});
         };
-
-        
     }]);
    
