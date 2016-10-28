@@ -3,7 +3,7 @@ var crudRouter = express.Router();
 var mongoose = require('mongoose');
 var Unit = require('../models/unitSchema');
 var Patient = require('../models/patientSchema');
-var dbDisk = require('../server/common/dbdiskconnection');
+var dbDisk = require('../server/med/dbdiskconnection');
 var pjson = require('../package.json')
 
 crudRouter.get('/units', function (req, res, next) {
