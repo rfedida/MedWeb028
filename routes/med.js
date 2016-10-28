@@ -8,6 +8,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/saveInj', function(req, res, next) {
-  console.log(req.params.injData);
+  console.log(req.body.injData);
 });
 module.exports = router;

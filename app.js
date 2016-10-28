@@ -9,6 +9,7 @@ var crud = require('./routes/crud');
 var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
 var udpServer = dgram.createSocket('udp4');
+var bodyParser = require('body-parser');
 
 var app = express();
 app.use(function(req, res, next)
@@ -41,12 +42,14 @@ app.use(function(req, res, next)
     // }
 });
  
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 app.use('/', routes);
 app.use('/agam', agamRoutes);
 app.use('/med', medRoutes);
 app.use('/infrastructure', infrastructureRoutes);
 app.use('/crud', crud);
+
 
 
 // Listening to port 9000
