@@ -7,27 +7,28 @@ myApp.controller('mapControl', ['$scope', 'leafletData', function($scope,leaflet
 
     angular.extend($scope, {
         TaagadIcon:{
-            iconUrl: '../Icons/1.png',
+            iconUrl: '../../common/img/1.png',
             iconSize: [32, 37],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
             shadowSize: [41, 41],
         },
         HospitalIcon:{
-            iconUrl: '../Icons/2.png',
+            iconUrl: '../../common/img/2.png',
             iconSize: [32, 37],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
             shadowSize: [41, 41],
         },
         PalhakIcon:{
-            iconUrl: '../Icons/3.png',
+            iconUrl: '../../common/img/3.png',
             iconSize: [32, 37],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
             shadowSize: [41, 41],
         }
     });
+
     // Add a Marker to the map
     //geoObject - {
     //     id:??,
@@ -49,7 +50,8 @@ myApp.controller('mapControl', ['$scope', 'leafletData', function($scope,leaflet
                 color: "green"
             }
 
-        }
+        };
+        
         $scope.markers.push({
             id: geoObject.id,
             lat:geoObject.lat,
@@ -59,15 +61,17 @@ myApp.controller('mapControl', ['$scope', 'leafletData', function($scope,leaflet
             message:name,
             icon: {}
         });
+
         if(name.includes('Taagad')){
             $scope.markers[$scope.markers.length-1].icon = $scope.TaagadIcon;
         }
-        if(name.includes('Palhak')){
+        else if(name.includes('Palhak')){
             $scope.markers[$scope.markers.length-1].icon = $scope.PalhakIcon;
         }
         else{
             $scope.markers[$scope.markers.length-1].icon = $scope.HospitalIcon;
-        }					
+        }		
+
         if(Object.keys(text).length == 2){
             htmlAbove = '<div width=100px style=text-align:center;font-weight:bold;font-size:2em;><span style=color:red;> ' + text.urgent + '  </span> + <span style=color:green;> ' + text.notUrgent + '</div>';
             iconSize = [85,0];
@@ -107,4 +111,16 @@ myApp.controller('mapControl', ['$scope', 'leafletData', function($scope,leaflet
             map.fitBounds([ [lat - 0.05, lng - 0.05], [lat + 0.05, lng + 0.05] ]);
         });
     });
+
+    $scope.addMarker(
+        {
+            id:1,
+            lat: 31,
+            lng:35
+        }
+    ,{
+        urgent:2,
+        notUrgent:4
+    },
+    "Taagad 2");
 }]);

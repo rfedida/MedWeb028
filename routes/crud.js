@@ -21,10 +21,8 @@ crudRouter.get('/units', function (req, res, next) {
     if (pjson.isWeb) {
         Unit.find(function (err, units) {
             if (err) {
-                console.log(err);
                 res.send(err); 
             } else {
-                console.log(units);
                 res.send(units);
             }
         });
