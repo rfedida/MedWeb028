@@ -17,7 +17,7 @@ crudRouter.get('/units', function (req, res, next) {
             res.send(err); 
         } else {
             res.send(units);
-        }
+        }       
     });
 });
 
@@ -91,15 +91,15 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 });
 
 // Get the name of unit by id
-crudRouter.get('/units/:id', function(req, res,next) {
-    Patient.findOne({"id": req.params.id} , "name", function(err, unit) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(unit);
-        }
-    });
-});
+// crudRouter.get('/unitName/:id', function(req, res,next) {
+//     Unit.findOne({"id": req.params.id} , "name", function(err, unit) {
+//         if (err) {
+//             res.send(err);
+//         } else {
+//             res.send(unit);
+//         }
+//     });
+// });
 
 // Get all units under specific unit
 crudRouter.get('/units/:unitId/units', function(req, res, next) {
@@ -128,9 +128,9 @@ crudRouter.get('/units/:unitId/units', function(req, res, next) {
 });
 
 // Update patient details
-crudRouter.update('/patients/:object', function (req, res, next) {
-    //Patient.find
-})
+// crudRouter.update('/patients/:object', function (req, res, next) {
+//     //Patient.find
+// })
 
 crudRouter.delete('/patients/:id', function (req, res, next) {
     Patient.findOneAndRemove({"id": req.params.id}, function(err, unit) {

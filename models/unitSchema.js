@@ -16,7 +16,7 @@ var unitSchema = new mongoose.Schema({
 	maxCapacity: Number,
 	doctorsCount: Number
 	// location: { type: Point, coordinates: [Number]} ?
-});
+}, {collection: 'Units'});
 
 var Unit = mongoose.model('Unit', unitSchema);
 
