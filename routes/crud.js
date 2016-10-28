@@ -7,7 +7,7 @@ var Patient = require('../models/patientSchema');
 crudRouter.get('/units', function (req, res, next) {
     Unit.find(function (err, units) {
         if (err) {
-            res.send(err); 
+            res.send(err);
         } else {
             res.send(units);
         }

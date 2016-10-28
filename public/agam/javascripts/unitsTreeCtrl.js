@@ -1,7 +1,7 @@
 myApp.controller('unitsTreeController', function ($scope, $http) {
-      $scope.treeInd = true;
-      $scope.window = "col-md-6";
-      $scope.treeOptions = {
+    $scope.treeInd = true;
+    $scope.window = "col-md-6";
+    $scope.treeOptions = {
           nodeChildren: "children",
           dirSelectable: true,
           injectClasses: {
@@ -14,8 +14,16 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
               label: "a6",
               labelSelected: "a8"
           }
-      }
-      $scope.dataForTheTree = 
+    }
+
+    (function()
+    {
+        $http.get('/crud/units').success(function(data){
+            $scope.units = data;
+        });
+    }());
+
+    $scope.dataForTheTree = 
       [
           {"name" : "Joe", "age" : "21", "children" : [
               {"name" : "Smith", "age" : "42", "children" : []},
