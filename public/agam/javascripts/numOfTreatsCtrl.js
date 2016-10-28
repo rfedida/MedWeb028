@@ -4,33 +4,24 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         var treatments = response.data.Treatments;
         //Object {id: "1", Standard: 59, Stock: 59}
 
-        $scope.dataVygon = [
+        var emptyChart = [
             {
                 key: 'אין נתונים להציג',
                 x: [[]]
             }
         ];
 
-        $scope.dataHosemOrakim = [
-            {
-                key: 'אין נתונים להציג',
-                x: [[]]
-            }
-        ];
-        $scope.dataNekezHaze = [
-            {
-                key: 'אין נתונים להציג',
-                x: [[]]
-            }
-        ];
+        $scope.dataVygon = emptyChart;
+        $scope.dataHosemOrakim = emptyChart;
+        $scope.dataNekezHaze = emptyChart;
 
         $scope.mlay;
 
         for (i=0; i<treatments.length; i++)
         {
+            $scope.mlay = treatments[i].Standard - treatments[i].Stock;
             if (treatments[i].id == 10)
             {
-                $scope.mlay = treatments[i].Standard - treatments[i].Stock;
                 $scope.dataVygon = [
                     {
                         key: 'במלאי',
@@ -44,7 +35,6 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             }
             else if (treatments[i].id == 5) // Assumming it means 'c.a.t'
             {
-                $scope.mlay = treatments[i].Standard - treatments[i].Stock;
                 $scope.dataHosemOrakim = [
                     {
                         key: 'במלאי',
@@ -58,7 +48,6 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             }
             else if (treatments[i].id == 4)
             {
-                $scope.mlay = treatments[i].Standard - treatments[i].Stock;
                 $scope.dataNekezHaze = [
                     {
                         key: 'במלאי',
