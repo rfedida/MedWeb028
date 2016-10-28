@@ -37,7 +37,7 @@ app.use(function(req, res, next)
     //     res.status(401).send();
     // }
 });
-
+ 
 app.use(express.static(__dirname + '/public'));
 app.use('/', routes);
 app.use('/agam', agamRoutes);
