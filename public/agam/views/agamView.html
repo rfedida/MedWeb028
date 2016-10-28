@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <title>שו"ב אג"מ</title>
     <script src="..\..\components\angular\angular.min.js" type="text/javascript"></script>
-    <script src="..\..\agam\javascripts\app.js" type="text/javascript"></script>
     <script src="..\..\components\d3\d3.js" type="text/javascript"></script>
     <script src="..\..\components\nvd3\build\nv.d3.js" type="text/javascript"></script>
     <script src="..\..\components\angular-nvd3\src\angular-nvd3.js" type="text/javascript"></script>
     <script src="..\..\components\leaflet\dist\leaflet.js" type="text/javascript"></script>
     <script src="..\..\components\leaflet\dist\angular-leaflet-directive.js" type="text/javascript"></script>
+    <script src="..\..\components\angular-tree-control\angular-tree-control.js" type="text/javascript"></script>
+    <script src="..\..\agam\javascripts\app.js" type="text/javascript"></script>
     <link rel="stylesheet" href="..\..\components\nvd3\build\nv.d3.css">
     <link rel="stylesheet" href="..\..\components\bootstrap\css\bootstrap.css">
     <link rel="stylesheet" href="..\..\components\leaflet\dist\leaflet.css">
-
+    <link rel="stylesheet" href="..\..\components\angular-tree-control\css\tree-control.css">
+    <link rel="stylesheet" href="..\..\components\angular-tree-control\css\tree-control-attribute.css">
 </head>
 <body ng-controller="statisticController" style="overflow-x : hidden">
   <img ng-src="..\..\common\img\banner.jpg" width="101%">
@@ -21,7 +23,7 @@
    <div class="col-md-4">
         <leaflet width="104%" height="843"></leaflet>
     </div>
-    <div class="col-md-6">
+    <div class="{{window}}">
         <div class="row" style="background: gray">
               <span class="col-md-4">    
             <button type="button" class="btn btn-warning"><< צפה בפרטים</button>
@@ -53,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" >
             <nav class="navbar navbar-inverse">
                <ul class="nav navbar-nav">
                   <li class="active"><a href="#">גרף סוגי פגיעה</a></li>
@@ -64,11 +66,21 @@
                </ul>
             </nav>
         </div>
+        <button ng-click="treeEvent()">dd</button>
         <div>
             <nvd3 options='options' data='data'></nvd3>
-         </div>
+         </div> 
     </div>
-  </div>
+      <!--img ng-src="..\..\common\img\openIcon.png" float: left-->
+      <div ng-controller="unitsTreeController"
+        <treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+                unit: {{node.name}} age {{node.age}}
+        </treecontrol>
+        <div treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+            unit: {{node.name}} age {{node.age}}
+        </div>
+      </div>
+
 </body>
 
 </html>
