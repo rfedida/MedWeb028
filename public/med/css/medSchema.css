@@ -1,0 +1,17 @@
+
+body {
+    direction: rtl;
+}
+
+td {
+     text-align: right!important;
+}
+
+th {
+     text-align: right!important;
+}
+
+.redColor
+{
+    color:red
+}
