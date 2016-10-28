@@ -19,13 +19,12 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
     $scope.units = [];
     $scope.loadUnits = function(){
         $http.get('/crud/units').success(function(data){
-            $scope.units = data;
+             $scope.dataForTheTree = data;
         });
     };
 
     $scope.loadUnits();
 
-    $scope.dataForTheTree =  $scope.units;
     //   [
     //       {"name" : "Joe", "age" : "21", "children" : [
     //           {"name" : "Smith", "age" : "42", "children" : []},
