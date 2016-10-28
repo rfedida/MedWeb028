@@ -8,9 +8,11 @@ var pjson = require('../package.json')
 
 function sortArrayByLastTimestamp(arrayToSort) {
 
-    arrayToSort.sort(function(a,b) {
+    var newArray = arrayToSort.sort(function(a,b) {
         return parseFloat(b.timestamp) - parseFloat(a.timestamp); 
     });
+
+    return newArray;
 }
 
 crudRouter.get('/units', function (req, res, next) {
@@ -62,26 +64,43 @@ crudRouter.get('/patients', function(req, res, next) {
     }
 });
 
-// Get patient by id
-crudRouter.get('/patients/:id', function(req, res,next) {
+
+crudRouter.get('/patients/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        Patient.findOne({"id": req.params.id, function(err, patient) {
-            if (err) {
+        Patient.findOne({"braceletId" : req.params.id}, function(err, patient) {
+            if (err) { 
                 res.send(err);
             } else {
                 res.send(patient);
             }
-        }});
+        })
     }
 });
+
+// Get patient by id
+// crudRouter.get('/patients/:id', function(req, res,next) {
+//     if (pjson.isWeb) {
+//         Patient.find({"braceletId": req.params.id}, function(err, patient) {
+//             if (err) {  
+//                 res.send(err);
+//             } else {
+//                 res.send(patient);
+//             }
+//         })
+//     }
+// });
 
 // Get patients by unit id
 crudRouter.get('/patients/units/:unitId', function(req, res,next) {   
      if (pjson.isWeb) {
-        Patient.find({"CurrentStation" : req.params.id}, "braceletId measurements",  function(err, patients) {
+        Patient.find({"CurrentStation" : req.params.unitId},  function(err, patients) {
         if (err) {
             res.send(err);
         } else {
+            patients = JSON.parse(JSON.stringify(patients));
+            // var x = patients.map(funciton(){
+            //     return patient.toObject();
+            // });
             var result = []; 
             
             // Run all patients and save specific fields
