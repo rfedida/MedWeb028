@@ -96,23 +96,86 @@ myApp.controller('statisticController', function($scope, $http) {
     });
     
     
-    $scope.injuryLocationData = [
-        {
-            key: 'פגיעות מפשעה',
-            y: 7
-        },
-        {
-            key: 'פגיעות חזה',
-            y: 36
-        },
-        {
-            key: 'פגיעות גפיים',
-            y: 8
-        },
-        {
-            key: 'פגיעות ראש',
-            y: 49
-        }
-    ];
+    $scope.injuryLocationData = [];
+    $http.get("/crud/injuryMechanism").success(function(data){
+        $scope.injuryLocationData = buildData(data);
+    }).error(function(data){
+        console.log(data);
+    }); 
+
+function buildData(data){
+        var tempData = [
+                        {
+                key: $scope.injury[0].generalData.injuryLocation,
+                y: 7
+            },
+            {
+                key: 'פגיעות חזה',
+                y: 36
+            },
+            {
+                key: 'פגיעות גפיים',
+                y: 8
+            },
+            {
+                key: 'פגיעות ראש',
+                y: 49
+            }
+        ];
+
+        // for (var statIndex in currInjury.values)
+        // {
+        //     var currStation = currInjury.values[statIndex];
+        //     injuryData.values.push({
+        //         'x' : statIndex, // TODO: change to currStation.x when getting the stations is available 
+        //         'y' : currStation.y
+        //     });
+        // }
+
+
+        return tempData;
+}
    
+   
+
+
+
+
+//       $http.get('/agam/Occupation/'+'1_1_1'
+//     ).success(function(response){
+//         var jsonTwo = response[1];
+//             $scope.dataTwo = buildData(jsonTwo);
+
+//     });
+    
+// });
+
+// function buildData(data)
+// {
+//     var GoodData = [];
+
+//     for (var index in data)
+//     {
+//         var currInjury = data[index];
+//         var injuryData = {
+//             'key' : currInjury.key,
+//             'values': []
+//         };
+        
+        
+//         for (var statIndex in currInjury.values)
+//         {
+//             var currStation = currInjury.values[statIndex];
+//             injuryData.values.push({
+//                 'x' : statIndex, // TODO: change to currStation.x when getting the stations is available 
+//                 'y' : currStation.y
+//             });
+//         }
+
+//         GoodData.push(injuryData);
+//     }
+
+//     return (GoodData);
+
 });
+
