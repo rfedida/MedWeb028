@@ -20,9 +20,9 @@ myApp.config(function($routeProvider){
             controller : "statisticController"
         })
 
-        .when("/numOfTreat" , {
-            templateUrl : "/agam/views/numOfTreat.html",
-            controller : "statisticController"
+        .when("/numOfTreats" , {
+            templateUrl : "/agam/views/numOfTreats.html",
+            controller : "numOfTreatsCtrl"
         })
 
         .when("/injuryPerHour" , {

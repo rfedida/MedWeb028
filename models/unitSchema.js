@@ -18,6 +18,6 @@ var unitSchema = new mongoose.Schema({
 	// location: { type: Point, coordinates: [Number]} ?
 }, {collection: 'Units'});
 
-var Unit = mongoose.model('Unit', unitSchema);
+var Unit = mongoose.model('Units', unitSchema);
 
 module.exports = Unit;

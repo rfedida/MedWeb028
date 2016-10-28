@@ -46,7 +46,6 @@ app.use('/', routes);
 app.use('/agam', agamRoutes);
 app.use('/med', medRoutes);
 app.use('/infrastructure', infrastructureRoutes);
-
 app.use('/crud', crud);
 
 
@@ -61,7 +60,7 @@ mongoose.connect('mongodb://150.0.0.56:27017/DB');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(){
-    console.log("connect to mongo");
+    console.log("connected to mongo");
 });
 
 // UDP Server

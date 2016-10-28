@@ -1,9 +1,8 @@
-myApp.controller('useOfDrugsCtrl', function($scope, $http) {
+myApp.controller('numOfTreatsCtrl', function($scope, $http) {
 
     $http.get("/crud/units").then(function(response){
         var data = response.data;
-        alert(data);
-         $scope.dataDormikom = [
+         $scope.dataVygon = [
             {
                 key: 'במלאי',
                 y: 8
@@ -14,7 +13,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             }
         ];
 
-        $scope.dataAksakafron = [
+        $scope.dataHosemOrakim = [
             {
                 key: 'במלאי',
                 y: 33
@@ -25,7 +24,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             }
         ];
 
-        $scope.dataAcamol = [
+        $scope.dataNekezHaze = [
             {
                 key: 'במלאי',
                 y: 67
@@ -33,39 +32,6 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             {
                 key: 'שימוש',
                 y: 36
-            }
-        ];
-
-        $scope.dataKatmin = [
-            {
-            key: 'במלאי',
-                y: 7
-            },
-            {
-                key: 'שימוש',
-                y: 36
-            }
-        ];
-
-        $scope.dataFantil = [
-            {
-                key: 'במלאי',
-                y: 7
-            },
-            {
-                key: 'שימוש',
-                y: 1
-            }
-        ];
-
-        $scope.dataMorphium = [
-            {
-                key: 'מלאי',
-                y: 7
-            },
-            {
-                key: 'שימוש',
-                y: 6
             }
         ];
     })
@@ -103,7 +69,5 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                 }
             } 
         }        
-    };
-
-   
+    };   
 });
