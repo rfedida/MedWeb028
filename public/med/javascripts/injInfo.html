@@ -74,11 +74,18 @@
             <div class="col-md-8">
                 <div class="row dataRow">
                     <div class="col-md-4">
-                        <select class="form-control" ng-model="injured.General_Data.Injury_mechanism" ng-options="Injury_mechanism.id as Injury_mechanism.name for Injury_mechanism in InjuryMechanismType" convert-to-number>                            
+                        <select class="form-control" ng-model="injured.General_Data.Injury_mechanism" convert-to-number>
+                            <option value="0">תלול מסלול</option>
+                            <option value="1">ירי</option>
+                            <option value="2">הדף</option>
+                            <option value="3">אב"כ</option>
+                            <option value="4">כוויה</option>
+                            <option value="5">שאיפה</option>
+                            <option value="6">תאונת דרכים</option>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label>מנגנון הפציעה</label>
+                        <label>מנגנון הפציעה{{injured.General_Data.Injury_mechanism}}</label>
                     </div>
                     <div class="col-md-4">       
                         <div class="btn-group btn-group-sm" data-toggle="buttons">                            
