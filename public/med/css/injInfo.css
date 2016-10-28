@@ -76,3 +76,22 @@ h4 small {
 label{
     font-size: 15px;
 }
+
+.humanImg{
+    height: 350px;
+    width: 360px;
+    margin-top: 10px;
+}
+
+.btnEmergency.active{
+    background-color: #d9534f;
+    color: #fff;
+    border-color: #d43f3a
+}
+
+.btnNotEmergency.active{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+
+}
