@@ -12,6 +12,7 @@ var unitSchema = new mongoose.Schema({
 		id: String,
 		Standard: Number,
 		Stock: Number
+
 	}],	
 	Max_Capacity: Number,
 	Doctors_num: Number

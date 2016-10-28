@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
   var x= res.req.params;
   var userHirarchy = res.req.params.userHirarchy;
   graphOccupation.getOcupationAmoutGraph(userHirarchy, function(fullJson) {
-      res.send(fullJson);
+      res.json(fullJson);
   });
   
 });
