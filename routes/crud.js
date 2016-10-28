@@ -180,11 +180,11 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
     console.log("get requst for db");
-    Patient.find({},function(err, users){
+    Patient.find({},function(err, patients){
         if(!err)
          {
-             res.json(users);
-             console.log(users);
+             res.json(patients);
+             console.log(patients);
         }
         else {}
     });
