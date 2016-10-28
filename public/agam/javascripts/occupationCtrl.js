@@ -53,8 +53,37 @@ myApp.controller('occupationController', function($scope, $http) {
         /*if (jsonTwo.isEmpty() != true)
         {*/
            // document.getElementById("graphTwo").innerHTML.hidden = false;
-            $scope.dataTwo = jsonTwo;
+            $scope.dataTwo = buildData(jsonTwo);
         //  }
 
     });
+    
 });
+
+function buildData(data)
+{
+    var GoodData = [];
+
+    for (var index in data)
+    {
+        var currInjury = data[index];
+        var injuryData = {
+            'key' : currInjury.key,
+            'values': []
+        };
+        
+        
+        for (var statIndex in currInjury.values)
+        {
+            var currStation = currInjury.values[statIndex];
+            injuryData.values.push({
+                'x' : statIndex, // TODO: change to currStation.x when getting the stations is available 
+                'y' : currStation.y
+            });
+        }
+
+        GoodData.push(injuryData);
+    }
+
+    return (GoodData);
+}
