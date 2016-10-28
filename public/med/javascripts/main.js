@@ -1,4 +1,4 @@
-var app = angular.module("medApp", ["ngRoute"]);
+var app = angular.module("medApp", ["ngRoute", "ui.toggle"]);
 
 app.config(['$routeProvider', 
 function($routeProvider){
