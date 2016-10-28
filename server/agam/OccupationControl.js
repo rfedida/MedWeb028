@@ -96,32 +96,37 @@ var Patient = require('../../models/patientSchema');
                     "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
                 }
                 ], function(err, res){
+                   res.forEach(function(element) {
+                   var key = element._id; 
+                   jsonDataOne[key] = {'key': element._id, values : element.values};
+
+                // Get the current palhak 
+                Patient.aggregate([
+                {"$match": {"CurrentStation" :hirarchCode}},
+                {"$group" : {
+                    "_id" : {"Station": "$CurrentStation",
+                            "Emergency": "$generalData.emergency"},
+                    "count": {"$sum": 1}
+                }},
+                {"$group":{
+                    "_id" : "$_id.Emergency",
+                    "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
+                }], function(err, res) {
                     
+
+                    res.forEach(function(element) {
+                    var key = element._id; 
+                    jsonDataTwo[key] = {'key': element._id, values : element.values};
+                    }, this);
+
+                    createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                    callback(jsonDataFull);
+                });
+                }, this);
                 }
             );
 
-            // Get the current palhak 
-            Patient.aggregate([
-            {"$match": {"CurrentStation" :hirarchCode}},
-            {"$group" : {
-                  "_id" : {"Station": "$CurrentStation",
-                         "Emergency": "$generalData.emergency"},
-                  "count": {"$sum": 1}
-             }},
-            {"$group":{
-                   "_id" : "$_id.Emergency",
-                   "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
-            }], function(err, res) {
-                
-
-                res.forEach(function(element) {
-                   var key = element._id; 
-                   jsonDataTwo[key] = {'key': element._id, values : element.values};
-                }, this);
-
-                createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
-                callback(jsonDataFull);
-            });
+           
 
             break;
         }
