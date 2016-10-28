@@ -117,9 +117,10 @@ var Patient = require('../../models/patientSchema');
                 res.forEach(function(element) {
                    var key = element._id; 
                    jsonDataTwo[key] = {'key': element._id, values : element.values};
-                   createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
-                   callback(jsonDataFull);
                 }, this);
+
+                createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                callback(jsonDataFull);
             });
 
             break;
@@ -137,7 +138,10 @@ var Patient = require('../../models/patientSchema');
                    "_id" : "$_id.Emergency",
                    "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
             }], function(err, res) {
-
+                res.forEach(function(element) {
+                   var key = element._id; 
+                   jsonDataTwo[key] = {'key': element._id, values : element.values};
+                }, this);
             });
 
             break;
