@@ -29,7 +29,7 @@
 <body ng-app="myApp"  style="overflow-x : hidden">
     <img ng-src="..\..\common\img\banner.jpg" width="101%"></img>
     <div class="row" width="100%">
-        <div class="col-md-4">
+        <div class="col-md-4" ng-controller="mapControl">
             <leaflet width="104%" height="843"></leaflet>
         </div>
         <div class="col-md-6">
@@ -70,19 +70,19 @@
                         <li class="active"><a href="#typeOfInjury">גרף סוגי פגיעה</a></li>
                         <li><a href="#useOfDrugs">גרף שימוש תרופות </a></li>
                         <li><a href="#numOfTreats">גרף מספר טיפולים </a></li>
-                        <li><a href="#tonnage">גרף תפוסה</a></li>
+                        <li><a href="#Occupation">גרף תפוסה</a></li>
                         <li><a href="#injuryPerHour">גרף פגיעות לשעה</a></li>
                     </ul>
                 </nav>
                 <div ng-view></div>
             </div>
-        </div>
+        </div> 
       <div ng-controller="unitsTreeController"
         <treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
-                unit: {{node.name}} age {{node.age}}
+                {{node.name}}
         </treecontrol>
         <div treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
-            unit: {{node.name}} age {{node.age}}
+            {{node.name}}
         </div>
       </div>
 </body>
