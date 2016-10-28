@@ -10,3 +10,8 @@ td {
 th {
      text-align: right!important;
 }
+
+.redColor
+{
+    color:red
+}

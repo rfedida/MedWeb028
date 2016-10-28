@@ -6,10 +6,18 @@
        </div>
        <br><br>
        <div class="row">
-             <div class="col-md-3">סטרוציה:{{inj.Storation}}</div>
-             <div class="col-md-3">ל"ד:{{inj.BloodPressure}}</div>
-             <div class="col-md-3">חום:{{inj.temp}}</div>
-             <div class="col-md-3">דופק:{{inj.HeartBeat}}</div>
+             <div class="col-md-3" ng-class="{'redColor': inj.Storation > 97 || inj.Storation < 92 }">
+               סטרוציה:{{inj.Storation}}
+             </div>
+             <div class="col-md-3">
+              ל"ד:{{inj.BloodPressure}}
+             </div>
+             <div class="col-md-3" ng-class="{'redColor': inj.temp > 38.3 || inj.temp < 36 }">
+               חום:{{inj.temp}}
+              </div>
+             <div class="col-md-3" ng-class="{'redColor': inj.HeartBeat > 105 }">
+               דופק:{{inj.HeartBeat}}
+             </div>
        </div>
        <br>
       <div class="row">
