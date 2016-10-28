@@ -45,7 +45,6 @@ app.use('/', routes);
 app.use('/agam', agamRoutes);
 app.use('/med', medRoutes);
 app.use('/infrastructure', infrastructureRoutes);
-
 app.use('/crud', crud);
 
 
