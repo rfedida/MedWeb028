@@ -5,7 +5,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
         alert(data);
          $scope.dataDormikom = [
         {
-            key: 'מלאי',
+            key: 'במלאי',
             y: 8
         },
         {
@@ -16,7 +16,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
 
     $scope.dataAksakafron = [
         {
-            key: 'מלאי',
+            key: 'במלאי',
             y: 33
         },
         {
@@ -27,7 +27,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
 
     $scope.dataAcamol = [
         {
-            key: 'מלאי',
+            key: 'במלאי',
             y: 67
         },
         {
@@ -38,7 +38,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
 
     $scope.dataKatmin = [
         {
-            key: 'מלאי',
+           key: 'במלאי',
             y: 7
         },
         {
@@ -49,7 +49,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
 
     $scope.dataFantil = [
         {
-            key: 'מלאי',
+            key: 'במלאי',
             y: 7
         },
         {
