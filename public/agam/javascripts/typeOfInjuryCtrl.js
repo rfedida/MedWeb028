@@ -30,7 +30,10 @@ myApp.controller('statisticController', function($scope, $http) {
             }
         }        
     };
+    //trying
+    $scope.injury = [];
 
+<<<<<<< HEAD
     $scope.lineChartOptions = {
         chart:
         {
@@ -101,9 +104,16 @@ myApp.controller('statisticController', function($scope, $http) {
     ];
 
     $scope.injuryTypeData = [
+=======
+    $http.get("/crud/injuryMechanism").success(function(data){
+     $scope.injury = data;  
+      
+
+      $scope.data2 = [
+>>>>>>> 566f11171063f19e0add15d4be787e38ed42c1e2
         {
             key: 'תלול מסלול',
-            y: 7
+            y: $scope.injury[0].generalData.emergency
         },
         {
             key: 'ירי',
@@ -127,4 +137,30 @@ myApp.controller('statisticController', function($scope, $http) {
         }
 
     ];
+
+        }).error(function(data){
+        console.log(data);
+    });
+    
+    
+    $scope.data1 = [
+        {
+            key: 'פגיעות מפשעה',
+            y: 7
+        },
+        {
+            key: 'פגיעות חזה',
+            y: 36
+        },
+        {
+            key: 'פגיעות גפיים',
+            y: 8
+        },
+        {
+            key: 'פגיעות ראש',
+            y: 49
+        }
+    ];
+
+   
 });
