@@ -17,7 +17,6 @@ angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalSe
     {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"urgent", date:"25/10/2016", time:"11:15"}
   ];
 
-$scope.complexResult = null;
 $scope.showComplex = function() {
 
     ModalService.showModal({
@@ -28,9 +27,6 @@ $scope.showComplex = function() {
       }
     }).then(function(modal) {
       modal.element.modal();
-      modal.close.then(function(result) {
-        $scope.complexResult  = "Name: " + result.name + ", age: " + result.age;
-      });
     });
 };
 
@@ -40,16 +36,18 @@ angular.module("medApp").controller('ComplexController', [
   '$scope', '$element', 'title', 'close', 
   function($scope, $element, title, close) {
 
-  $scope.name = null;
-  $scope.age = null;
+  //$scope.braceId = null;
+  //$scope.date = null;
+  //$scope.time = null;
   $scope.title = title;
   
   //  This close function doesn't need to use jQuery or bootstrap, because
   //  the button has the 'data-dismiss' attribute.
   $scope.close = function() {
  	  close({
-      name: $scope.name,
-      age: $scope.age
+      braceId: $scope.braceId,
+      date: $scope.date,
+      time: $scope.time
     }, 500); // close, but give 500ms for bootstrap to animate
   };
 
@@ -62,8 +60,9 @@ angular.module("medApp").controller('ComplexController', [
     
     //  Now call close, returning control to the caller.
     close({
-      name: $scope.name,
-      age: $scope.age
+      braceId: $scope.braceId,
+      date: $scope.date,
+      time: $scope.time
     }, 500); // close, but give 500ms for bootstrap to animate
   };
 
