@@ -1,8 +1,4 @@
 myApp.controller('useOfDrugsCtrl', function($scope, $http) {
-
-    $http.get("/crud/units").then(function(response){
-        var data = response.data;
-        alert(data);
          $scope.dataDormikom = [
             {
                 key: 'במלאי',
@@ -68,7 +64,6 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                 y: 6
             }
         ];
-    })
 
     $scope.colorArray = ['gray','#660000'];
     
