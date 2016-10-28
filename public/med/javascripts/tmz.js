@@ -24,7 +24,7 @@ $scope.showComplex = function() {
       templateUrl: "/med/views/modalTmz.html",
       controller: "ComplexController",
       inputs: {
-        title: "A More Complex Example"
+        title: "פצוע חדש"
       }
     }).then(function(modal) {
       modal.element.modal();
@@ -58,7 +58,7 @@ angular.module("medApp").controller('ComplexController', [
   $scope.cancel = function() {
 
     //  Manually hide the modal.
-    $element.modal('hide');
+ $element.modal('hide');
     
     //  Now call close, returning control to the caller.
     close({

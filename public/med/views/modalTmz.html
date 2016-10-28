@@ -1,36 +1,63 @@
 
 
-<div class="modal fade">
-        <div class="modal-dialog modal-md">
+<div class="modal ">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
+                <center>
                 <div class="modal-header">
                     <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">{{title}}</h4>
+                    <h4 class="modal-title"><strong>פצוע חדש</strong>
+                    </h4>
                 </div>
+                </center>
                 <div class="modal-body">
-                    <p>Here's a more complex modal, it contains a form, data is passed to the controller 
-                    and data is returned from the modal.</p>
-
                     <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">Name</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="name" placeholder="Your Name" ng-model="name">
+                        <div class="col-sm-10" style="padding-top: 10px;">
+                        <input type="text" class="form-control" id="name" placeholder="הכנס מספר צמיד" ng-model="name">
                         </div>
+                        <label for="name" class="col-sm-2 control-label">מזהה צמיד</label>
                     </div>
+
                     <div class="form-group">
-                        <label for="age" class="col-sm-2 control-label">Age</label>
-                        <div class="col-sm-10">
-                        <input type="number" class="form-control" id="inputPassword3" placeholder="Age" ng-model="age">
+                        <div class="col-sm-10" style="padding-top: 10px;">
+                        <!--<input type="datetime" class="form-control" id="inputPassword3" placeholder="הכנס שעת קליטה" ng-model="age">-->
+
+                        <div class="input-group date" id="inputPassword3">
+                            <input type="date" class="form-control" placeholder="הכנס תאריך קליטה" style="border-radius: 3px;"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+
                         </div>
+
+                        </div>
+                        <label for="age" class="col-sm-2 control-label">תאריך קליטה</label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10" style="padding-top: 10px;">
+                        <!--<input type="datetime" class="form-control" id="inputPassword3" placeholder="הכנס שעת קליטה" ng-model="age">-->
+
+                        <div class="input-group date" id="inputPassword3">
+                            <input type="time" class="form-control" placeholder="הכנס שעת קליטה" style="border-radius: 3px;"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+
+                        </div>
+
+                        </div>
+                        <label for="age" class="col-sm-2 control-label">שעת קליטה</label>
                     </div>
                     </form>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">OK</button>
-                    <button type="button" ng-click="cancel()" class="btn">Cancel</button>
+                    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">אישור</button>
+                    <button type="button" ng-click="cancel()" class="btn">ביטול</button>
                 </div>
             </div>
         </div>
     </div>
+    
