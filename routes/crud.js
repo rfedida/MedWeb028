@@ -6,6 +6,7 @@ var Patient = require('../models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
 var pjson = require('../package.json')
 
+
 function sortArrayByLastTimestamp(arrayToSort) {
 
     arrayToSort.sort(function(a,b) {
@@ -18,8 +19,10 @@ crudRouter.get('/units', function (req, res, next) {
     if (pjson.isWeb) {
         Unit.find(function (err, units) {
             if (err) {
+                console.log(err);
                 res.send(err); 
             } else {
+                console.log(units);
                 res.send(units);
             }
         });
@@ -177,11 +180,11 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
     console.log("get requst for db");
-    Patient.find({},function(err, users){
+    Patient.find({},function(err, patients){
         if(!err)
          {
-             res.json(users);
-             console.log(users);
+             res.json(patients);
+             console.log(patients);
         }
         else {}
     });
