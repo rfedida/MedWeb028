@@ -26,7 +26,7 @@ myApp.controller('statisticController', function($scope, $http) {
             },
             callback: function(){
                 d3.selectAll('.nv-legend-text').style('fill', 'black');            
-                d3.selectAll('.nv-pieLabels text').style('fill', 'black');          
+                d3.selectAll('.nv-pieLabels text').style('fill', 'black');                
             }
         }        
     };
