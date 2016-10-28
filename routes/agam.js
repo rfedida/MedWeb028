@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var graphOccupation = require('../server/agam/OccupationControl.js');
-var Units = require('../../models/unitSchema');
+var Units = require('../models/unitSchema.js');
 
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {
@@ -21,7 +21,7 @@ router.get('/Occupation/:userHirarchy', function(req, res, next){
 router.get('/units/:userHirarchy', function(req, res, next){
   var x= res.req.params;
   var userHirarchy = res.req.params.userHirarchy;
-  Units.find({'id': new RegExp('^'+hirarchCode)}, function(err, units) {
+  Units.find({'id': new RegExp('^'+userHirarchy)}, function(err, units) {
             if (err) { 
                 res.send(err);
             } else {
