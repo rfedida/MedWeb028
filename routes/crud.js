@@ -6,6 +6,7 @@ var Patient = require('../models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
 var pjson = require('../package.json')
 
+
 function sortArrayByLastTimestamp(arrayToSort) {
 
     arrayToSort.sort(function(a,b) {
@@ -18,8 +19,10 @@ crudRouter.get('/units', function (req, res, next) {
     if (pjson.isWeb) {
         Unit.find(function (err, units) {
             if (err) {
+                console.log(err);
                 res.send(err); 
             } else {
+                console.log(units);
                 res.send(units);
             }
         });
