@@ -1,4 +1,5 @@
-var app = angular.module("medApp", ["ngRoute","angularModalService"]);
+var app = angular.module("medApp", ["ngRoute","angularModalService", "ui.toggle"]);
+
 
 app.config(['$routeProvider', 
 function($routeProvider){
