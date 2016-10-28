@@ -1,41 +1,9 @@
 myApp.controller('useOfDrugsCtrl', function($scope, $http) {
 
-    $scope.colorArray = ['gray','#660000'];
-    
-    $scope.colorFunction = function() {
-        return function(d,i){
-            return $scope.colorArray[i];
-        }
-    }
-    
-    $scope.options = {
-        chart:
-        {
-            type: 'pieChart',
-            height: 200,
-            width: 230,
-            donut: true,
-            x: function(d){return d.key},
-            y: function(d){return d.y},
-            showLables: true,
-            labelType: "value",
-            color: $scope.colorFunction(),
-            duration: 500,
-            labelThreshold: 0.01,
-            labelSunbeamLayout: true,
-            legend: {
-                margin:
-                {
-                    top: 5,
-                    right: 35,
-                    bottom: 5,
-                    left: 0
-                }
-            } 
-        }        
-    };
-
-    $scope.dataDormikom = [
+    $http.get("/crud/units").then(function(response){
+        var data = response.data;
+        alert(data);
+         $scope.dataDormikom = [
         {
             key: 'מלאי',
             y: 8
@@ -100,4 +68,42 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             y: 6
         }
     ];
+    })
+
+    $scope.colorArray = ['gray','#660000'];
+    
+    $scope.colorFunction = function() {
+        return function(d,i){
+            return $scope.colorArray[i];
+        }
+    }
+    
+    $scope.options = {
+        chart:
+        {
+            type: 'pieChart',
+            height: 200,
+            width: 230,
+            donut: true,
+            x: function(d){return d.key},
+            y: function(d){return d.y},
+            showLables: true,
+            labelType: "value",
+            color: $scope.colorFunction(),
+            duration: 500,
+            labelThreshold: 0.01,
+            labelSunbeamLayout: true,
+            legend: {
+                margin:
+                {
+                    top: 5,
+                    right: 35,
+                    bottom: 5,
+                    left: 0
+                }
+            } 
+        }        
+    };
+
+   
 });
