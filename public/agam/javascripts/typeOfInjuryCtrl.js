@@ -27,14 +27,11 @@ myApp.controller('statisticController', function($scope, $http) {
             callback: function(){
                 d3.selectAll('.nv-legend-text').style('fill', 'black');            
                 d3.selectAll('.nv-pieLabels text').style('fill', 'black');          
-            },
-            dataLabels: function(d) {
-                return d3.format('<b>{d.key}</b> {d.y:.1f} %');
             }
         }        
     };
 
-    $scope.graphOptions = {
+    $scope.lineChartOptions = {
         chart:
         {
             type: 'lineChart',
@@ -52,7 +49,7 @@ myApp.controller('statisticController', function($scope, $http) {
                 axisLable: 'שעה'
             },
             yAxis:
-            {
+            { 
                 axisLable: 'מספר נפגעים',
                 axisLableDistance: 0
             }
@@ -86,19 +83,19 @@ myApp.controller('statisticController', function($scope, $http) {
 
     $scope.data = [
         {
-            key: 'פגיעות מפשעה',
+            x: 1,
             y: 7
         },
         {
-            key: 'פגיעות חזה',
+            x: 2,
             y: 36
         },
         {
-            key: 'פגיעות גפיים',
+            x: 3,
             y: 8
         },
         {
-            key: 'פגיעות ראש',
+            x: 4,
             y: 49
         }
     ];
