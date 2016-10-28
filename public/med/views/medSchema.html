@@ -1,0 +1,127 @@
+
+      <div ng-controller="myController">
+       <br>
+        <div class="row">
+             <div class="col-md-4 col-md-offset-4">תיק רפואי - צמיד {{inj.id}}</div>
+       </div>
+       <br><br>
+       <div class="row">
+             <div class="col-md-3">סטרוציה:{{inj.Storation}}</div>
+             <div class="col-md-3">ל"ד:{{inj.BloodPressure}}</div>
+             <div class="col-md-3">חום:{{inj.temp}}</div>
+             <div class="col-md-3">דופק:{{inj.HeartBeat}}</div>
+       </div>
+       <br>
+      <div class="row">
+       <div class="col-md-6">
+          <table class="table table-bordered">
+            <tr>
+             <th>שם הנוזל</th>
+              <th>כמות</th>     
+            </tr>
+          <tr ng-repeat = "liquid in liquids">
+             <td>{{liquid.name}}</td>
+             <td> {{liquid.Dosage + liquid.Dosage_type}} </td>
+          </tr>   
+        </table>
+       </div>    
+
+       <div class="col-md-6">
+     
+        <table class="table table-bordered">
+
+          <tr>
+             <th>לפני</th>
+             <th>שם התרופה</th>
+             <th>כמות</th>
+           </tr>
+          <tr ng-repeat = "medication in medications">
+             <td>{{medication.Time}}</td>
+             <td> {{medication.name}} </td>
+<td> {{medication.Dosage + medication.Dosage_type}} </td>
+           </tr>
+           
+        </table>
+       </div>
+
+      </div>
+      <br>
+      <div class="row">
+       <div class="col-md-6">
+           <table class="table table-bordered">
+            <tr>
+              <th rowspan="100">B</th>
+            </tr>
+           <tr>
+             <th>לפני</th>
+             <th>תיאור</th>
+           </tr>
+         <tr ng-repeat = "treatment in treatments.B">
+             <td>{{treatment.Date}}</td>
+             <td> {{treatment.name}} </td>
+          </tr>
+        </table>
+       </div>
+     
+      <div class="col-md-6">   
+         <table class="table table-bordered">
+            <tr>
+              <th rowspan="100">A</th>
+              </tr>
+            <tr>
+               <th>לפני</th>
+               <th>תיאור</th>
+           </tr>
+          <tr ng-repeat = "treatment in treatments.A">
+             <td>{{treatment.Date}}</td>
+             <td>{{treatment.name}}</td>
+          </tr>
+        </table>
+       </div>
+      </div>
+
+     <br>
+     <div class="row">
+       <div class="col-md-6">
+
+            <table class="table table-bordered">
+
+           <tr>
+              <th rowspan="100">D</th>
+           </tr>
+           <tr>
+              <th>לפני</th>
+             <th>תיאור</th>
+           </tr>
+         <tr ng-repeat = "treatment in treatments.D">
+             <td>{{treatment.Date}}</td>
+             <td> {{treatment.name}} </td>
+          </tr>
+
+        </table>
+
+       </div>
+    
+       <div class="col-md-6">
+
+<table class="table table-bordered">
+   
+           <tr>
+              <th rowspan="100">C</th>
+           </tr>
+            <tr>
+               <th>לפני</th>
+             <th>תיאור</th>
+           </tr>
+           <tr ng-repeat = "treatment in treatments.C">
+             <td>{{treatment.Date}}</td>
+             <td> {{treatment.name}} </td>
+          </tr>
+
+        </table>
+
+       </div>
+      </div>
+
+      <a href="#injInfo">מעבר לנתוני פצוע</a> 
+      </div>
