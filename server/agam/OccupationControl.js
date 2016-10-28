@@ -1,6 +1,6 @@
 var Patient = require('../../models/patientSchema');
 
- var  getOcupationAmoutGraph = function(hirarchCode){
+ var  getOcupationAmoutGraph = function(hirarchCode, callback){
      var jsonDataOne = {};
       var jsonDataTwo = {};
      var jsonDataFull = {};
@@ -85,7 +85,7 @@ var Patient = require('../../models/patientSchema');
         {
             // Get all the taagads in the hirarchy
             Patient.aggregate(
-                [{"$match": {"CurrentStation" : {"$regex": "/^" + hirarchCode + ".{2}$/"}}},
+                [{"$match": {"CurrentStation" : {"$regex": "^" + hirarchCode + ".{2}$"}}},
                 {"$group" : {
                     "_id" : {"Station": "$CurrentStation",
                         "Emergency": "$generalData.emergency"},
@@ -117,8 +117,10 @@ var Patient = require('../../models/patientSchema');
                 res.forEach(function(element) {
                    var key = element._id; 
                    jsonDataTwo[key] = {'key': element._id, values : element.values};
-                   createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
                 }, this);
+
+                createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                callback(jsonDataFull);
             });
 
             break;
@@ -136,7 +138,10 @@ var Patient = require('../../models/patientSchema');
                    "_id" : "$_id.Emergency",
                    "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
             }], function(err, res) {
-
+                res.forEach(function(element) {
+                   var key = element._id; 
+                   jsonDataTwo[key] = {'key': element._id, values : element.values};
+                }, this);
             });
 
             break;
@@ -145,7 +150,7 @@ var Patient = require('../../models/patientSchema');
             break;
     }
 
-    return (jsonDataFull);
+    
 }
 
 function createFullJson(one, two, full)

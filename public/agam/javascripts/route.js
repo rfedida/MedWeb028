@@ -15,14 +15,14 @@ myApp.config(function($routeProvider){
             controller : "useOfDrugsCtrl"
         })
 
-        .when("/tonnage" , {
+        .when("/Occupation" , {
             templateUrl : "/agam/views/tonnage.html",
-            controller : "statisticController"
+            controller : "occupationController"
         })
 
-        .when("/numOfTreat" , {
-            templateUrl : "/agam/views/numOfTreat.html",
-            controller : "statisticController"
+        .when("/numOfTreats" , {
+            templateUrl : "/agam/views/numOfTreats.html",
+            controller : "numOfTreatsCtrl"
         })
 
         .when("/injuryPerHour" , {
