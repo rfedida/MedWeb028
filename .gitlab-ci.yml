@@ -2,12 +2,9 @@ before_script:
     
 rspec:
     script:
-<<<<<<< HEAD
-        pwd
-=======
         - pwd
         - npm set registry http://150.0.0.53
         - npm install
         - forever stopall
         - forever start app.js
->>>>>>> 4158f028d146ae7ee80507b8fbf95f2494685492
+

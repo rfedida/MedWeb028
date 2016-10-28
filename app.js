@@ -22,7 +22,7 @@ app.use(function(req, res, next)
     {
         res.status(401).send();
     }
-    next();
+    //next();
     // var loginDetails = {};
     // var isLoggedOn = true;
     // console.log("req address : " + req.originalUrl);
@@ -37,8 +37,6 @@ app.use(function(req, res, next)
     //     res.status(401).send();
     // }
 });
-app.use(express.static(__dirname + '\\public'));
-
 
 app.use(express.static(__dirname + '/public'));
 app.use('/', routes);
