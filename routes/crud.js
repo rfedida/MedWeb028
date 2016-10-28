@@ -99,4 +99,18 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
     });
 });
 
+//trying
+crudRouter.get('/injuryMechanism' , function(req , res ){
+    console.log("get requst for db");
+    Patient.find({},function(err, users){
+        if(!err)
+         {
+             res.json(users);
+             console.log(users);
+        }
+        else {}
+    });
+    
+});
+
 module.exports = crudRouter;
