@@ -1,0 +1,75 @@
+
+/* General */
+@font-face {
+    font-family: alef;
+    src: "C:\Desktop\main\fonts\Alef-Regular.ttf";
+}
+
+/* Top */
+.h-divider{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 1px;
+    width: 100%;
+    border-top: 1px solid lightgray;
+}
+
+/* footer */
+.menuimg {
+    padding-top: 25px;
+    width:400px;
+}
+
+.addImg{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin-top: 10px;
+    padding-bottom: 50px;
+    font-size: 50px;
+    text-align: center;
+    box-sizing: border-box;
+    line-height: 50px;
+    box-shadow: 3px 3px 3px #B0BEC5;
+    background-color: #5C6BC0;
+    border-color: #5C6BC0;
+    color: white;
+    border-style: solid;
+
+}
+/* Body */
+
+.border-right {
+    border-right: 1px solid lightgray;
+}
+
+body {
+    direction: rtl;
+    font-family: 'alef';
+}
+
+.bodyhigh {
+    height: 650px;
+}
+
+.portfolio-item {
+    margin-bottom: 20px;
+    height: 160px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.bodyText {
+    font-size:13.5px; 
+}
+
+/* hover animation */
+
+.fade {
+    opacity: 1;
+}
+
+.fade:hover {
+    opacity: 0.6;
+}
+

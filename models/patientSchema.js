@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var patientSchema = new mongoose.Schema({
 	braceletId: Number,
 	CurrentStation: String,
+	LastUpdate: Date,
 	generalData: {
 		emergency: {
 			type: Number,
@@ -68,12 +69,12 @@ var patientSchema = new mongoose.Schema({
 			timestamp: Number
 		}]
 	},
-	Stations: [{
+	Stations: [{		
 		receptionTime: {type: Date, default: Date.now},
 		stationId: String,
 		leavingDate: {type: Date}
 	}]
-});
+}, {collection: 'Patients'});
 
 var Patient = mongoose.model("Patient", patientSchema);
 module.exports = Patient;

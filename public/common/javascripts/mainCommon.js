@@ -2,7 +2,7 @@ var medApp = angular.module('medApp', ["ngMaterial"]);
 medApp.controller('medController',['$scope', '$http', 'loginCardService',
  function ($scope, $http, loginCardService){
 
-   loginCardService.showLoginCard();
+   // loginCardService.showLoginCard();
     $scope.data = "try";
 }]);
 
