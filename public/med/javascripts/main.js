@@ -10,11 +10,8 @@ function($routeProvider){
 		.when('/injInfo', {
 		templateUrl: "/med/views/injInfo.html"
 		})
-		.when('/view2', {
-		templateUrl: "/med/views/view2.html"
-		})
-		.when('/view3', {
-		templateUrl: "/med/views/view3.html"
+		.when('/medSchema', {
+		templateUrl: "/med/views/medSchema.html"
 		});
 }]);
 
