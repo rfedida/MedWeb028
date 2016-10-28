@@ -3,18 +3,18 @@ var mongoose = require("mongoose");
 var unitSchema = new mongoose.Schema({
 	id: String,
 	name: String,
-	medications: [{
+	Medications: [{
 		id: String,
-		standard: Number,
-		stock: Number
+		Standard: Number,
+		Stock: Number
 	}],
-	treatments: [{
+	Treatments: [{
 		id: String,
-		standard: Number,
-		stock: Number
-	}],
-	maxCapacity: Number,
-	doctorsCount: Number
+		Standard: Number,
+		Stock: Number
+	}],	
+	Max_Capacity: Number,
+	Doctors_num: Number
 	// location: { type: Point, coordinates: [Number]} ?
 }, {collection: 'Units'});
 
