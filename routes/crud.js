@@ -180,7 +180,21 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
     console.log("get requst for db");
-    Patient.find({},function(err, patients){
+    Patient.aggregate(
+        [
+            {$group :
+                { _id : "$generalData.injuryMechanism", 
+                  count : {$sum : 1}}},
+            {$sort : {_id : 1}},
+            { $project : 
+                {
+                    key : "$_id",
+                    y : "$count",
+                    _id : 0
+                }
+            }
+        ],
+        function(err, patients){
         if(!err)
          {
              res.json(patients);
