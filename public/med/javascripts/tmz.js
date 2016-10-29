@@ -72,12 +72,6 @@ angular.module("medApp").controller('ComplexController', [
     //  Manually hide the modal.
  $element.modal('hide');
     
-    //  Now call close, returning control to the caller.
-    close({
-      braceId: $scope.braceId,
-      date: $scope.date,
-      time: $scope.time
-    }, 500); // close, but give 500ms for bootstrap to animate
   };
 
 }]);
