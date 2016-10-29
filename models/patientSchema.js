@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var patientSchema = new mongoose.Schema({
-	braceletId: Number,
+	braceletId: String,
 	CurrentStation: String,
 	LastUpdate: Date,
 	generalData: {
