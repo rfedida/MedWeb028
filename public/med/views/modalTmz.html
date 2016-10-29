@@ -21,10 +21,12 @@
 
                     <div class="form-group">
                         <div class="col-sm-10" style="padding-top: 10px;">
-                            <div class="input-group date" id="inputPassword3">
-                                <input type="date" id="date" class="form-control" placeholder="הכנס תאריך קליטה" ng-model="date" style="border-radius: 3px;"/>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
+                            <div class="input-group date">
+                                <input type="date" id="date" class="form-control" 
+                                placeholder="הכנס תאריך קליטה" ng-model="date" 
+                                value="{{date}}" style="border-radius: 3px;"/>
+                                <span class="input-group-addon" dir="rtl">
+                                    <span class="glyphicon glyphicon-calendar" ></span>
                                 </span>
 
                             </div>
@@ -34,8 +36,10 @@
 
                     <div class="form-group">
                         <div class="col-sm-10" style="padding-top: 10px;">
-                            <div class="input-group date" id="inputPassword3">
-                                <input type="time" id="time"class="form-control" placeholder="הכנס שעת קליטה" ng-model="time" style="border-radius: 3px;"/>
+                            <div class="input-group date" >
+                                <input type="time" id="time"class="form-control"  
+                                placeholder="הכנס שעת קליטה" ng-model="time" 
+                                value="{{time}}" style="border-radius: 3px;"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>

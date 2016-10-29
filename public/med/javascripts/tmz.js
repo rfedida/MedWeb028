@@ -1,5 +1,6 @@
 
-angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService', function($scope, ModalService)  {
+angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location',
+function($scope, ModalService, medAppFactory, $location)  {
 
   $scope.woundeds = [
     {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"urgent", date:"26/10/2016", time:"11:15"},
@@ -27,24 +28,34 @@ $scope.showComplex = function() {
       }
     }).then(function(modal) {
       modal.element.modal();
+      modal.close.then(function(result){
+          var newUser = angular.copy(medAppFactory.newInjured);
+          newUser.Bracelet_id = result.braceId;
+          newUser.Stations.ReceptionDate = result.date;
+          newUser.Stations.ReceptionTime = result.time;
+          medAppFactory.currentInjured = newUser;
+
+      $location.path("/injInfo");
+      });
     });
 };
 
 }]);
 
 angular.module("medApp").controller('ComplexController', [
-  '$scope', '$element', 'title', 'close', 
-  function($scope, $element, title, close) {
+  '$scope', '$element', '$filter', 'title', 'close', 
+  function($scope, $element, $filter, title, close) {
 
-  //$scope.braceId = null;
-  //$scope.date = null;
-  //$scope.time = null;
+  $scope.braceId = null;
+  $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
+  //$scope.time = $filter('time')(Date.now(), 'hh:mm:ss a');
+  $scope.time = null;
   $scope.title = title;
   
   //  This close function doesn't need to use jQuery or bootstrap, because
   //  the button has the 'data-dismiss' attribute.
   $scope.close = function() {
- 	  close({
+ 	  close({   
       braceId: $scope.braceId,
       date: $scope.date,
       time: $scope.time
