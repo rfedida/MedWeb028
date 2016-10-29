@@ -40,25 +40,89 @@ myApp.controller('occupationController', function($scope, $http) {
         }        
     };
 
-    $http.get('/Occupation/', {
-        params: {
-            userHirarchy: "1_1_1" // TODO: Change to the real one from the scope when available
-        }
-    }).success(function(response){
-        var jsonFull = response.data;
-        var jsonOne = jsonFull[0];
-        var jsonTwo = jsonFull[1];
+    $http.get('/agam/Occupation/'+'1_1_1'
+    ).success(function(response){
+        var jsonOne = response[0];
+        var jsonTwo = response[1];
 
-        if (jsonOne != {})
+        if (!isEmpty(jsonOne))
         {
-            document.getElementById("graphOne").hidden.value = false;
-            $scope.dataOne = jsonOne;
+            $scope.dataOne = buildData(jsonOne);
         }
-        if (jsonTwo != {})
+        if (!isEmpty(jsonTwo))
         {
-            document.getElementById("graphTwo").hidden.value = false;
-            $scope.dataTwo = jsonTwo;
+            $scope.dataTwo = buildData(jsonTwo);                
         }
 
     });
+    
 });
+
+function buildData(data)
+{
+    var GoodData = [];
+
+    for (var index in data)
+    {
+        var currInjury = data[index];
+
+        switch (currInjury.key) {
+            case 0:
+                {
+                    currInjury.key = 'לא ידוע';
+
+                    break;
+                }
+            case 1:
+                {
+                    currInjury.key = 'לא דחוף';
+                    break;
+                }
+            case 2:
+                {
+                    currInjury.key = 'דחוף';
+                    break;
+                }
+            case 3:
+                {
+                    currInjury.key = 'נפטר';
+                    break;
+                }                                                
+        
+            default:
+                break;
+        }
+
+        var injuryData = {
+            'key' : currInjury.key,
+            'values': []
+        };
+        
+        
+        for (var statIndex in currInjury.values)
+        {
+            var currStation = currInjury.values[statIndex];
+            injuryData.values.push({
+                'x' : statIndex, // TODO: change to currStation.x when getting the stations is available 
+                'y' : currStation.y
+            });
+        }
+
+        GoodData.push(injuryData);
+    }
+
+    return (GoodData);
+}
+
+// Checks if the json is empty.
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+function isEmpty(obj)
+{
+    if (obj == null) return true;
+    if(obj.length > 0) return false;
+    if (obj.length === 0) return true;
+    
+    for (var key in obj){
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+}

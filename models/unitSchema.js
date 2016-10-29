@@ -3,21 +3,22 @@ var mongoose = require("mongoose");
 var unitSchema = new mongoose.Schema({
 	id: String,
 	name: String,
-	medications: [{
+	Medications: [{
 		id: String,
-		standard: Number,
-		stock: Number
+		Standard: Number,
+		Stock: Number
 	}],
-	treatments: [{
+	Treatments: [{
 		id: String,
-		standard: Number,
-		stock: Number
-	}],
-	maxCapacity: Number,
-	doctorsCount: Number
-	// location: { type: Point, coordinates: [Number]} ?
-});
+		Standard: Number,
+		Stock: Number
 
-var Unit = mongoose.model('Unit', unitSchema);
+	}],	
+	Max_Capacity: Number,
+	Doctors_num: Number
+	// location: { type: Point, coordinates: [Number]} ?
+}, {collection: 'Units'});
+
+var Unit = mongoose.model('Units', unitSchema);
 
 module.exports = Unit;
