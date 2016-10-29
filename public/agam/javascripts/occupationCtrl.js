@@ -65,6 +65,34 @@ function buildData(data)
     for (var index in data)
     {
         var currInjury = data[index];
+
+        switch (currInjury.key) {
+            case 0:
+                {
+                    currInjury.key = 'לא ידוע';
+
+                    break;
+                }
+            case 1:
+                {
+                    currInjury.key = 'לא דחוף';
+                    break;
+                }
+            case 2:
+                {
+                    currInjury.key = 'דחוף';
+                    break;
+                }
+            case 3:
+                {
+                    currInjury.key = 'נפטר';
+                    break;
+                }                                                
+        
+            default:
+                break;
+        }
+
         var injuryData = {
             'key' : currInjury.key,
             'values': []
