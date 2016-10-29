@@ -9,7 +9,7 @@ var Patient = require('../../models/patientSchema');
         case 1: // pikud
         {
         Patient.aggregate([
-        {"$match": {"CurrentStation" : {"$regex": "/^" + hirarchCode + "/"}}},
+        {"$match": {"CurrentStation" : {"$regex": "^" + hirarchCode}}},
         {"$project": { "title": 2, "CurrentStation": {"$substr": ["$CurrentStation", 0, 3]}, "Emergency": "$generalData.emergency"}},
         {"$group" : {
             "_id" : {"Emergency": "$Emergency",
@@ -22,14 +22,21 @@ var Patient = require('../../models/patientSchema');
             "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
         }], 
             function(err, res){
+                res.forEach(function(element) {
+                var key = element._id; 
+                jsonDataTwo[key] = {'key': element._id, values : element.values};
+                }, this);
 
+                createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                callback(jsonDataFull);                
             });
             break;
         }
         case 3: // ugda
         {
+            // Get all the palhaks in hirarchy
             Patient.aggregate(
-                [{"$match": {"CurrentStation" : {"$regex": new RegExp('/^' + hirarchCode + '.{2}$/')}}}/*,
+                [{"$match": {"CurrentStation" : {"$regex": "^" + hirarchCode + ".{2}$"}}},
                 {"$group" : {
                     "_id" : {"Station": "$CurrentStation",
                         "Emergency": "$generalData.emergency"},
@@ -38,47 +45,34 @@ var Patient = require('../../models/patientSchema');
                 {"$group":{
                     "_id" : "$_id.Emergency",
                     "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
-                }*/
-                ], function(err, res){
-                    console.log(res);
-                }
-            );
-
-            // Get all the taagads in the hirarchy
-            Patient.aggregate(
-                [{"$match": {"CurrentStation" : {"$regex": new RegExp('/^' + hirarchCode + '.{4}$/')}}},
-                {"$group" : {
-                    "_id" : {"Station": "$CurrentStation",
-                        "Emergency": "$generalData.emergency"},
-                    "count": {"$sum": 1}
-                    }}/*,
-                {"$group":{
-                    "_id" : "$_id.Emergency",
-                    "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
-                }*/
-                ], function(err, res){
-                    console.log(res);
-                }
-            );
-
-            // Get all the palhaks in the hirarchy
-            Patient.aggregate([
-{"$match": {"CurrentStation" : {"$regex": new RegExp('/^' + hirarchCode + '.{2}$/')}}}/*,
-{$group : {
-    _id : {"Station": "$CurrentStation",
-           "Emergency": "$generalData.emergency"},
-    count: {$sum: 1}
-    }},
-{$group:{
-    _id : "$_id.Emergency",
-    value: { $push : {x: "$_id.Station", y: "$count"}}}    
-}*/
-]).exec(function (err, res)
-            { 
-                
-                console.log(res)
-            });    
-
+                }], function(err, res){
+                    res.forEach(function(element) {
+                    var key = element._id; 
+                    jsonDataTwo[key] = {'key': element._id, values : element.values};
+                    }, this);
+                    
+                    // Get all the taagads in the hirarchy
+                    Patient.aggregate(
+                        [{"$match": {"CurrentStation" : {"$regex": "^" + hirarchCode + ".{4}$"}}},
+                        {"$group" : {
+                            "_id" : {"Station": "$CurrentStation",
+                                "Emergency": "$generalData.emergency"},
+                            "count": {"$sum": 1}
+                            }},
+                        {"$group":{
+                            "_id" : "$_id.Emergency",
+                            "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
+                        }], function(err, res){
+                            res.forEach(function(element) {
+                            var key = element._id; 
+                            jsonDataTwo[key] = {'key': element._id, values : element.values};
+                            }, this);
+                            
+                            createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                            callback(jsonDataFull);                                                          
+                        });                                      
+                   });       
+       
             break;     
         }
         case 5: // palhak
@@ -96,32 +90,34 @@ var Patient = require('../../models/patientSchema');
                     "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
                 }
                 ], function(err, res){
-                    
+                   res.forEach(function(element) {
+                   var key = element._id; 
+                   jsonDataOne[key] = {'key': element._id, values : element.values};
+                }, this);
+                    // Get the current palhak after the previous has found
+                    Patient.aggregate([
+                    {"$match": {"CurrentStation" :hirarchCode}},
+                    {"$group" : {
+                        "_id" : {"Station": "$CurrentStation",
+                                "Emergency": "$generalData.emergency"},
+                        "count": {"$sum": 1}
+                    }},
+                    {"$group":{
+                        "_id" : "$_id.Emergency",
+                        "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
+                    }], function(err, res) {
+                        res.forEach(function(element) {
+                        var key = element._id; 
+                        jsonDataTwo[key] = {'key': element._id, values : element.values};
+                        }, this);
+
+                        createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                        callback(jsonDataFull);
+                    });
                 }
             );
 
-            // Get the current palhak 
-            Patient.aggregate([
-            {"$match": {"CurrentStation" :hirarchCode}},
-            {"$group" : {
-                  "_id" : {"Station": "$CurrentStation",
-                         "Emergency": "$generalData.emergency"},
-                  "count": {"$sum": 1}
-             }},
-            {"$group":{
-                   "_id" : "$_id.Emergency",
-                   "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
-            }], function(err, res) {
-                
-
-                res.forEach(function(element) {
-                   var key = element._id; 
-                   jsonDataTwo[key] = {'key': element._id, values : element.values};
-                }, this);
-
-                createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
-                callback(jsonDataFull);
-            });
+           
 
             break;
         }
@@ -142,6 +138,9 @@ var Patient = require('../../models/patientSchema');
                    var key = element._id; 
                    jsonDataTwo[key] = {'key': element._id, values : element.values};
                 }, this);
+
+                createFullJson(jsonDataOne, jsonDataTwo, jsonDataFull);
+                callback(jsonDataFull);
             });
 
             break;
