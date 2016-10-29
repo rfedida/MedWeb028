@@ -2,7 +2,6 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
 
     $http.get("/crud/units/1_1_1_1").then(function(response){
         var treatments = response.data.Treatments;
-        //Object {id: "1", Standard: 59, Stock: 59}
 
         var emptyChart = [
             {
@@ -12,8 +11,9 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         ];
 
         $scope.dataVygon = emptyChart;
-        $scope.dataHosemOrakim = emptyChart;
+        $scope.dataCAT = emptyChart;
         $scope.dataNekezHaze = emptyChart;
+        $scope.dataCombatGauze = emptyChart;
 
         $scope.mlay;
 
@@ -33,9 +33,9 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     }
                 ];
             }
-            else if (treatments[i].id == 5) // Assumming it means 'c.a.t'
+            else if (treatments[i].id == 5)
             {
-                $scope.dataHosemOrakim = [
+                $scope.dataCAT = [
                     {
                         key: 'במלאי',
                         y: $scope.mlay
@@ -49,6 +49,19 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             else if (treatments[i].id == 4)
             {
                 $scope.dataNekezHaze = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock
+                    }
+                ];
+            }
+            else if (treatments[i].id == 7)
+            {
+                $scope.dataCombatGauze = [
                     {
                         key: 'במלאי',
                         y: $scope.mlay
@@ -74,8 +87,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'pieChart',
-            height: 200,
-            width: 230,
+            height: 300,
+            width: 300,
             donut: true,
             x: function(d){return d.key},
             y: function(d){return d.y},
