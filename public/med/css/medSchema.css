@@ -16,12 +16,20 @@ th {
     color:red
 }
 
+.firstSection
+{
+ border-radius: 5px;
+ text-align: center;
+ background: beige;
+ border-spacing: 5px 10px;
+}
 .detailsBorder
 {
  border-radius: 5px;
  text-align: center;
  font-size: 20px;
  padding:7px;
+ background:beige;
 }
 
 .title

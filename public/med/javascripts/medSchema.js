@@ -76,7 +76,31 @@ function($scope, medAppFactory, $location, $interval)
                   } 
            }
 
-           $scope.timeGap = function(date)
+
+        $scope.timeGap = function(date)
+           {
+               var actionDate = new Date(parseInt(date));            
+               var now = new Date();
+               var timeDiff = Math.ceil(Math.abs((now - actionDate.getTime()) * 
+                                                 (1.667 * Math.pow(10,-5))));
+               var hoursDiff = "" + Math.floor(timeDiff / 60);
+               var minutesDiff = "" +  Math.abs(timeDiff % 60);
+
+               var pad = "00";
+    
+              return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
+               ':' + 
+              pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
+
+           }
+
+       //    $scope.sortCol = function(col)
+         //  {
+           //    col.sort(function(a,b){return a-b});
+
+           //}
+
+      /*     $scope.timeGap = function(date)
            {
                var actionDate = new Date(date);            
 
@@ -91,13 +115,12 @@ function($scope, medAppFactory, $location, $interval)
               return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
                ':' + 
               pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
-           }
+           }*/
 
-
-  
+      
 
     $scope.inj = {
-                   "id":  $scope.currentInj.Bracelet_id,
+                   "id":  $scope.currentInj.braceletId,
                    "temp": $scope.currentInj.measurements.temperatures[$scope.currentInj
                             .measurements.temperatures.length-1].tempreature,
                    "HeartBeat": $scope.currentInj.measurements
