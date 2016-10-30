@@ -3,23 +3,6 @@
 angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce', '$http',
 function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
 
-
-  $scope.woundeds = [
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"urgent", date:"26/10/2016", time:"11:15"},
-    {"id":"6098793", "pulse":"90", "bp":"160/70", "Saturation":"95%",status:"notUrgent", date:"26/10/2016", time:"11:15"},
-    {"id":"8066610", "pulse":"100", "bp":"110/20", "Saturation":"95%",status:"notClassified", date:"28/10/2016", time:"13:15"},
-    {"id":"8066610", "pulse":"100", "bp":"111/20", "Saturation":"95%",status:"notClassified", date:"28/10/2016", time:"11:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"moved", date:"26/10/2016", time:"11:15"},
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"dead", date:"26/10/2016", time:"11:15"},
-    {"id":"8066610", "pulse":"100", "bp":"110/20", "Saturation":"95%",status:"notUrgent", date:"26/10/2016", time:"11:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"dead", date:"26/10/2016", time:"11:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"dead", date:"26/10/2016", time:"11:15"},
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"moved", date:"26/10/2016", time:"11:15"},
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"moved", date:"26/10/2016", time:"11:15"},
-    {"id":"6098793", "pulse":"90", "bp":"160/70", "Saturation":"95%",status:"notClassified", date:"28/10/2016", time:"12:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"urgent", date:"25/10/2016", time:"11:15"}
-  ];
-
   $scope.injureds = null;
           
   $http.get("/crud/patients/units/" + medAppFactory.currentStation).then(function(response)
@@ -27,6 +10,15 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
          $scope.woundeds = response.data;
       });
 
+
+  medAppFactory.getStationName().then(function(res)
+  {
+    $scope.currentStationName = medAppFactory.currentStationName;
+  });
+
+$scope.myFilter = function (wounded){
+return wounded.status == '1' || wounded.status == '2';
+};
 
 $scope.showComplex = function() {
 
@@ -52,7 +44,6 @@ $scope.showComplex = function() {
 };
 
 $scope.moveToSchema = function(id) {
-      var id="920140140";
       $http.get("/crud/patients/" + id).then(function(response)
       {
          medAppFactory.currentInjured = response.data;
