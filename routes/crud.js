@@ -16,14 +16,24 @@ function sortArrayByLastTimestamp(arrayToSort) {
     return newArray;
 }
 
-function sortArrayByReceptionTime(arrayToSort) {
+function sortArrayByLastReceptionTime(arrayToSort) {
 
-    var newArray = arrayToSort.sort(function(a,b) {
+    arrayToSort.sort(function(a,b) {
         return parseFloat(b.receptionTime) - parseFloat(a.receptionTime); 
     });
-
-    return newArray;
 }
+
+function getAllCurrentStationById(arrayToSort, currStationId) {
+
+    var onlyCurrentStationArray = [];
+    arrayToSort.forEach(function(station) {
+        if (station.stationId == currStationId) {
+            onlyCurrentStationArray.push(station);
+        }
+    });
+    return onlyCurrentStationArray;
+}
+
 crudRouter.get('/units', function (req, res, next) {
 
     if (pjson.isWeb) {
@@ -99,6 +109,7 @@ crudRouter.get('/patients/:id', function (req, res, next) {
 //     }
 // });
 
+// Get the last patient who arrived to current station
 crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
     if (pjson.isWeb) {
          Patient.find({"CurrentStation" : req.params.unitId},  function(err, patients) {
@@ -107,8 +118,27 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
             } else {
                 // Parse to json
                 patients = JSON.parse(JSON.stringify(patients));
-               // sortArrayByReceptionTime
-                res.send(patients);
+                
+                // Run all patients and sort each station by reception time
+                patients.forEach(function(patient){
+
+                    // Pull out all station which equals to current station
+                    patient.Stations = getAllCurrentStationById(patient.Stations, req.params.unitId);
+
+                    // Sort the array by last reception time
+                    sortArrayByLastReceptionTime(patient.Stations);
+                })
+
+                var lastReceptionPatient = patients[0];
+
+                // Run all patients and check what is the last patient who arrived to station
+                patients.forEach(function(patient){
+                    if (patient.Stations[0].receptionTime > lastReceptionPatient.Stations[0].receptionTime) {
+                        lastReceptionPatient = patient;
+                    }
+                })
+
+                res.send(lastReceptionPatient);
             }
          })
     }
