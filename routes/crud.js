@@ -100,7 +100,7 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                         lastReceptionPatient = patient;
                     }
                 })
-
+                res.setHeader('Access-Control-Allow-Origin', '*');
                 res.send(lastReceptionPatient);
             }
          })
