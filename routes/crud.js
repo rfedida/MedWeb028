@@ -168,36 +168,31 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
     })}
 });
 
+// Insert patient details
+crudRouter.post('/patients/:object', function (req, res, next) {
+    if (pjson.isWeb) {
+        Patient.create(req.params.object, function(err, patient){
+            if (err) { 
+            res.send(err);
+            } 
+            else {
+                res.send(patient);
+            }
+        });
+    }
+});
+
 // Update patient details
- crudRouter.put('/patients/:isTure/:object', function (req, res, next) {
-
+ crudRouter.put('/patients/:object', function (req, res, next) {
      if (pjson.isWeb) {
-
         req.params.object.LastUpdate = new Date().getTime();
-
-         // If the patient is new
-         if (req.params.isTure) {
-            Patient.create(req.params.object, function(err, patient){
-                  if (err) { 
-                    res.send(err);
-                  } 
-                  else {
-                        res.send(patient);
-                  }
-            })
-         }
-         // Update the patient 
-         else {
-            
-            Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, 
-                function (err, patient){
-                    if (err) { 
-                    res.send(err);
-                    } else {
-                        res.send(patient);
-                    }
-            });
-         }  
+        Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, function (err, patient){
+            if (err) { 
+            res.send(err);
+            } else {
+                res.send(patient);
+            }
+        });
      }
  })
 
