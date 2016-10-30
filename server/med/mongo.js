@@ -2,6 +2,17 @@ var mongoose = require('mongoose');
 var Unit = require('../../models/unitSchema');
 var Patient = require('../../models/patientSchema');
 
+function getAllCurrentStationById(arrayToSort, currStationId) {
+
+    var onlyCurrentStationArray = [];
+    arrayToSort.forEach(function(station) {
+        if (station.stationId == currStationId) {
+            onlyCurrentStationArray.push(station);
+        }
+    });
+    return onlyCurrentStationArray;
+}
+
 function sortDesc(arrayToSort, field){
     var newArray = arrayToSort.sort(function(a,b) {
         return (new Date(b[field]) - new Date(a[field])); 
@@ -148,5 +159,7 @@ module.exports = {
         for (var i=0; i<tempUnits.length; i++) {
 
         }
-    }
+    },
+    getAllCurrentStationById: getAllCurrentStationById,
+    sortDesc: sortDesc
 };

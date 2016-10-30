@@ -10,17 +10,6 @@ var mongo = require('../server/med/mongo');
 var files = require('../server/med/files');
 var temp = require('../server/med/temp');
 
-function getAllCurrentStationById(arrayToSort, currStationId) {
-
-    var onlyCurrentStationArray = [];
-    arrayToSort.forEach(function(station) {
-        if (station.stationId == currStationId) {
-            onlyCurrentStationArray.push(station);
-        }
-    });
-    return onlyCurrentStationArray;
-}
-
 crudRouter.get('/units', function (req, res, next) {
 
     if (pjson.isWeb) {
@@ -97,10 +86,10 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                 patients.forEach(function(patient){
 
                     // Pull out all station which equals to current station
-                    patient.Stations = getAllCurrentStationById(patient.Stations, req.params.unitId);
+                    patient.Stations = mongo.getAllCurrentStationById(patient.Stations, req.params.unitId);
 
                     // Sort the array by last reception time
-                    sortDesc(patient.Stations, "receptionTime");
+                    mongo.sortDesc(patient.Stations, "receptionTime");
                 })
 
                 var lastReceptionPatient = patients[0];
