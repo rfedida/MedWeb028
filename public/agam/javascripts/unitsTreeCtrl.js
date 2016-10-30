@@ -17,8 +17,9 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
     }
     
     $scope.units = [];
+    $scope.user_id = '1_1_1';
     $scope.loadUnits = function(){
-        $http.get('/crud/units').success(function(data){
+        $http.get('/agam/units/'+'1').success(function(data){
              $scope.dataForTheTree = data;
         });
     };

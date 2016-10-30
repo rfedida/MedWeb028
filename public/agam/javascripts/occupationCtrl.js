@@ -45,16 +45,14 @@ myApp.controller('occupationController', function($scope, $http) {
         var jsonOne = response[0];
         var jsonTwo = response[1];
 
-       /* if (jsonOne.isEmpty() != true)
+        if (!isEmpty(jsonOne))
         {
-            document.getElementById("graphOne").hidden.value = false;
-            $scope.dataOne = jsonOne;
-        }*/
-        /*if (jsonTwo.isEmpty() != true)
-        {*/
-           // document.getElementById("graphTwo").innerHTML.hidden = false;
-            $scope.dataTwo = buildData(jsonTwo);
-        //  }
+            $scope.dataOne = buildData(jsonOne);
+        }
+        if (!isEmpty(jsonTwo))
+        {
+            $scope.dataTwo = buildData(jsonTwo);                
+        }
 
     });
     
@@ -86,4 +84,17 @@ function buildData(data)
     }
 
     return (GoodData);
+}
+
+// Checks if the json is empty.
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+function isEmpty(obj)
+{
+    if (obj == null) return true;
+    if(obj.length > 0) return false;
+    if (obj.length === 0) return true;
+    
+    for (var key in obj){
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
 }

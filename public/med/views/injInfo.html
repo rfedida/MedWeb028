@@ -75,14 +75,14 @@
             <div class="col-md-8">
                 <div class="row dataRow">
                     <div class="col-md-4">
-                        <select class="form-control" ng-model="injured.General_Data.Injury_mechanism" ng-options="Injury_mechanism.id as Injury_mechanism.name for Injury_mechanism in InjuryMechanismType" convert-to-number>                            
+                        <select class="form-control" ng-model="injured.General_Data.Injury_mechanism" ng-options="Injury_mechanism.id as Injury_mechanism.name for Injury_mechanism in InjuryMechanismType" convert-to-number ng-change="SaveInj()">                            
                         </select>
                     </div>
                     <div class="col-md-2">
                         <label>מנגנון הפציעה</label>
                     </div>
                     <div class="col-md-4">       
-                        <div class="btn-group btn-group-sm" data-toggle="buttons">                            
+                        <div class="btn-group btn-group-sm" data-toggle="buttons" ng-click="SaveInj()">                            
                             <label class="btn btn-default" ng-click='injured.General_Data.Emergency = 0' ng-class="{'active': injured.General_Data.Emergency == 0}"><input type="radio" class="btn btn-default" >לא נקבע</label>
                             <label class="btn btn-default btnNotEmergency" ng-click='injured.General_Data.Emergency = 1' ng-class="{'active': injured.General_Data.Emergency == 1}"><input type="radio" class="btn btn-default">לא דחוף</label>
                             <label class="btn btn-default btnEmergency" ng-click='injured.General_Data.Emergency = 2' ng-class="{'active': injured.General_Data.Emergency == 2}"><input type="radio" class="btn btn-default">דחוף</label>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="row dataRow">
                     <div class="col-md-4">
-                        <div class="btn-group btn-group-sm" data-toggle="buttons">                            
+                        <div class="btn-group btn-group-sm" data-toggle="buttons" ng-click="SaveInj()">                            
                             <label class="btn btn-default" ng-click="injured.General_Data.Consciousness = 'U'" ng-class="{'active': injured.General_Data.Consciousness == 'U'}"><input type="radio" class="btn btn-default">U</button></label>
                             <label class="btn btn-default" ng-click="injured.General_Data.Consciousness = 'P'" ng-class="{'active': injured.General_Data.Consciousness == 'P'}"><input type="radio" class="btn btn-default">P</button></label>
                             <label class="btn btn-default" ng-click="injured.General_Data.Consciousness = 'V'" ng-class="{'active': injured.General_Data.Consciousness == 'V'}"><input type="radio" class="btn btn-default">V</button></label>
@@ -106,7 +106,7 @@
                     </div>
                     <div class="col-md-4">                        
                         <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין"
-                            off=" לא תקין " ng-model="injured.General_Data.Breathing_hit" ng-change="changed()"></toggle>
+                            off=" לא תקין " ng-model="injured.General_Data.Breathing_hit" ng-change="changed()" ng-click="SaveInj()"></toggle>
                     </div>
                     <div class="col-md-2">
                         <label>פגיעה בנשימה</label>
@@ -115,7 +115,7 @@
                 <div class="row dataRow">
                     <div class="col-md-10">                        
                         <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין"
-                            off=" לא תקין " ng-model="injured.General_Data.Airway_hit" ng-change="changed()"></toggle>
+                            off=" לא תקין " ng-model="injured.General_Data.Airway_hit" ng-change="changed()" ng-click="SaveInj()"></toggle>
                     </div>
                     <div class="col-md-2" style="padding-left: 1px;">
                         <label>פגיעה בנתיב אוויר</label>
@@ -124,7 +124,7 @@
                 <div class="row dataRow">                    
                     <div class="col-md-10">                        
                         <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין"
-                            off=" לא תקין " ng-model="injured.General_Data.Shock" ng-change="changed()"></toggle>
+                            off=" לא תקין " ng-model="injured.General_Data.Shock" ng-change="changed()" ng-click="SaveInj()"></toggle>
                     </div>
                     <div class="col-md-2">
                         <label>הלם</label>
@@ -140,6 +140,6 @@
         </div>
 
     </div>
-
+    
     <a href="#/">מעבר לתמצ</a> 
 </div>

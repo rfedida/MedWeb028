@@ -63,34 +63,33 @@ myApp.controller('statisticController', function($scope, $http) {
 
     $scope.injury = [];
     $http.get("/crud/injuryMechanism").success(function(data){
-        $scope.injury = data;
-      
-        $scope.injuryMechanismData = [
-            {
-                key: 'תלול מסלול',
-                y: $scope.injury[0].generalData.emergency
-            },
-            {
-                key: 'ירי',
-                y: 36
-            },
-            {
-                key: 'אב"כ',
-                y: 8
-            },
-            {
-                key: 'כוויה',
-                y: 49
-            },
-            {
-                key: 'שאיפה',
-                y: 49
-            },
-            {
-                key: 'תאונת דרכים',
-                y: 49
-            }
-       ];
+        $scope.injuryMechanismData = data; 
+    //     [
+    //         {
+    //             key: 'תלול מסלול',
+    //             y: $scope.injury
+    //         },
+    //         {
+    //             key: 'ירי',
+    //             y: 36
+    //         },
+    //         {
+    //             key: 'אב"כ',
+    //             y: 8
+    //         },
+    //         {
+    //             key: 'כוויה',
+    //             y: 49
+    //         },
+    //         {
+    //             key: 'שאיפה',
+    //             y: 49
+    //         },
+    //         {
+    //             key: 'תאונת דרכים',
+    //             y: 49
+    //         }
+    //    ];
     }).error(function(data){
         console.log(data);
     });
