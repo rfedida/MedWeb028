@@ -14,15 +14,6 @@ function sortDesc(arrayToSort, field){
     return newArray;
 }
 
-
-
-function sortArrayByLastReceptionTime(arrayToSort) {
-
-    arrayToSort.sort(function(a,b) {
-        return parseFloat(b.receptionTime) - parseFloat(a.receptionTime); 
-    });
-}
-
 function getAllCurrentStationById(arrayToSort, currStationId) {
 
     var onlyCurrentStationArray = [];
@@ -182,9 +173,11 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 
      if (pjson.isWeb) {
 
+        req.params.object.LastUpdate = new Date().getTime();
+
          // If the patient is new
          if (req.params.isTure) {
-            Patient.save(function(err, patient){
+            Patient.create(req.params.object, function(err, patient){
                   if (err) { 
                     res.send(err);
                   } 
@@ -195,6 +188,7 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
          }
          // Update the patient 
          else {
+            
             Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, 
                 function (err, patient){
                     if (err) { 

@@ -37,10 +37,28 @@
     border-style: solid;
 
 }
+
 /* Body */
+.lableFix{
+    margin-top: 12px;
+}
+
+.colorMenu {
+    width: 23px;
+    height: 23px;
+    border-radius: 5px;
+    margin-top: 12px;
+}
+
+.menuStrip {
+    background-color: #ECEFF1;
+    height: 45px;
+    border-radius: 5px;
+}
 
 .border-right {
     border-right: 1px solid lightgray;
+    height: 650px;
 }
 
 body {
@@ -54,6 +72,7 @@ body {
 
 .portfolio-item {
     margin-bottom: 20px;
+    margin-top: 10px;
     height: 160px;
     border-radius: 10px;
     transition: all 0.3s ease;
