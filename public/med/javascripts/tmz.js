@@ -44,9 +44,8 @@ $scope.showComplex = function() {
 };
 
 $scope.moveToSchema = function(id) {
-
       var id="920140140";
-      $http.get("/curd/patients/" + id).then(function(response)
+      $http.get("/crud/patients/" + id).then(function(response)
       {
          medAppFactory.currentInjured = response.data;
          $location.path("/medSchema");
