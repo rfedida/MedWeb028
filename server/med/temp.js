@@ -56,5 +56,11 @@ module.exports = {
     },
     insertPatient: (patient) => {
         diskdb.TempPatients.save(patient);
+    },
+    getTempPatients: (callback) => {
+        callback(diskdb.TempPatients.find());
+    },
+    getTempUnits: (callback) => {
+        callback(diskdb.TempUnits.find());
     }
 };
