@@ -23,7 +23,45 @@ function($routeProvider, $sceDelegateProvider){
 angular.module("medApp").factory('medAppFactory', function ($http) {
     var factory = {};
 
+
+    factory.newInjured = {
+        "Bracelet_id": "",
+        "IsDead":false,
+    "General_Data" :{
+                        "Emergency": 0, // 0 - Undifiened, 1 - no emergency, 2 - emenrgency
+                        "Breathing_hit": false,
+                        "Airway_hit": false,
+                        "Shock": false,
+                        "Injury_mechanism": "",
+                        "Consciousness": "",  // Enum - A O V P L
+                        "Injury_place_in_body": ""
+                    },
+    "Treatments": [],
+
+    "Medications": [],
+
+   "Liquids": [],
+  "Measurements": {
+                    "Temperatures": [],
+
+                    "Storations": [],
+
+                    "Bloodpressures": [],
+
+                    "Heartbeat": []
+
+                  },
+    "Stations":[{
+                    "ReceptionDate": "",
+                    "ReceptionTime": "",
+                    "StationId": "",
+                    "LeavingDate":"", 
+                    "LeavingTime": "" //Evacucation time
+                }]
+};
+
     factory.currentInjured = {
+
         "Bracelet_id": "920140140",
         "IsDead": false,
         "General_Data": {
