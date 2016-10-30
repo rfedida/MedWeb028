@@ -2,3 +2,7 @@ th
 {
     text-align: center !important;
 }
+
+.belkinClass{
+    direction: rtl;
+}
