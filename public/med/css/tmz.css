@@ -57,6 +57,7 @@ body {
     height: 160px;
     border-radius: 10px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .bodyText {
