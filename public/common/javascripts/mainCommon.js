@@ -1,20 +1,36 @@
-var medApp = angular.module('medApp', ["ngMaterial", "ngCookies"]);
-medApp.controller('medController',['$scope', '$http',
- function ($scope, $http){
+angular.module('mainCommon', ["infra", "ngCookies", "ngMaterial"]);
+// , "ngCookies", "infra" "ngMaterial",
 
-<<<<<<< HEAD
-   //loginCardService.showLoginCard();
-=======
-   // loginCardService.showLoginCard();
->>>>>>> dd49b5785234accaf7f9b606a0ce9ceb8d987997
-    $scope.data = "try";
+//
+angular.module('mainCommon').controller('mainController',
+function ($scope, $http, loginCardService, currentUser, $cookies)
+{    
+    $scope.$watch(
+    function()
+    {
+         return currentUser.details;
+    },
+    function(newVal)
+    {
+         if (currentUser.details.permission && 
+             currentUser.details.permission.split("_").length < 4)
+         {
+             $scope.isMed = false;        
+         }
+         else
+         {
+             $scope.isMed = true;
+         }
+    });
 
-    $scope.a = function(){
-        $http.get("/hello", function(data){
-            console.log(data);
-        });
+    $scope.logout = function()
+    {
+        $cookies.remove("user");
+        $cookies.remove("hash");
+        loginCardService.showLoginCard();    
     }
-
-}]);
+    
+    loginCardService.showLoginCard();
+});
 
 

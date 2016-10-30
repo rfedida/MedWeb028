@@ -10,12 +10,9 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.15.2",
-<<<<<<< HEAD
     "cookie-parser": "^1.4.3",
     "crypto": "0.0.3",
-=======
     "diskdb": "^0.1.15",
->>>>>>> dd49b5785234accaf7f9b606a0ce9ceb8d987997
     "express": "^4.14.1",
     "express-session": "^1.14.1",
     "mongoose": "^4.6.3",

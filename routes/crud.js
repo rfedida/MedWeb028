@@ -1,8 +1,8 @@
 var express = require('express');
 var crudRouter = express.Router();
 var mongoose = require('mongoose');
-var Unit = require('../models/unitSchema');
-var Patient = require('../models/patientSchema');
+var Unit = require('../server/common/models/unitSchema');
+var Patient = require('../server/common/models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
 var pjson = require('../package.json')
 

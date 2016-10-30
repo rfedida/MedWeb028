@@ -30,16 +30,17 @@ function getUser(request)
     {
         return;
     }
-    else if(request.sessions[request.cookies.hash] == null)
+    else if(request.session[request.cookies.hash] == null)
     {
         return;
     }
     else
     {
-        return request.sessions[request.cookies.hash];
+        return request.session[request.cookies.hash];
     }
 }
 
 module.exports = {
-    login : login
+    login : login,
+    getUser : getUser
 };

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var graphOccupation = require('../server/agam/OccupationControl.js');
-var Units = require('../models/unitSchema.js');
+var Units = require('../server/common/models/unitSchema.js');
 
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {

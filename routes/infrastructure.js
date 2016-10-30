@@ -13,7 +13,13 @@ router.post('/login', function(req, res, next)
         var seesionObject = {};
         seesionObject[user.hash] = user;
         req.session[user.hash] = user;
-        res.send(user.hash);
+        var userDetails = {
+            username : user.UserName,
+            permission : user.PermissionID,
+            hash : user.hash,
+            userId : user.UserId
+        }
+        res.send(userDetails);
     })
     .catch(function(error)
     {
