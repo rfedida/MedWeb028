@@ -3,6 +3,7 @@ th
     text-align: center !important;
 }
 
-.belkinClass{
-    direction: rtl;
+.nv-group
+{
+    width: 60;  
 }
