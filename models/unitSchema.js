@@ -20,7 +20,8 @@ var unitSchema = new mongoose.Schema({
 		}
 	}],	
 	Max_Capacity: Number,
-	Doctors_num: Number
+	Doctors_num: Number,
+	location: {lat:Number, lng:Number}
 	// location: { type: Point, coordinates: [Number]} ?
 }, {collection: 'Units'});
 

@@ -213,7 +213,6 @@ function buildMaxCapacity(data, units)
 
     data.forEach(function(curr){
         curr.values.forEach(function(currUnit){
-
         });
     });
 }

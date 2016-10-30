@@ -3,6 +3,7 @@ var router = express.Router();
 var path = require('path');
 var graphOccupation = require('../server/agam/OccupationControl.js');
 var Units = require('../models/unitSchema.js');
+var MapUnits = require('../server/agam/MapUnitsControl.js');
 
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {
@@ -27,6 +28,14 @@ router.get('/units/:userHirarchy', function(req, res, next){
             } else {
                 res.send(units);
             }
+    });
+});
+
+router.get('/MapUnits/:userHirarchy',function(req,res,next){
+    var x=res.req.params;
+    var userHirarchy = res.req.params.userHirarchy;
+    MapUnits.GetUnitsOnMap(userHirarchy,function(UnitsArr) {
+        res.json(UnitsArr);
     });
 });
 

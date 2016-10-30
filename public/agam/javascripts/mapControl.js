@@ -112,6 +112,25 @@ myApp.controller('mapControl', ['$scope', 'leafletData', function($scope,leaflet
         });
     });
 
+    // Puting the stations on the map
+    $http.get('/agam/MapUnits/'+ '1').success(function(response){
+        var Units = response;
+    });
+
+    Units.forEach(function(element) {
+        $scope.addMarker(
+            {
+                id:0,
+                lat:element.lat,
+                lng:element.lng
+            },
+            {
+                urgent:2,
+                notUrgent:4
+            },
+            element.name);
+        
+    }, this);
     $scope.addMarker(
         {
             id:1,
