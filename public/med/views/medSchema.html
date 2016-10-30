@@ -29,10 +29,10 @@
           <th>שם הנוזל</th>
           <th>כמות</th>     
         </tr>
-      <tr ng-repeat = "liquid in liquids">
+        <tr ng-repeat = "liquid in liquids">
           <td>{{liquid.name}}</td>
           <td> {{liquid.Dosage + liquid.Dosage_type}} </td>
-      </tr>   
+        </tr>   
     </table>
       </div>
     </div>    
@@ -50,20 +50,17 @@
           <td> {{medication.name}} </td>
           <td> {{medication.dosage + medication.dosageUnit}} </td>
         </tr>
-      
       </table>
-      </div>
-      </div>
+    </div>
+   </div>
   </div>
  </div>
 
  <div class="col-md-12">
   <div class="row">
-  
     <div class="col-md-6">
-        <div class = "tableDesignB">
-        <table  class="table table-bordered bBackground">
-          
+     <div class = "tableDesignB">
+      <table  class="table table-bordered bBackground">
         <tr>
           <th rowspan="100">
             <div class ="treatLetter">B</div>
@@ -74,13 +71,12 @@
           <th>תיאור</th>
         </tr>
       <tr ng-repeat = "treatment in treatments.B">
-          <td>{{treatment.Date}}</td>
+          <td>{{timeGap(treatment.date)}}</td>
           <td> {{treatment.name}} </td>
       </tr>
-      
     </table>
-        </div>
-    </div>
+   </div>
+  </div>
 
   <div class="col-md-6">   
       <div  class = "tableDesignA">
