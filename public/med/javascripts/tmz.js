@@ -49,7 +49,6 @@ $scope.moveToSchema = function(id) {
          medAppFactory.currentInjured = response.data;
          $location.path("/medSchema");
       });
-     
 };
 
 }]);
@@ -59,7 +58,20 @@ angular.module("medApp").controller('ComplexController', [
   function($scope, $element, $filter, title, close) {
 
   var currDate = new Date();
-  var currTime = currDate.getHours() + ":" + currDate.getMinutes();
+  var h = currDate.getHours();
+  var m = currDate.getMinutes();
+  
+  if (h < 10)
+  {
+    h = "0" + h;
+  }
+
+  if (m < 10)
+  {
+    m = "0" + m;
+  }
+
+  var currTime = h + ":" + m;
 
   $scope.braceId = null;
   $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');

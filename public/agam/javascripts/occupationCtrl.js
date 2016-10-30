@@ -48,7 +48,8 @@ myApp.controller('occupationController', function($scope, $http) {
                                 tickFormat: function(d){
                                     return d3.format(',.1f')(d);
                                 }
-                            }  
+                            },  
+                            noData:"" 
                         }        
                     };                     
                 
@@ -82,7 +83,8 @@ myApp.controller('occupationController', function($scope, $http) {
                                 tickFormat: function(d){
                                     return d3.format(',.1f')(d);
                                 }
-                            }  
+                            },  
+                            noData:""   
                         }        
                     };              
 
@@ -99,12 +101,14 @@ function buildData(data, units)
     var GoodData = [];
     var ourUnits = {};
     var maxCapacity = {
-        'key' : 'כמות שנותרה לתפוסה מקסימלית',
+        'key' : 'כמות שנותרה',
         'values': []
     };
 
     for (var index in data)
     {
+        if (data[index].key != 4)
+        {
         var currInjury = data[index];
 
         switch (currInjury.key) {
@@ -164,6 +168,7 @@ function buildData(data, units)
         }
 
         GoodData.push(injuryData);
+        }
     }
 
     for (var currUnit in ourUnits)
