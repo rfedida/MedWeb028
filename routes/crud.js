@@ -16,6 +16,24 @@ function sortArrayByLastTimestamp(arrayToSort) {
     return newArray;
 }
 
+function sortArrayByLastReceptionTime(arrayToSort) {
+
+    arrayToSort.sort(function(a,b) {
+        return parseFloat(b.receptionTime) - parseFloat(a.receptionTime); 
+    });
+}
+
+function getAllCurrentStationById(arrayToSort, currStationId) {
+
+    var onlyCurrentStationArray = [];
+    arrayToSort.forEach(function(station) {
+        if (station.stationId == currStationId) {
+            onlyCurrentStationArray.push(station);
+        }
+    });
+    return onlyCurrentStationArray;
+}
+
 crudRouter.get('/units', function (req, res, next) {
 
     if (pjson.isWeb) {
@@ -91,6 +109,42 @@ crudRouter.get('/patients/:id', function (req, res, next) {
 //     }
 // });
 
+// Get the last patient who arrived to current station
+crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
+    if (pjson.isWeb) {
+         Patient.find({"CurrentStation" : req.params.unitId},  function(err, patients) {
+            if (err) {
+                res.send(err);
+            } else {
+                // Parse to json
+                patients = JSON.parse(JSON.stringify(patients));
+                
+                // Run all patients and sort each station by reception time
+                patients.forEach(function(patient){
+
+                    // Pull out all station which equals to current station
+                    patient.Stations = getAllCurrentStationById(patient.Stations, req.params.unitId);
+
+                    // Sort the array by last reception time
+                    sortArrayByLastReceptionTime(patient.Stations);
+                })
+
+                var lastReceptionPatient = patients[0];
+
+                // Run all patients and check what is the last patient who arrived to station
+                patients.forEach(function(patient){
+                    if (patient.Stations[0].receptionTime > lastReceptionPatient.Stations[0].receptionTime) {
+                        lastReceptionPatient = patient;
+                    }
+                })
+
+                res.send(lastReceptionPatient);
+            }
+         })
+    }
+})   
+     
+
 // Get patients by unit id
 crudRouter.get('/patients/units/:unitId', function(req, res,next) {   
      if (pjson.isWeb) {
@@ -98,10 +152,8 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
         if (err) {
             res.send(err);
         } else {
+            // Parse to json
             patients = JSON.parse(JSON.stringify(patients));
-            // var x = patients.map(funciton(){
-            //     return patient.toObject();
-            // });
             var result = []; 
             
             // Run all patients and save specific fields
@@ -115,7 +167,9 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
                                     "temperature" :  sortArrayByLastTimestamp(patient.measurements.temperatures)[0].tempreature,
                                     "storation" : sortArrayByLastTimestamp(patient.measurements.storations)[0].storation,
                                     "bloodPressure" : sortArrayByLastTimestamp(patient.measurements.bloodPressures)[0].bloodPressure,
-                                    "heartbeat" : sortArrayByLastTimestamp(patient.measurements.heartbeat)[0].heartbeat };
+                                    "heartbeat" : sortArrayByLastTimestamp(patient.measurements.heartbeat)[0].heartbeat,
+                                    "status" : patient.generalData.emergency,
+                                    "receptionTime" : patient.Stations[0].receptionTime };
                 result.push(newPatient);                
             });
 
@@ -124,10 +178,36 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
     })
     }
 });
-  // Update patient details
-// crudRouter.update('/patients/:object', function (req, res, next) {
-//     //Patient.find
-// })
+
+// Update patient details
+ crudRouter.put('/patients/:isTure/:object', function (req, res, next) {
+
+     if (pjson.isWeb) {
+
+         // If the patient is new
+         if (req.params.isTure) {
+            Patient.save(function(err, patient){
+                  if (err) { 
+                    res.send(err);
+                  } 
+                  else {
+                        res.send(patient);
+                  }
+            })
+         }
+         // Update the patient 
+         else {
+            Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, 
+                function (err, patient){
+                    if (err) { 
+                    res.send(err);
+                    } else {
+                        res.send(patient);
+                    }
+            });
+         }  
+     }
+ })
 
 // Get the name of unit by id
 // crudRouter.get('/unitName/:id', function(req, res,next) {
@@ -145,28 +225,40 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 
 // Get all units under specific unit
 crudRouter.get('/units/:unitId/units', function(req, res, next) {
-    var list = [];
-    var units = Unit.find();
-    var pattern = "^" + req.params.unitId + "[_\d]{1}[0-9]+$";
-    var regex = new RegExp(pattern);
-    var bIsIdExist = false;
-
-    // Find if the unit id is existed
-    for (var i=0; i<units.length; i++) {
-        if(units[i].id === req.params.unitId)
-        bIsIdExist = true;
-    }
     
-    // If the id exist
-    if (bIsIdExist) {
-        
-        // Run all units and find if the are units which match the regex
-        for (var i=0; i<units.length; i++) {
-            if (regex.test(units[i].id))
-                list.push(units[i]);
-        }
-    }
-    res.json(list);
+    if (pjson.isWeb) {
+       Unit.find(function (err, units) {
+              if (err) {
+                console.log(err);
+                res.send(err); 
+            } else {
+
+                var pattern = "^" + req.params.unitId + "(_[0-9]+)+$";
+                var list = [];
+                var regex = new RegExp(pattern);
+                var bIsIdExist = false;
+                units = JSON.parse(JSON.stringify(units));
+                
+                // Find if the unit id is existed
+                for (var i=0; i<units.length; i++) {
+                    if(units[i].id === req.params.unitId)
+                    bIsIdExist = true;
+                }
+                
+                // If the id exist
+                if (bIsIdExist) {
+                    
+                    // Run all units and find if the are units which match the regex
+                    for (var i=0; i<units.length; i++) {
+                        if (regex.test(units[i].id))
+                            list.push(units[i]);
+                    }
+                }
+
+                res.send(list);
+            }
+        });
+    }    
 });
 
 
