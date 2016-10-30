@@ -1,4 +1,126 @@
 myApp.controller('useOfDrugsCtrl', function($scope, $http) {
+    $scope.unit = '1_1_1_1';
+    $http.get("/crud/units/" + $scope.unit).then(function(response){
+        var medications = response.data.Medications;
+
+          var emptyChart = [
+            {
+                key: 'אין נתונים להציג',
+                x: [[]]
+            }
+        ];
+
+        $scope.dataDormikom = emptyChart;
+        $scope.dataHexakapron = emptyChart;
+        $scope.dataAkamol = emptyChart;
+        $scope.dataKetamine = emptyChart;
+        $scope.dataPantenyl = emptyChart;
+        $scope.dataMorphium = emptyChart;
+
+        $scope.mlay;
+
+//             "0": { name: "A.W", group: "A" },
+//             "1": { name: "קוניוטו", group: "A" },
+//             "2": { name: "איטוב", group: "A" },
+//             "3": { name: "N.A", group: "B" },
+//             "4": { name: "נקז חזה", group: "B" },
+//             "5": { name: "C.A.T", group: "B" },
+//             "6": { name: "BIG", group: "C" },
+//             "7": { name: "Combat Gauze", group: "C" },
+//             "8": { name: "AVPU", group: "D" },
+//             "9": { name: "AT" },
+//             "10": { name: "Vygon" },
+//             "11": { name: "Ketamine" },
+//             "12": { name: "Morphium" },
+//             "13": { name: "Dormikom" },
+//             "14": { name: "Hexakapron" },
+//             "15": { name: "Pantenyl" },
+//             "16": { name: "Akamol" },
+//             "17": { name: "nonTREAT" }
+        for (i=0; i<medications.length; i++)
+        {
+            $scope.mlay = medications[i].Standard - medications[i].Stock;
+
+            if (medications[i].id == 13)
+            {
+                $scope.dataDormikom = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: medications[i].Stock
+                    }
+                ];
+            }
+            else if (medications[i].id == 14) // Assumming it means 'c.a.t'
+            {
+                $scope.dataHexakapron = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: medications[i].Stock
+                    }
+                ];
+            }
+            else if (medications[i].id == 16)
+            {
+                $scope.dataAkamol = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: medications[i].Stock
+                    }
+                ];
+            }
+            else if (medications[i].id == 11)
+            {
+                $scope.dataKetamine = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: medications[i].Stock
+                    }
+                ];
+            }
+            else if (medications[i].id == 15)
+            {
+                $scope.dataPantenyl = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: medications[i].Stock
+                    }
+                ];
+            }
+            else if (medications[i].id == 12)
+            {
+                $scope.dataMorphium = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: medications[i].Stock
+                    }
+                ];
+            }
+        }
+    });
 
     $scope.colorArray = ['gray','#660000'];
     
@@ -34,70 +156,6 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             } 
         }        
     };
-
-    $scope.dataDormikom = [
-        {
-            key: 'מלאי',
-            y: 8
-        },
-        {
-            key: 'שימוש',
-            y: 50
-        }
-    ];
-
-    $scope.dataAksakafron = [
-        {
-            key: 'מלאי',
-            y: 33
-        },
-        {
-            key: 'שימוש',
-            y: 50
-        }
-    ];
-
-    $scope.dataAcamol = [
-        {
-            key: 'מלאי',
-            y: 67
-        },
-        {
-            key: 'שימוש',
-            y: 36
-        }
-    ];
-
-    $scope.dataKatmin = [
-        {
-            key: 'מלאי',
-            y: 7
-        },
-        {
-            key: 'שימוש',
-            y: 36
-        }
-    ];
-
-    $scope.dataFantil = [
-        {
-            key: 'מלאי',
-            y: 7
-        },
-        {
-            key: 'שימוש',
-            y: 1
-        }
-    ];
-
-    $scope.dataMorphium = [
-        {
-            key: 'מלאי',
-            y: 7
-        },
-        {
-            key: 'שימוש',
-            y: 6
-        }
-    ];
+    
+   
 });
