@@ -22,7 +22,7 @@ function($routeProvider, $sceDelegateProvider){
 angular.module("medApp").factory('medAppFactory', function ($http) {
     var factory = {};
 
-    factory.currentStation = "1_1_1";
+    factory.currentStation = "1_1_1_1";
     factory.newInjured = {
         "Bracelet_id": "",
         "IsDead":false,
@@ -62,8 +62,8 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
-        "1234": {name: "קוניוטו", group:"A"}, 
-        "123": {name: "איטוב", group:"A"},
+        "1": {name: "קוניוטו", group:"A"}, 
+        "2": {name: "איטוב", group:"A"},
         "3": {name: "N.A", group:"B"},
         "4": {name: "נקז חזה", group:"B"},
         "5": {name: "C.A.T", group:"B"},
@@ -285,10 +285,13 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
     factory.currentStationName = "";
 
     // checnku
-    $http.get("/crud/units/" + factory.currentStation).then(function(res)
+    factory.getStationName = function()
     {
-           factory.currentStationName = res.data.name;
-    });
+        return $http.get("/crud/units/" + factory.currentStation).then(function(res)
+        {
+            factory.currentStationName = res.data.name;
+        });
+    }
   
     // Check after insert to DB;
     factory.getCommand = function()
@@ -307,7 +310,7 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
         return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.indexOf('_')))
         .then(function(res)
         {
-            factory.currentStation = "1_1_1";
+            factory.currentStation = "1_1_1_1";
         });
     }
 
