@@ -59,7 +59,7 @@
                                 <label class="lableFix">לא דחוף</label>
                             </div>
                             <div class="col-md-1 ">
-                                <div class="colorMenu" style="background-color: #69F0AE"></div>
+                                <div class="colorMenu" style="background-color: #A5D6A7"></div>
                             </div>
 
                             <div class="col-md-3 ">
@@ -76,7 +76,7 @@
                             ng-repeat="wounded in woundeds | filter:myFilter | filter:filterText 
                             | orderBy: ['-status','-receptionTime']"
                                 ng-style="{'background-color':wounded.status == '2' ?  '#FF8A80': 
-                                        (wounded.status == '1' ?  '#69F0AE': white) }" 
+                                        (wounded.status == '1' ?  '#A5D6A7': white) }" 
                               ng-click="moveToSchema(wounded.braceletId)">
                             <br>
                             <p> <strong>מס' צמיד:</strong> {{wounded.braceletId}}</p>
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="col-md-5 col-xs-5 col-xs-offset-1 portfolio-item fade bodyText" 
-                            ng-repeat="wounded in woundeds | filter: {status:'moved'} | filter:filterText | 
+                            ng-repeat="wounded in woundeds | filter: {status:'4'} | filter:filterText | 
                             orderBy: ['-receptionTime']"
                                 ng-style="{'background-color':'#BBDEFB' }" 
                               ng-click="moveToSchema(wounded.braceletId)">
