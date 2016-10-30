@@ -1,7 +1,7 @@
 
 
-angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce',
-function($scope, ModalService, medAppFactory, $location, $sce)  {
+angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce', '$http',
+function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
 
 
   $scope.woundeds = [
@@ -20,6 +20,14 @@ function($scope, ModalService, medAppFactory, $location, $sce)  {
     {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"urgent", date:"25/10/2016", time:"11:15"}
   ];
 
+  $scope.injureds = null;
+          
+  $http.get("/crud/patients/units/" + medAppFactory.currentStation).then(function(response)
+      {
+         $scope.woundeds = response.data;
+      });
+
+
 $scope.showComplex = function() {
 
     var url = $sce.getTrustedResourceUrl(app.remote + "/med/views/modalTmz.html");
@@ -32,15 +40,25 @@ $scope.showComplex = function() {
     }).then(function(modal) {
       modal.element.modal();
       modal.close.then(function(result){
-          var newUser = angular.copy(medAppFactory.newInjured);
-          newUser.Bracelet_id = result.braceId;
-          newUser.Stations.ReceptionDate = result.date;
-          newUser.Stations.ReceptionTime = result.time;
-          medAppFactory.currentInjured = newUser;
+          var newInjured = angular.copy(medAppFactory.newInjured);
+          newInjured.Bracelet_id = result.braceId;
+          newInjured.Stations.ReceptionDate = result.date;
+          newInjured.Stations.ReceptionTime = result.time;
+          medAppFactory.currentInjured = newInjured;
 
       $location.path("/injInfo");
       });
     });
+};
+
+$scope.moveToSchema = function(id) {
+      var id="920140140";
+      $http.get("/crud/patients/" + id).then(function(response)
+      {
+         medAppFactory.currentInjured = response.data;
+         $location.path("/medSchema");
+      });
+     
 };
 
 }]);
@@ -49,10 +67,12 @@ angular.module("medApp").controller('ComplexController', [
   '$scope', '$element', '$filter', 'title', 'close', 
   function($scope, $element, $filter, title, close) {
 
+  var currDate = new Date();
+  var currTime = currDate.getHours() + ":" + currDate.getMinutes();
+
   $scope.braceId = null;
   $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
-  //$scope.time = $filter('time')(Date.now(), 'hh:mm:ss a');
-  $scope.time = null;
+  $scope.time = currTime;
   $scope.title = title;
   
   //  This close function doesn't need to use jQuery or bootstrap, because
