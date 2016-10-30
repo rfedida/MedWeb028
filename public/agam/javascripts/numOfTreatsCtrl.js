@@ -1,6 +1,6 @@
 myApp.controller('numOfTreatsCtrl', function($scope, $http) {
-
-    $http.get("/crud/units/1_1_1_1").then(function(response){
+    $scope.unit = '1_1_1_1';
+    $http.get("/crud/units/" + $scope.unit).then(function(response){
         var treatments = response.data.Treatments;
 
         var emptyChart = [
