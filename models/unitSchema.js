@@ -8,7 +8,7 @@ var unitSchema = new mongoose.Schema({
 		Standard: Number,
 		Stock: {
 			CurrStock: Number,
-			Usage: [String]
+			Usage: [Number]
 		}
 	}],
 	Treatments: [{
@@ -16,7 +16,7 @@ var unitSchema = new mongoose.Schema({
 		Standard: Number,
 		Stock: {
 			CurrStock: Number,
-			Usage: [String]
+			Usage: [Number]
 		}
 	}],	
 	Max_Capacity: Number,

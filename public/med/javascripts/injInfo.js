@@ -6,7 +6,7 @@ var app = angular.module("medApp").controller('InjuredController', ['$scope', 'm
 
         $scope.SaveInj = function() 
         {
-            $http.post('/crud/saveInj/' +  $scope.injured).then(function(response)
+            $http.put('/crud/units/' +  $scope.injured).then(function(response)
             {
                 
             });
