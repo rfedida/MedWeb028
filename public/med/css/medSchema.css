@@ -18,10 +18,15 @@ th {
 
 .detailsBorder
 {
- border: 2px groove;
  border-radius:5px;
  text-align: center;
  font-size:20px;
+}
+
+.title
+{
+    border: #d0d0c4 solid 2px;
+    background: #e8e8dc;
 }
 
 .medTble
@@ -32,7 +37,7 @@ th {
 
 .medBackground
 {
-  background: lightblue;  
+  background-color:rgba(158, 158, 158, 0.57);
 }
 
 .tableDesignA
@@ -43,7 +48,8 @@ th {
 }
 .aBackground
 {
-  background: lightyellow;
+  background-color: rgba(187, 222, 251,  0.57);
+  
 }
 
 .tableDesignB
@@ -55,7 +61,7 @@ th {
 }
 .bBackground
 {
-  background: lightslategray;
+  background-color: rgba(105, 240, 174,  0.57);
 }
 
 .tableDesignC
@@ -66,7 +72,7 @@ th {
 }
 .cBackground
 {
-  background: lightyellow;
+  background-color: rgba(255, 245, 157,  0.57);
 }
 
 .tableDesignD
@@ -77,11 +83,17 @@ th {
 
 .dBackground
 {
-  background: lightcoral;
+  background-color: rgba(255, 138, 128,  0.57);
 }
 
 .treatLetter
 {
  font-size:45px;
  text-align: center;
+}
+
+.MarginTB
+{   
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
