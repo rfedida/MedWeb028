@@ -102,7 +102,7 @@ module.exports = {
     },
     updatePatient: (patient, callback) => {
         patient.LastUpdate = new Date().getTime();
-        Patient.findByIdAndUpdate(patient.braceletId, {$set: patient}, {new: false}, function (err, patient){
+        Patient.findByIdAndUpdate(patient._id, {$set: patient}, {new: false}, function (err, patient){
             if (err) { 
                 callback(err);
             } else {

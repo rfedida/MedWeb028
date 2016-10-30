@@ -50,8 +50,8 @@
                     </div>
                     <div class="col-md-3">
                         <h4>דופק:
-                            <small ng-class="{'redColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat >= 105, 'greenColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat < 105}">
-                                {{injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat}}
+                            <small ng-class="{'redColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat >= 105, 'greenColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat < 105}">
+                                {{injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat}}
                             </small>
                         </h4>
                     </div>
@@ -143,7 +143,7 @@
                 <div class="row dataRow">
                     <div class="col-md-12">
                         <label>הערות</label>
-                        <textarea class="form-control" rows="6" ng-model="injured.generalData.comments"></textarea>
+                        <textarea class="form-control" rows="6" ng-model="injured.generalData.comments" ng-change="SaveInj()"></textarea>
                     </div>
                 </div>
             </div>
