@@ -10,6 +10,17 @@ var mongo = require('../server/med/mongo');
 var files = require('../server/med/files');
 var temp = require('../server/med/temp');
 
+function getAllCurrentStationById(arrayToSort, currStationId) {
+
+    var onlyCurrentStationArray = [];
+    arrayToSort.forEach(function(station) {
+        if (station.stationId == currStationId) {
+            onlyCurrentStationArray.push(station);
+        }
+    });
+    return onlyCurrentStationArray;
+}
+
 crudRouter.get('/units', function (req, res, next) {
 
     if (pjson.isWeb) {

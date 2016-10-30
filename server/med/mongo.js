@@ -10,17 +10,6 @@ function sortDesc(arrayToSort, field){
     return newArray;
 }
 
-function getAllCurrentStationById(arrayToSort, currStationId) {
-
-    var onlyCurrentStationArray = [];
-    arrayToSort.forEach(function(station) {
-        if (station.stationId == currStationId) {
-            onlyCurrentStationArray.push(station);
-        }
-    });
-    return onlyCurrentStationArray;
-}
-
 module.exports = {
     getAllPatients: (callback) => {
         Patient.find(function (err, patients) {
@@ -138,5 +127,26 @@ module.exports = {
                 callback(patient);
             }
         });
+    },
+    updatePatientsAfterConnection: (tempPatients, callback) => {
+        for (var i=0; i<tempPatients.length; i++) {
+            Patient.findOne({"braceletId" : tempPatients[i].braceletId}, function(err, patient) {
+                if (err) {
+                    // Insert to db
+                    callback(err);
+                } else {
+                    // check if data need to update according timestamps
+                    if (tempPatients[i].LastUpdate > patient.LastUpdate) {
+
+                    }
+                    callback(patient);
+                }
+            })
+        }
+    },
+    updateUnitsAfterConnection: (tempUnits, callback) => {
+        for (var i=0; i<tempUnits.length; i++) {
+
+        }
     }
 };
