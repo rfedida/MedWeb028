@@ -126,10 +126,21 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
     })
     }
 });
-  // Update patient details
-// crudRouter.update('/patients/:object', function (req, res, next) {
-//     //Patient.find
-// })
+
+// Update patient details
+ crudRouter.put('/patients/:isTure/:object', function (req, res, next) {
+
+     if (pjson.isWeb) {
+        Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new:req.params.isTure}, 
+            function (err, patient){
+                if (err) { 
+                res.send(err);
+                } else {
+                    res.send(patient);
+                }
+            })
+     }
+ })
 
 // Get the name of unit by id
 // crudRouter.get('/unitName/:id', function(req, res,next) {
@@ -147,28 +158,40 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 
 // Get all units under specific unit
 crudRouter.get('/units/:unitId/units', function(req, res, next) {
-    var list = [];
-    var units = Unit.find();
-    var pattern = "^" + req.params.unitId + "[_\d]{1}[0-9]+$";
-    var regex = new RegExp(pattern);
-    var bIsIdExist = false;
-
-    // Find if the unit id is existed
-    for (var i=0; i<units.length; i++) {
-        if(units[i].id === req.params.unitId)
-        bIsIdExist = true;
-    }
     
-    // If the id exist
-    if (bIsIdExist) {
-        
-        // Run all units and find if the are units which match the regex
-        for (var i=0; i<units.length; i++) {
-            if (regex.test(units[i].id))
-                list.push(units[i]);
-        }
-    }
-    res.json(list);
+    if (pjson.isWeb) {
+       Unit.find(function (err, units) {
+              if (err) {
+                console.log(err);
+                res.send(err); 
+            } else {
+
+                var pattern = "^" + req.params.unitId + "(_[0-9]+)+$";
+                var list = [];
+                var regex = new RegExp(pattern);
+                var bIsIdExist = false;
+                units = JSON.parse(JSON.stringify(units));
+                
+                // Find if the unit id is existed
+                for (var i=0; i<units.length; i++) {
+                    if(units[i].id === req.params.unitId)
+                    bIsIdExist = true;
+                }
+                
+                // If the id exist
+                if (bIsIdExist) {
+                    
+                    // Run all units and find if the are units which match the regex
+                    for (var i=0; i<units.length; i++) {
+                        if (regex.test(units[i].id))
+                            list.push(units[i]);
+                    }
+                }
+
+                res.send(list);
+            }
+        });
+    }    
 });
 
 
