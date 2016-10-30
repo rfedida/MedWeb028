@@ -2,7 +2,8 @@ myApp.controller('statisticController', function($scope, $http) {
 
     $scope.roundMinutes = function(date){
         date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
-        date.setMinutes(0);
+        date.setMinutes(0)
+        date.setSeconds(0);
 
         return date;
     };
@@ -98,23 +99,34 @@ myApp.controller('statisticController', function($scope, $http) {
     $scope.buildData = function(data){
         var newData = [];
 
-
         for (var index in data)
         {
-            console.log(new Date(data[index].x[0]));
+            var currentInjuryLocation = data[index]._id.key;
+            var injuryValues = [];
+
+            for (var innerIndex in data)
+            {
+                if (data[innerIndex]._id.key == currentInjuryLocation)
+                {
+                    injuryValues.push({
+                        x: $scope.roundMinutes(new Date(parseInt(data[index]._id.x))),
+                        y: data[innerIndex].y
+                    });
+                }
+            }
+
             newData.push({
-                key: data[index].key,
+                key: data[index]._id.key,
                 type: 'line',
                 yAxis: 1,
-                values: [
-                    {
-                        x: '2016-10-30T10:09:48.282Z',
-                        y: 1
-                    }
-                ]
+                values: injuryValues
             });
-        }
-        
+            
+            console.log(newData);
+        }        
+
+        return newData;
+
         // var newData = [
         // {
         //     key:'ראש',
@@ -122,23 +134,23 @@ myApp.controller('statisticController', function($scope, $http) {
         //     yAxis: 1,
         //     values:[
         //         {
-        //             x:$scope.roundMinutes(new Date('2016-10-30T10:09:48.282Z')),
+        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
         //             y:1
         //         },
         //         {
-        //             x:$scope.roundMinutes(new Date('2016-10-30T10:49:48.282Z')),
+        //             x:$scope.roundMinutes(new Date(parseInt('1477853946000'))),
         //             y:2
         //         },
         //         {
-        //             x:$scope.roundMinutes(new Date('2016-10-30T11:54:48.282Z')),
+        //             x:$scope.roundMinutes(new Date(parseInt('1477853944000'))),
         //             y:2
         //         },
         //         {
-        //             x:$scope.roundMinutes(new Date('2016-10-30T13:19:48.282Z')),
+        //             x:$scope.roundMinutes(new Date(parseInt('1477853995790'))),
         //             y:1
         //         },
         //         {
-        //             x:$scope.roundMinutes(new Date('2016-10-30T13:49:48.282Z')),
+        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
         //             y:2
         //         }
         //     ]           
@@ -149,18 +161,18 @@ myApp.controller('statisticController', function($scope, $http) {
         //     yAxis: 1,
         //     values:[
         //         {
-        //             x:$scope.roundMinutes(new Date('2016-10-30T13:49:48.282Z')),
+        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
         //             y:1  
         //         },
         //         {
-        //             x:$scope.roundMinutes(new Date('2016-10-30T14:49:48.282Z')),
+        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
         //             y:3
         //         }
         //     ]              
         // }
         // ];
 
-        return newData;
+        // return newData;
     };
 
 });
