@@ -50,6 +50,27 @@
             
         </div>
     </div>
+    <div class="row" style="background:rgba(231, 231, 236, 0.66); height:40px;">
+        <div class="col-md-10 col-md-offset-2">
+            <div class="row">
+                <div type="button" class="btnDesignTitle col-md-1 col-md-offset-6" ng-click=changeLocation(3)>
+                    <div class="spanDesignTitle"> {{currentStaionNameLocation[3].name}}  </div>
+                    </div>
+                <img class="imgCss col-md-1" src="\med\img\arrow.png"> 
+                <div type="button" class="btnDesignTitle  col-md-1">
+                    <div class="spanDesignTitle"> {{currentStaionNameLocation[2].name}} </div>
+                    </div>
+                <img class="imgCss col-md-1" src="\med\img\arrow.png"> 
+                <div type="button" class="btnDesignTitle  col-md-1">
+                    <div class="spanDesignTitle"> {{currentStaionNameLocation[1].name}} </div>
+                    </div>
+                <img class="imgCss col-md-1" src="\med\img\arrow.png"> 
+                <div type="button" class="btnDesignTitle  col-md-1">
+                    <div class="spanDesignTitle"> {{currentStaionNameLocation[0].name}} </div>
+                </div>
+                </div>
+        </div>
+    </div>
     <div ng-view></div>
 </body>
 

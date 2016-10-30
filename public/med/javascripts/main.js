@@ -22,6 +22,11 @@ function($routeProvider, $sceDelegateProvider){
 angular.module("medApp").factory('medAppFactory', function ($http) {
     var factory = {};
 
+    factory.roleList = {command: "", 
+                        ogda: "", 
+                        hativa: "", 
+                        tagad: ""};
+
     factory.currentStation = "1_1_1_1";
     factory.newInjured = {
         "Bracelet_id": "",
@@ -319,6 +324,10 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
 
 app.controller('medViewCtrl',  function ($scope, $location, medAppFactory) 
 {
+    $scope.currentStaionNameLocation = [{name: "", location: "/injInfo"},
+                                        {name: "", location: "/injInfo"},
+                                        {name: "", location: "/injInfo"},
+                                        {name: "", location: "/tmz"}];
 
     medAppFactory.getCommand().then(function (response)
     {
@@ -328,13 +337,18 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory)
     medAppFactory.getRole().then(function(res)
     {
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
-        if(amountLine == 0 || amountLine == 1)
-        {
-            $location.path("/injInfo");
-        }
-        else
-        {
-            $location.path("/tmz");
-        }
+        $location.path($scope.currentStaionNameLocation[amountLine].location);
     });
+
+    medAppFactory.getStationName().then(function(res)
+    {
+        var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
+        $scope.currentStaionNameLocation[amountLine].name = medAppFactory.currentStationName;
+    });
+
+    $scope.changeLocation = function(num)
+    {
+        $location.path($scope.currentStaionNameLocation[num].location);
+    }
+    
 });
