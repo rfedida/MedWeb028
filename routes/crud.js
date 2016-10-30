@@ -87,10 +87,10 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                 patients.forEach(function(patient){
 
                     // Pull out all station which equals to current station
-                    patient.Stations = getAllCurrentStationById(patient.Stations, req.params.unitId);
+                    patient.Stations = mongo.getAllCurrentStationById(patient.Stations, req.params.unitId);
 
                     // Sort the array by last reception time
-                    sortDesc(patient.Stations, "receptionTime");
+                    mongo.sortDesc(patient.Stations, "receptionTime");
                 })
 
                 var lastReceptionPatient = patients[0];
@@ -101,7 +101,7 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                         lastReceptionPatient = patient;
                     }
                 })
-
+                res.setHeader('Access-Control-Allow-Origin', '*');
                 res.send(lastReceptionPatient);
             }
          })

@@ -12,6 +12,7 @@ var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
 var udpServer = dgram.createSocket('udp4');
 var pjson = require('./package.json');
+var bodyParser = require("body-parser");
 var temp = require('./server/med/temp');
 var mongo = require('./server/med/mongo');
 
