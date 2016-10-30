@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>שו"ב אג"מ</title>
+    <script src="\components\jQuery\jquery-3.1.1.min.js"></script>    
+            <script src="/components/bootstrap/js/bootstrap.min.js">
+        </script>    
     <script src="\components\angular\angular.min.js" type="text/javascript"></script>
     <script src="\components\angular\angular-route.min.js" type="text/javascript"></script>
     <script src="\agam\javascripts\app.js" type="text/javascript"></script>
@@ -14,13 +17,16 @@
     <script src="\agam\javascripts\unitsTreeCtrl.js" type="text/javascript"></script>
     <script src="\agam\javascripts\numOfTreatsCtrl.js" type="text/javascript"></script>
     <script src="\agam\javascripts\mapControl.js" type="text/javascript"></script>
+    <script src="\agam\javascripts\hamalControl.js" type="text/javascript"></script>
     <script src="\components\d3\d3.js" type="text/javascript"></script>
     <script src="\components\nvd3\build\nv.d3.js" type="text/javascript"></script>
     <script src="\components\angular-nvd3\src\angular-nvd3.js" type="text/javascript"></script>
-    <script src="\components\jquery\jquery-3.1.1.js" type="text/javascript"></script>    
+    <script src="\components\ng-table\bundles\ng-table.js" type="text/javascript"></script>
     <script src="\components\leaflet\dist\leaflet.js" type="text/javascript"></script>
     <script src="\components\leaflet\dist\angular-leaflet-directive.js" type="text/javascript"></script>
     <script src="\components\angular-tree-control\angular-tree-control.js" type="text/javascript"></script>
+    <script src="\components\angular\angular-modal-service.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="\components\ng-table\bundles\ng-table.css">
     <link rel="stylesheet" href="\components\nvd3\build\nv.d3.css">
     <link rel="stylesheet" href="\components\bootstrap\css\bootstrap.css">
     <link rel="stylesheet" href="\components\leaflet\dist\leaflet.css">
@@ -29,12 +35,22 @@
     <link rel="stylesheet" href="\components\angular-tree-control\css\tree-control-attribute.css">
 </head>
 <body ng-app="myApp"  style="overflow-x : hidden">
-    <img ng-src="..\..\common\img\banner.jpg" width="101%"></img>
+
+    <div class="mainBaner row">
+        <div class="col-md-2 mainBannerText"> רפואה שלמה
+        </div>    
+        <div ng-controller="modalController" class="col-md-4">
+            <button id="hamal" type="button" class="btn hamalBtn" ng-click="showComplex()">
+                תצוגת חמ"ל
+            </button>
+        </div>
+    </div>    
     <div class="row" width="100%">
         <div class="col-md-4" ng-controller="mapControl">
             <leaflet markers="markers" width="104%" height="843"></leaflet>
         </div>
-        <div class="col-md-6">
+        <span  ng-controller="unitsTreeController">
+        <div class="{{sizestatic}}">
             <div class="row" style="background: gray">
                 <span class="col-md-4">  
             <button type="button" class="btn btn-warning"><< צפה בפרטים</button>
@@ -79,14 +95,19 @@
                 <div ng-view></div>
             </div>
         </div> 
-      <div ng-controller="unitsTreeController"
-        <treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+        <div>
+      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" ng-click="loadPatients('1_1_1')" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
                 {{node.name}}
         </treecontrol>
-        <div treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)"  selected-node="node1">
             {{node.name}}
         </div>
-      </div>
+      </div>       
+         <img ng-src="..\..\common\img\openIcon.png" ng-click="openTree()" style="position: fixed; top: 50%; right: 0%"></img>
+        </div>
+        </span>
+
+      
 </body>
 
 </html>

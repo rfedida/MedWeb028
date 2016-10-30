@@ -23,7 +23,7 @@
 
 [treecontrol] li {
     position: relative;
-    padding: 0 0 0 20px;
+    padding: 0 20px 0 0;
     line-height: 20px;
 }
 
@@ -39,7 +39,7 @@
 [treecontrol] li .tree-label {
     cursor: pointer;
     display: inline;
-}
+} 
 
 
 [treecontrol].tree-classic li.tree-expanded i.tree-branch-head {
