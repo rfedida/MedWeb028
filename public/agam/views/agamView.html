@@ -17,6 +17,7 @@
     <script src="\components\d3\d3.js" type="text/javascript"></script>
     <script src="\components\nvd3\build\nv.d3.js" type="text/javascript"></script>
     <script src="\components\angular-nvd3\src\angular-nvd3.js" type="text/javascript"></script>
+    <script src="\components\jquery\jquery-3.1.1.js" type="text/javascript"></script>    
     <script src="\components\leaflet\dist\leaflet.js" type="text/javascript"></script>
     <script src="\components\leaflet\dist\angular-leaflet-directive.js" type="text/javascript"></script>
     <script src="\components\angular-tree-control\angular-tree-control.js" type="text/javascript"></script>
@@ -33,7 +34,8 @@
         <div class="col-md-4" ng-controller="mapControl">
             <leaflet markers="markers" width="104%" height="843"></leaflet>
         </div>
-        <div class="col-md-6">
+        <span  ng-controller="unitsTreeController">
+        <div class="{{sizestatic}}">
             <div class="row" style="background: gray">
                 <span class="col-md-4">  
             <button type="button" class="btn btn-warning"><< צפה בפרטים</button>
@@ -78,14 +80,19 @@
                 <div ng-view></div>
             </div>
         </div> 
-      <div ng-controller="unitsTreeController"
-        <treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+        <div>
+      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" ng-click="loadPatients('1_1_1')" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
                 {{node.name}}
         </treecontrol>
-        <div treecontrol class="tree-light" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)"  selected-node="node1">
             {{node.name}}
         </div>
-      </div>
+      </div>       
+         <img ng-src="..\..\common\img\openIcon.png" ng-click="openTree()" style="position: fixed; top: 50%; right: 0%"></img>
+        </div>
+        </span>
+
+      
 </body>
 
 </html>

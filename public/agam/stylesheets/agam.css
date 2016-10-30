@@ -2,3 +2,13 @@ th
 {
     text-align: center !important;
 }
+
+.nv-group
+{
+    width: 60;  
+}
+
+.belkinClass{
+    padding: 0 30px 0 0;
+    direction: rtl;
+}
