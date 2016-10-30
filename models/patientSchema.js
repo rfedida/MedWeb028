@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var patientSchema = new mongoose.Schema({
 	braceletId: String,
 	CurrentStation: String,
-	LastUpdate: Date,
+	LastUpdate: Number,
 	generalData: {
 		emergency: {
 			type: Number,
@@ -23,7 +23,7 @@ var patientSchema = new mongoose.Schema({
 		injuryLocation: String
 	},
 	treatments: [{
-			date: {type: Date, default: Date.now},
+			date: Number,
 			treatmentType: {type: Number, enum : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}, // Treatments enum
 			location: String,
 			bloodPressure: String,
@@ -32,7 +32,7 @@ var patientSchema = new mongoose.Schema({
 			storation: Number
 	}],
 	medications: [{
-		date: {type: Date, default: Date.now},
+		date: Number,
 		medicationId: {type: Number, enum: [11, 12, 13, 14, 15, 16]}, // From medications enum
 		dosage: Number,
 		dosageUnit: String,
@@ -42,7 +42,7 @@ var patientSchema = new mongoose.Schema({
 		storation: Number
 	}],
 	liquids: [{
-		date: {type: Date, default: Date.now},
+		date: Number,
 		liquidId: {type: Number, enum: [0, 1 ,2]}, // From liquids enum
 		dosage: Number,
 		dosageUnit: String,
@@ -70,9 +70,9 @@ var patientSchema = new mongoose.Schema({
 		}]
 	},
 	Stations: [{		
-		receptionTime: {type: Date, default: Date.now},
+		receptionTime: Number,
 		stationId: String,
-		leavingDate: {type: Date}
+		leavingDate: Number
 	}]
 }, {collection: 'Patients'});
 
