@@ -297,7 +297,7 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
         .then(function(res)
         {
             factory.currentCommand = res.data.name;
-            factory.currentCommand = "פיקוד צפון";
+            //factory.currentCommand = "פיקוד צפון";
         });
     }
 
