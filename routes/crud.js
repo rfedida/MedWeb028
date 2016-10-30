@@ -194,6 +194,60 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
     }
 });
 
+crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate(
+        [
+            {$group :
+                { _id : "$generalData.injuryLocation", 
+                  count : {$sum : 1}}},
+            {$sort : {_id : 1}},
+            { $project : 
+                {
+                    key : "$_id",
+                    y : "$count",
+                    _id : 0
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             res.json(patients);
+             console.log(patients);
+        }
+        else {}
+    });
+});
+
+crudRouter.get('/patientsInjuryLocationByTime', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate(
+        [
+            {$group :
+                { _id : "$generalData.injuryLocation",
+                  time : "$Stations[0].injuryLocation", 
+                  count : {$sum : 1}}},
+            {$sort : {_id : 1}},
+            { $project : 
+                {
+                    key : "$_id",
+                    x : "$time",
+                    y : "$count",
+                    _id : 0
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             res.json(patients);
+             console.log(patients);
+        }
+        else {}
+    });
+});
+
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
     console.log("get requst for db");
