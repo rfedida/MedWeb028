@@ -1,7 +1,7 @@
 var diskdb = require('./dbdiskconnection');
 
 module.exports = {
-    updatePatient: (patient) => {
+    updatePatient: (patient, callback) => {
         var options = {
             multi: false,
             upsert: true
@@ -24,12 +24,12 @@ module.exports = {
         };
 
         if(db.TempPatients.update(query, dataToBeUpdate, options) == 1) {
-            return true;
+            callback(true);
         } 
 
-        return false;
+        callback(false);
     },
-    updateUnit: (unit) => {
+    updateUnit: (unit, callback) => {
         var options = {
             multi: false,
             upsert: true
@@ -49,10 +49,10 @@ module.exports = {
         };
 
         if(db.TempUnits.update(query, dataToBeUpdate, options) == 1) {
-            return true;
+            callback(true);
         }
 
-        return false;
+        callback(false);
     },
     insertPatient: (patient) => {
         diskdb.TempPatients.save(patient);

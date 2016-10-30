@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var Unit = require('../models/unitSchema');
-var Patient = require('../models/patientSchema');
+var Unit = require('../../models/unitSchema');
+var Patient = require('../../models/patientSchema');
 
 function sortDesc(arrayToSort, field){
     var newArray = arrayToSort.sort(function(a,b) {
@@ -22,28 +22,28 @@ function getAllCurrentStationById(arrayToSort, currStationId) {
 }
 
 module.exports = {
-    getAllPatients: () => {
+    getAllPatients: (callback) => {
         Patient.find(function (err, patients) {
             if (err) {
-                return err;
+                callback(err);
             } else {
-                return patients;
+                callback(patients);
             }
         });
     },
-    getPatientByBraceletId: (braceletId) => {
+    getPatientByBraceletId: (braceletId, callback) => {
         Patient.findOne({"braceletId" : braceletId}, function(err, patient) {
             if (err) { 
-                return err;
+                callback(err);
             } else {
-                return patient;
+                callback(patient);
             }
         })
     },
-    getPatientsByUnitId: (unitId) => {
+    getPatientsByUnitId: (unitId, callback) => {
         Patient.find({"CurrentStation" : unitId},  function(err, patients) {
             if (err) {
-                return err;
+                callback(err);
             } else {
                 // Parse to json
                 patients = JSON.parse(JSON.stringify(patients));
@@ -66,23 +66,23 @@ module.exports = {
                     result.push(newPatient);                
                 });
 
-                return result;
+                return callback(result);
             }
         });  
     },
-    getUnitByUnitId: (unitId) => {
-        Unit.findOne({'id' : unitId.id}, function(err, unit) {
+    getUnitByUnitId: (unitId, callback) => {
+        Unit.findOne({'id' : unitId}, function(err, unit) {
             if (err) { 
-                return err;
+                callback(err);
             } else {
-                return unit;
+                callback(unit);
             }
         })
     },
-    getUnitsOfUnderUnit: (unitId) => {
+    getUnitsOfUnderUnit: (unitId, callback) => {
         Unit.find(function (err, units) {
             if (err) {
-                return err; 
+                callback(err); 
             } else {
 
                 var pattern = "^" + unitId + "(_[0-9]+)+$";
@@ -107,36 +107,35 @@ module.exports = {
                     }
                 }
 
-                return list;
+                callback(list);
             }
         });
     },
-    updatePatient: (patient) => {
+    updatePatient: (patient, callback) => {
         patient.LastUpdate = new Date().getTime();
         Patient.findByIdAndUpdate(patient.braceletId, {$set: req.params.object}, {new: false}, function (err, patient){
             if (err) { 
-                return err;
+                callback(err);
             } else {
-                return patient;
+                callback(patient);
             }
         });
     },
-    updateUnit: (unit) => {
+    updateUnit: (unit, callback) => {
         Unit.findByIdAndUpdate(unit.id, {$set: unit}, {new: false}, function (err, unit){
             if (err) { 
-                return err;
+                callback(err);
             } else {
-                return unit;
+                callback(unit);
             }
         });
     },
-    insertPatient: (patient) => {
+    insertPatient: (patient, callback) => {
         Patient.create(patient, function(err, patient){
             if (err) { 
-                return err;
-            } 
-            else {
-                return patient;
+                callback(err);
+            } else {
+                callback(patient);
             }
         });
     }

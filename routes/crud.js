@@ -25,9 +25,13 @@ crudRouter.get('/units', function (req, res, next) {
 
 crudRouter.get('/units/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.getUnitByUnitId(req.params.id))
+        mongo.getUnitByUnitId(req.params.id, function(data) {
+            res.send(data);
+        });
     } else {
-        res.send(files.getUnitByUnitId(req.params.id));
+        files.getUnitByUnitId(req.params.id, function(data) {
+            res.send(data);
+        })
     }
 });
 
@@ -45,18 +49,26 @@ crudRouter.delete('/units/:id', function (req, res, next) {
 
 crudRouter.get('/patients', function(req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.getAllPatients());
+        mongo.getAllPatients(function(data) {
+            res.send(data);
+        });
     } else {
-        res.send(files.getAllPatients());
+        files.getAllPatients(function(data) {
+            res.send(data);
+        });
     }
 });
 
 
 crudRouter.get('/patients/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.getPatientByBraceletId(req.params.id));
+        mongo.getPatientByBraceletId(req.params.id, function(data) {
+            res.send(data);
+        });
     } else {
-        res.send(files.getPatientByBraceletId(req.params.id));
+        files.getPatientByBraceletId(req.params.id, function(data) {
+            res.send(data);
+        });
     }
 });
 
@@ -98,9 +110,13 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
 // Get patients by unit id
 crudRouter.get('/patients/units/:unitId', function(req, res,next) {   
      if (pjson.isWeb) {
-        res.send(mongo.getPatientsByUnitId(req.params.unitId));
+        mongo.getPatientsByUnitId(req.params.unitId, function(data) {
+            res.send(data);
+        });
      } else {
-         res.send(mongo.getPatientsByUnitId(req.params.unitId));
+         mongo.getPatientsByUnitId(req.params.unitId, function(data) {
+            res.send(data);
+         });
      }    
 });
 
@@ -113,7 +129,9 @@ crudRouter.post('/patients', function (req, res, next) {
         
         // check if online insert to db else insert to temp file
         if (index.isOnline) {
-            mongo.insertPatient(req.body.patient);
+            mongo.insertPatient(req.body.patient, function(data) {
+                res.send(data);
+            });
         } else {
             temp.insertPatient(req.body.patient);
         }
@@ -123,15 +141,23 @@ crudRouter.post('/patients', function (req, res, next) {
 // Update patient details
  crudRouter.put('/patients', function (req, res, next) {
      if (pjson.isWeb) {
-         res.send(mongo.updatePatient(req.body.patient));
+         mongo.updatePatient(req.body.patient, function(data) {
+             res.send(data);
+         });
      } else {
-        files.updatePatient(req.body.patient);
+        files.updatePatient(req.body.patient, function(isUpdataed) {
+            // Decide what to do if the patient didnt updated 
+        });
         
         // check if online update db else update temp file
         if (index.isOnline) {
-            mongo.updatePatient(req.body.patient);
+            mongo.updatePatient(req.body.patient, function(data) {
+                res.send(data);
+            });
         } else {
-            temp.updatePatient(req.body.patient);
+            temp.updatePatient(req.body.patient, function(data) {
+                res.send(data);
+            });
         }
      }
  })
@@ -139,15 +165,23 @@ crudRouter.post('/patients', function (req, res, next) {
 // Update unit details
  crudRouter.put('/units', function (req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.updateUnit(req.body.unit));
+        mongo.updateUnit(req.body.unit, function(data) {
+            res.send(data);
+        });
     } else {
-        files.updateUnit(req.body.unit);
+        files.updateUnit(req.body.unit, function(data) {
+            // Decide what to do if the patient didnt updated
+        });
 
         // check if online update db else update temp file
         if (index.isOnline) {
-            mongo.updateUnit(req.body.unit);
+            mongo.updateUnit(req.body.unit, function(data) {
+                res.send(data);
+            });
         } else {
-            temp.updateUnit(req.body.unit);
+            temp.updateUnit(req.body.unit, function(data) {
+                res.send(data);
+            });
         }
     }
  })
@@ -155,9 +189,13 @@ crudRouter.post('/patients', function (req, res, next) {
 // Get all units under specific unit
 crudRouter.get('/units/:unitId/units', function(req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.getUnitsOfUnderUnit(req.params.unitId));
+        mongo.getUnitsOfUnderUnit(req.params.unitId, function(data) {
+            res.send(data);
+        });
     } else {
-        res.send(files.getUnitsOfUnderUnit(req.params.unitId));
+        files.getUnitsOfUnderUnit(req.params.unitId, function(data) {
+            res.send(data);
+        });
     }
 });
 

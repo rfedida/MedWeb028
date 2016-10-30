@@ -9,16 +9,16 @@ function sortArrayByLastTimestamp(arrayToSort) {
 }
 
 module.exports = {
-    getAllPatients: () => {
-        return diskdb.Patients.find();
+    getAllPatients: (callback) => {
+        callback(diskdb.Patients.find());
     },
-    getUnitByUnitId: (unitId) => {
-        return diskdb.Units.findOne({id: unitId});
+    getUnitByUnitId: (unitId, callback) => {
+        callback(diskdb.Units.findOne({id: unitId}));
     },
-    getPatientByBraceletId: (braceletId) => {
-        return diskdb.Patients.findOne({Bracelet_id: braceletId});
+    getPatientByBraceletId: (braceletId, callback) => {
+        callback(diskdb.Patients.findOne({Bracelet_id: braceletId}));
     },
-    getPatientsByUnitId: (unitId) => {
+    getPatientsByUnitId: (unitId, callback) => {
         var list = [];
         var patients = db.Patients.find()
         for (var i=0; i<patients.length; i++) {
@@ -71,9 +71,9 @@ module.exports = {
             }
         }
 
-        return list;
+        callback(list);
     },
-    getUnitsOfUnderUnit: (unitId) => {
+    getUnitsOfUnderUnit: (unitId, callback) => {
         var list = [];
         var units = db.Units.find();
         var pattern = "^" + unitId + "(_[0-9]+)+$";
@@ -92,9 +92,9 @@ module.exports = {
             }
         }
 
-        return list;
+        callback(list);
     },
-    updatePatient: (patient) => {
+    updatePatient: (patient, callback) => {
         var options = {
             multi: false,
             upsert: true
@@ -118,12 +118,12 @@ module.exports = {
         };
 
         if(db.Patients.update(query, dataToBeUpdate, options) == 1) {
-            return true;
+            callback(true);
         } 
 
-        return false;
+        callback(false);
     },
-    updateUnit: (unit) => {
+    updateUnit: (unit, callback) => {
         var options = {
             multi: false,
             upsert: true
@@ -143,10 +143,10 @@ module.exports = {
         };
 
         if(db.Units.update(query, dataToBeUpdate, options) == 1) {
-            return true;
+            callback(true);
         }
 
-        return false;
+        callback(false);
     },
     insertPatient: (patient) => {
         diskdb.Patients.save(patient);
