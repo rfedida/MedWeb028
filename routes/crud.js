@@ -225,7 +225,7 @@ var InjuryMechanismType = {
 
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
-    console.log("get requst for db");
+    console.log("db get requst for injuryMechanism");
     Patient.aggregate(
         [
             {$group :
@@ -249,9 +249,10 @@ crudRouter.get('/injuryMechanism' , function(req , res ){
              });
 
              res.json(lior);
-             console.log(lior);
         }
-        else {}
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
     });
     
 });
