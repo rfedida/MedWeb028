@@ -2,14 +2,18 @@
 var express = require('express');
 var path = require('path');
 var routes = require('./routes/index');
+var agamRoutes = require('./routes/agam'); 
 var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 var crud = require('./routes/crud');
 var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
 var udpServer = dgram.createSocket('udp4');
 var pjson = require('./package.json');
+var temp = require('./server/med/temp');
+var mongo = require('./server/med/mongo');
 
 var server = express();
 server.use(function(req, res, next)
@@ -28,9 +32,11 @@ server.use(function(req, res, next)
     }
 });
 
+server.use(bodyParser.json());
 server.use(express.static(__dirname + '/public'));
 server.use('/', routes);
 server.use('/med', medRoutes);
+server.use('/agam', agamRoutes);
 server.use('/infrastructure', infrastructureRoutes);
 
 server.use('/crud', crud);
@@ -56,7 +62,17 @@ function connectToMongo () {
     db.once('open', function(){
         isOnline = true;
         console.log("connect to mongo");
+        
         // Update db according files
+        if (!pjson.isWeb) {
+            var tempUnits, tempPatients;
+            temp.getTempPatients(function(data) {
+                tempPatients = data;
+            });
+            temp.getTempUnits(function(data) {
+                tempUnits = data;
+            });
+        }
     });
     db.on('close', function(){
         console.log("connection to mongo closed");
