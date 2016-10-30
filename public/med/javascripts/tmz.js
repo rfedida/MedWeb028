@@ -20,6 +20,14 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
     {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"urgent", date:"25/10/2016", time:"11:15"}
   ];
 
+  $scope.injureds = null;
+          
+  $http.get("/crud/patients/units/" + medAppFactory.currentStation).then(function(response)
+      {
+         $scope.woundeds = response.data;
+      });
+
+
 $scope.showComplex = function() {
 
     var url = $sce.getTrustedResourceUrl(app.remote + "/med/views/modalTmz.html");

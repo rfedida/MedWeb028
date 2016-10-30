@@ -23,7 +23,7 @@ function($routeProvider, $sceDelegateProvider){
 angular.module("medApp").factory('medAppFactory', function ($http) {
     var factory = {};
 
-
+    factory.currentStation = "1_1_1";
     factory.newInjured = {
         "Bracelet_id": "",
         "IsDead":false,
@@ -63,8 +63,8 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
-        "1": {name: "קוניוטו", group:"A"}, 
-        "2": {name: "איטוב", group:"A"},
+        "1234": {name: "קוניוטו", group:"A"}, 
+        "123": {name: "איטוב", group:"A"},
         "3": {name: "N.A", group:"B"},
         "4": {name: "נקז חזה", group:"B"},
         "5": {name: "C.A.T", group:"B"},
@@ -84,9 +84,9 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
         "19": {name: "דם"}
 };
 
-    factory.currentInjured = {
+    factory.currentInjured = {};
 
-        "Bracelet_id": "920140140",
+      /*  "Bracelet_id": "920140140",
         "IsDead": false,
         "General_Data": {
             "Emergency": 1, // 0 - Undifiened, 1 - no emergency, 2 - emenrgency
@@ -270,7 +270,7 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
             "LeavingDate": "31/3/2016",
             "LeavingTime": "8:00:00" //Evacucation time
         }]
-    };
+    };*/
 
     factory.InjuryMechanismType = [
         { id: 0, name: "תלול מסלול" },
