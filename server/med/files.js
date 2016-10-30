@@ -12,6 +12,9 @@ module.exports = {
     getAllPatients: () => {
         return diskdb.Patients.find();
     },
+    getUnitByUnitId: (unitId) => {
+        return diskdb.Units.findOne({id: unitId});
+    },
     getPatientByBraceletId: (braceletId) => {
         return diskdb.Patients.findOne({Bracelet_id: braceletId});
     },
@@ -94,7 +97,7 @@ module.exports = {
     updatePatient: (patient) => {
         var options = {
             multi: false,
-            upsert: false
+            upsert: true
         };
         
         var query = {
@@ -103,6 +106,7 @@ module.exports = {
 
         var dataToBeUpdate = {
             Bracelet_id: patient.Bracelet_id,
+            LastUpdate: new Date().getTime(),
             IsDead: patient.IsDead,
             CurrentStation: patient.CurrentStation,
             General_Data: patient.General_Data,
@@ -122,7 +126,7 @@ module.exports = {
     updateUnit: (unit) => {
         var options = {
             multi: false,
-            upsert: false
+            upsert: true
         };
         
         var query = {

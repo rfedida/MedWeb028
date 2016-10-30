@@ -4,26 +4,11 @@ var mongoose = require('mongoose');
 var Unit = require('../models/unitSchema');
 var Patient = require('../models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
-var pjson = require('../package.json')
-
-function sortDesc(arrayToSort, field){
-    var newArray = arrayToSort.sort(function(a,b) {
-        return (new Date(b[field]) - new Date(a[field])); 
-    });
-
-    return newArray;
-}
-
-function getAllCurrentStationById(arrayToSort, currStationId) {
-
-    var onlyCurrentStationArray = [];
-    arrayToSort.forEach(function(station) {
-        if (station.stationId == currStationId) {
-            onlyCurrentStationArray.push(station);
-        }
-    });
-    return onlyCurrentStationArray;
-}
+var index = require('../app');
+var pjson = require('../package.json');
+var mongo = require('../server/med/mongo');
+var files = require('../server/med/files');
+var temp = require('../server/med/temp');
 
 crudRouter.get('/units', function (req, res, next) {
 
@@ -40,13 +25,9 @@ crudRouter.get('/units', function (req, res, next) {
 
 crudRouter.get('/units/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        Unit.findOne({'id' : req.params.id}, function(err, unit) {
-            if (err) { 
-                res.send(err);
-            } else {
-                res.send(unit);
-            }
-        })
+        res.send(mongo.getUnitByUnitId(req.params.id))
+    } else {
+        res.send(files.getUnitByUnitId(req.params.id));
     }
 });
 
@@ -64,41 +45,20 @@ crudRouter.delete('/units/:id', function (req, res, next) {
 
 crudRouter.get('/patients', function(req, res, next) {
     if (pjson.isWeb) {
-        Patient.find(function (err, patients) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(patients);
-            }
-        });
+        res.send(mongo.getAllPatients());
+    } else {
+        res.send(files.getAllPatients());
     }
 });
 
 
 crudRouter.get('/patients/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        Patient.findOne({"braceletId" : req.params.id}, function(err, patient) {
-            if (err) { 
-                res.send(err);
-            } else {
-                res.send(patient);
-            }
-        })
+        res.send(mongo.getPatientByBraceletId(req.params.id));
+    } else {
+        res.send(files.getPatientByBraceletId(req.params.id));
     }
 });
-
-// Get patient by id
-// crudRouter.get('/patients/:id', function(req, res,next) {
-//     if (pjson.isWeb) {
-//         Patient.find({"braceletId": req.params.id}, function(err, patient) {
-//             if (err) {  
-//                 res.send(err);
-//             } else {
-//                 res.send(patient);
-//             }
-//         })
-//     }
-// });
 
 // Get the last patient who arrived to current station
 crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
@@ -138,145 +98,68 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
 // Get patients by unit id
 crudRouter.get('/patients/units/:unitId', function(req, res,next) {   
      if (pjson.isWeb) {
-        Patient.find({"CurrentStation" : req.params.unitId},  function(err, patients) {
-        if (err) {
-            res.send(err);
-        } else {
-            // Parse to json
-            patients = JSON.parse(JSON.stringify(patients));
-            var result = []; 
-            
-            // Run all patients and save specific fields
-            patients.forEach(function(patient){
-
-                // Create new json which inculdes the following fields:
-                // braceletId, temperature, storation, bloodPressure, heartbeat
-                // Sort each array in measurements according to last timestamps and set the last into json
-                var newPatient = {
-                                    "braceletId" : patient.braceletId,
-                                    "temperature" :  sortDesc(patient.measurements.temperatures, "timestamp")[0].tempreature,
-                                    "storation" : sortDesc(patient.measurements.storations, "timestamp")[0].storation,
-                                    "bloodPressure" : sortDesc(patient.measurements.bloodPressures, "timestamp")[0].bloodPressure,
-                                    "heartbeat" : sortDesc(patient.measurements.heartbeat, "timestamp")[0].heartbeat,
-                                    "status" : patient.generalData.emergency,
-                                    "receptionTime" : sortDesc(patient.Stations, "receptionTime")[0].receptionTime };
-                result.push(newPatient);                
-            });
-
-            res.send(result);
-        }    
-    })}
+        res.send(mongo.getPatientsByUnitId(req.params.unitId));
+     } else {
+         res.send(mongo.getPatientsByUnitId(req.params.unitId));
+     }    
 });
 
 // Insert patient details
-crudRouter.post('/patients/:object', function (req, res, next) {
+crudRouter.post('/patients', function (req, res, next) {
     if (pjson.isWeb) {
-        Patient.create(req.params.object, function(err, patient){
-            if (err) { 
-            res.send(err);
-            } 
-            else {
-                res.send(patient);
-            }
-        });
+        res.send(mongo.insertPatient(req.body.patient));
+    } else {
+        files.insertPatient(req.body.patient);
+        
+        // check if online insert to db else insert to temp file
+        if (index.isOnline) {
+            mongo.insertPatient(req.body.patient);
+        } else {
+            temp.insertPatient(req.body.patient);
+        }
     }
 });
 
 // Update patient details
- crudRouter.put('/patients/:object', function (req, res, next) {
+ crudRouter.put('/patients', function (req, res, next) {
      if (pjson.isWeb) {
-        req.params.object.LastUpdate = new Date().getTime();
-        Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, function (err, patient){
-            if (err) { 
-            res.send(err);
-            } else {
-                res.send(patient);
-            }
-        });
+         res.send(mongo.updatePatient(req.body.patient));
+     } else {
+        files.updatePatient(req.body.patient);
+        
+        // check if online update db else update temp file
+        if (index.isOnline) {
+            mongo.updatePatient(req.body.patient);
+        } else {
+            temp.updatePatient(req.body.patient);
+        }
      }
  })
 
-// Update patient details
- crudRouter.put('/units/:object', function (req, res, next) {
+// Update unit details
+ crudRouter.put('/units', function (req, res, next) {
+    if (pjson.isWeb) {
+        res.send(mongo.updateUnit(req.body.unit));
+    } else {
+        files.updateUnit(req.body.unit);
 
-     if (pjson.isWeb) {
-
-            Unit.findByIdAndUpdate(req.params.object.id, {$set: req.params.object}, {new: false}, 
-                function (err, unit){
-                    if (err) { 
-                    res.send(err);
-                    } else {
-                        res.send(unit);
-                    }
-            });
-         }  
-     
+        // check if online update db else update temp file
+        if (index.isOnline) {
+            mongo.updateUnit(req.body.unit);
+        } else {
+            temp.updateUnit(req.body.unit);
+        }
+    }
  })
-
-// Get the name of unit by id
-// crudRouter.get('/unitName/:id', function(req, res,next) {
-//     Unit.findOne({"id": req.params.id} , "name", function(err, unit) {
-  //  if (pjson.isWeb) {
-//         if (err) {
-//             res.send(err);
-//         } else {
-//             res.send(unit);
-//         }
-    //}
-//     });
-    
-// });
 
 // Get all units under specific unit
 crudRouter.get('/units/:unitId/units', function(req, res, next) {
-    
     if (pjson.isWeb) {
-       Unit.find(function (err, units) {
-              if (err) {
-                console.log(err);
-                res.send(err); 
-            } else {
-
-                var pattern = "^" + req.params.unitId + "(_[0-9]+)+$";
-                var list = [];
-                var regex = new RegExp(pattern);
-                var bIsIdExist = false;
-                units = JSON.parse(JSON.stringify(units));
-                
-                // Find if the unit id is existed
-                for (var i=0; i<units.length; i++) {
-                    if(units[i].id === req.params.unitId)
-                    bIsIdExist = true;
-                }
-                
-                // If the id exist
-                if (bIsIdExist) {
-                    
-                    // Run all units and find if the are units which match the regex
-                    for (var i=0; i<units.length; i++) {
-                        if (regex.test(units[i].id))
-                            list.push(units[i]);
-                    }
-                }
-
-                res.send(list);
-            }
-        });
-    }    
+        res.send(mongo.getUnitsOfUnderUnit(req.params.unitId));
+    } else {
+        res.send(files.getUnitsOfUnderUnit(req.params.unitId));
+    }
 });
-
-
-// crudRouter.get('/units/:id', function(req, res,next) {
-//     if (pjson.isWeb) {
-//         Patient.findOne({"id": req.params.id} , "name", function(err, unit) {
-//             if (err) {
-//                 res.send(err);
-//             } else {
-//                 res.send(unit);
-//             }
-//         });
-//     }
-// });
 
 crudRouter.delete('/patients/:id', function (req, res, next) {
     if (pjson.isWeb) {

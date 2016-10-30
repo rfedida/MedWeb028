@@ -70,6 +70,15 @@ module.exports = {
             }
         });  
     },
+    getUnitByUnitId: (unitId) => {
+        Unit.findOne({'id' : unitId.id}, function(err, unit) {
+            if (err) { 
+                return err;
+            } else {
+                return unit;
+            }
+        })
+    },
     getUnitsOfUnderUnit: (unitId) => {
         Unit.find(function (err, units) {
             if (err) {

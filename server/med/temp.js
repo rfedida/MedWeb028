@@ -4,7 +4,7 @@ module.exports = {
     updatePatient: (patient) => {
         var options = {
             multi: false,
-            upsert: false
+            upsert: true
         };
         
         var query = {
@@ -32,7 +32,7 @@ module.exports = {
     updateUnit: (unit) => {
         var options = {
             multi: false,
-            upsert: false
+            upsert: true
         };
         
         var query = {
