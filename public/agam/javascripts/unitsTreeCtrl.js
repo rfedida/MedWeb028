@@ -1,5 +1,15 @@
 myApp.controller('unitsTreeController', function ($scope, $http) {
     $scope.treeInd = true;
+    $scope.showTree=false;
+    $scope.sizestatic = "col-md-8";
+    $scope.openTree = function(){
+        $scope.showTree = !$scope.showTree;
+        if ($scope.sizestatic == "col-md-6"){
+            $scope.sizestatic = "col-md-8";
+        }else{
+            $scope.sizestatic = "col-md-6";
+        }
+    }
     $scope.window = "col-md-6";
     $scope.treeOptions = {
           nodeChildren: "children",
@@ -74,14 +84,9 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
 
     $scope.loadUnits();
 
+    $scope.loadPatients = function(unitid){
+        $http.get('/agam/getPatients/'+unitid).success(function(data){
+        });
+    };
 
-    $scope.treeEvent = function(){
-        $scope.treeInd = !$scope.treeInd;
-       
-        if ( $scope.window == "col-md-6"){
-            $scope.window = "col-md-8";
-        }else{
-            $scope.window = "col-md-6"
-        }
-    }
 });
