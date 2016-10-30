@@ -23,7 +23,7 @@ function($routeProvider, $sceDelegateProvider){
 angular.module("medApp").factory('medAppFactory', function ($http) {
     var factory = {};
 
-
+    factory.currentStation = "1_1_1";
     factory.newInjured = {
         "Bracelet_id": "",
         "IsDead":false,

@@ -32,12 +32,12 @@
                                     ng-repeat="wounded in woundeds | filter: {status:'notClassified'} | filter:filterText
                                     | orderBy: ['-date', 'time']"
                                 ng-style="{'background-color':'#FFF59D' }"
-                                  ng-click="moveToSchema(wounded.id)">
+                                  ng-click="moveToSchema(wounded.braceletId)">
                             <br>
-                            <p> <strong>מס' צמיד:</strong> {{wounded.id}}</p>
-                            <p> <strong>דופק:</strong> {{wounded.pulse}}</p>
-                            <p> <strong>ל"ד:</strong> {{wounded.bp}}</p>
-                            <p> <strong>סטורציה:</strong> {{wounded.Saturation}}</p>
+                            <p> <strong>מס' צמיד:</strong> {{wounded.braceletId}}</p>
+                            <p> <strong>דופק:</strong> {{wounded.heartbeat}}</p>
+                            <p> <strong>ל"ד:</strong> {{wounded.bloodPressure}}</p>
+                            <p> <strong>סטורציה:</strong> {{wounded.Storation}}</p>
                         </div>
                     </div>
 
@@ -47,12 +47,12 @@
                             | orderBy: ['-status','-date', 'time']"
                                 ng-style="{'background-color':wounded.status == 'urgent' ?  '#FF8A80': 
                                         (wounded.status == 'notUrgent' ?  '#69F0AE': white) }" 
-                              ng-click="moveToSchema(wounded.id)">
+                              ng-click="moveToSchema(wounded.braceletId)">
                             <br>
-                            <p> <strong>מס' צמיד:</strong> {{wounded.id}}</p>
-                            <p> <strong>דופק:</strong> {{wounded.pulse}}</p>
-                            <p> <strong>ל"ד:</strong> {{wounded.bp}}</p>
-                            <p> <strong>סטורציה:</strong> {{wounded.Saturation}}</p>
+                            <p> <strong>מס' צמיד:</strong> {{wounded.braceletId}}</p>
+                            <p> <strong>דופק:</strong> {{wounded.heartbeat}}</p>
+                            <p> <strong>ל"ד:</strong> {{wounded.bloodPressure}}</p>
+                            <p> <strong>סטורציה:</strong> {{wounded.Storation}}</p>
                         </div>
                     </div>
 
@@ -60,12 +60,12 @@
                         <div class="col-md-5 col-xs-5 col-xs-offset-1 portfolio-item fade bodyText" 
                             ng-repeat="wounded in woundeds | filter: {status:'moved'} | filter:filterText | orderBy: ['-date', 'time']"
                                 ng-style="{'background-color':'#BBDEFB' }" 
-                              ng-click="moveToSchema(wounded.id)">
+                              ng-click="moveToSchema(wounded.braceletId)">
                             <br>
-                            <p> <strong>מס' צמיד:</strong> {{wounded.id}}</p>
-                            <p> <strong>דופק:</strong> {{wounded.pulse}}</p>
-                            <p> <strong>ל"ד:</strong> {{wounded.bp}}</p>
-                            <p> <strong>סטורציה:</strong> {{wounded.Saturation}}</p>
+                            <p> <strong>מס' צמיד:</strong> {{wounded.braceletId}}</p>
+                            <p> <strong>דופק:</strong> {{wounded.heartbeat}}</p>
+                            <p> <strong>ל"ד:</strong> {{wounded.bloodPressure}}</p>
+                            <p> <strong>סטורציה:</strong> {{wounded.Storation}}</p>
                         </div>
                     </div>
 
@@ -73,12 +73,12 @@
                         <div class="col-md-5 col-xs-5 col-xs-offset-1 portfolio-item fade bodyText" 
                             ng-repeat="wounded in woundeds | filter: {status:'dead'} | filter:filterText | orderBy: ['-date', 'time']"
                                 ng-style="{'background-color':'#9E9E9E' }" 
-                              ng-click="moveToSchema(wounded.id)">
+                              ng-click="moveToSchema(wounded.braceletId)">
                             <br><br><br>
-                            <p> <strong>מס' צמיד:</strong> {{wounded.id}}</p>
-                            <!--<p> <strong>דופק:</strong> {{wounded.pulse}}</p>
-                            <p> <strong>ל"ד:</strong> {{wounded.bp}}</p>
-                            <p> <strong>סטורציה:</strong> {{wounded.Saturation}}</p>-->
+                            <p> <strong>מס' צמיד:</strong> {{wounded.braceletId}}</p>
+                            <!--<p> <strong>דופק:</strong> {{wounded.heartbeat}}</p>
+                            <p> <strong>ל"ד:</strong> {{wounded.bloodPressure}}</p>
+                            <p> <strong>סטורציה:</strong> {{wounded.Storation}}</p>-->
                         </div>
                     </div>
 
