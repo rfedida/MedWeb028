@@ -1,4 +1,12 @@
 myApp.controller('statisticController', function($scope, $http) {
+
+    $scope.roundMinutes = function(date){
+        date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
+        date.setMinutes(0);
+
+        return date;
+    };
+
     $scope.pieChartOptions = {
         chart:
         {
@@ -43,16 +51,16 @@ myApp.controller('statisticController', function($scope, $http) {
                 bottom: 45,
                 left: 45
             },
-            x: function(d){return new Date(d.x)},
+            x: function(d){return d.x},
             y: function(d){return d.y},
             color: function(d, i) {
                 var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
                 return colorArray[i];        
             },
-            duration: 500,            
+            duration: 500,                    
             xAxis:
             {
-                axisLable: 'זמן',
+                axisLable: 'זמן',            
                 tickFormat: function(d){
                     return d3.time.format('%x %H:%M')(new Date(d));
                 }
@@ -64,47 +72,6 @@ myApp.controller('statisticController', function($scope, $http) {
             }
         }        
     };
-
-    $scope.data = [
-        {
-            key:'ראש',
-            type: 'line',
-            yAxis: 1,
-            values:[
-                {
-                    x:'11/04/2011 11:12:00',
-                    y:1
-                },
-                {
-                    x:'11/04/2011 12:15:00',
-                    y:2
-                },
-                {
-                    x:'11/04/2011 13:12:00',
-                    y:1
-                },
-                {
-                    x:'11/04/2011 14:15:00',
-                    y:2
-                }
-            ]           
-        },
-        {
-            key:'רגל',
-            type: 'line',
-            yAxis: 1,
-            values:[
-                {
-                    x:'11/04/2011 11:12:00',
-                    y:2  
-                },
-                {
-                    x:'11/04/2011 13:12:00',
-                    y:3
-                }
-            ]              
-        }
-    ];
 
     $scope.injuryMechanismData = [];
     $http.get("/crud/injuryMechanism").success(function(data){
@@ -120,5 +87,81 @@ myApp.controller('statisticController', function($scope, $http) {
     }).error(function(data){
         console.log(data);
     }); 
+
+    $scope.injuryLocationTimeData = [];
+    $http.get("/crud/patientsInjuryLocationByTime").success(function(data){
+        $scope.injuryLocationTimeData = $scope.buildData(data);
+    }).error(function(data){
+        console.log(data);
+    }); 
+
+    $scope.buildData = function(data){
+        var newData = [];
+
+
+        for (var index in data)
+        {
+            console.log(new Date(data[index].x[0]));
+            newData.push({
+                key: data[index].key,
+                type: 'line',
+                yAxis: 1,
+                values: [
+                    {
+                        x: '2016-10-30T10:09:48.282Z',
+                        y: 1
+                    }
+                ]
+            });
+        }
+        
+        // var newData = [
+        // {
+        //     key:'ראש',
+        //     type: 'line',
+        //     yAxis: 1,
+        //     values:[
+        //         {
+        //             x:$scope.roundMinutes(new Date('2016-10-30T10:09:48.282Z')),
+        //             y:1
+        //         },
+        //         {
+        //             x:$scope.roundMinutes(new Date('2016-10-30T10:49:48.282Z')),
+        //             y:2
+        //         },
+        //         {
+        //             x:$scope.roundMinutes(new Date('2016-10-30T11:54:48.282Z')),
+        //             y:2
+        //         },
+        //         {
+        //             x:$scope.roundMinutes(new Date('2016-10-30T13:19:48.282Z')),
+        //             y:1
+        //         },
+        //         {
+        //             x:$scope.roundMinutes(new Date('2016-10-30T13:49:48.282Z')),
+        //             y:2
+        //         }
+        //     ]           
+        // },
+        // {
+        //     key:'רגל',
+        //     type: 'line',
+        //     yAxis: 1,
+        //     values:[
+        //         {
+        //             x:$scope.roundMinutes(new Date('2016-10-30T13:49:48.282Z')),
+        //             y:1  
+        //         },
+        //         {
+        //             x:$scope.roundMinutes(new Date('2016-10-30T14:49:48.282Z')),
+        //             y:3
+        //         }
+        //     ]              
+        // }
+        // ];
+
+        return newData;
+    };
+
 });
 

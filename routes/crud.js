@@ -284,18 +284,12 @@ crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
 
 crudRouter.get('/patientsInjuryLocationByTime', function(req, res, next) {
     console.log("get requst for db");
-    Patient.aggregate(
-        [
-            {$group :
-                { _id : "$generalData.injuryLocation",
-                  time : "$Stations[0].injuryLocation", 
-                  count : {$sum : 1}}},
-            {$sort : {_id : 1}},
-            { $project : 
+    Patient.aggregate([
+            {
+                $project : 
                 {
-                    key : "$_id",
-                    x : "$time",
-                    y : "$count",
+                    key : "$generalData.injuryLocation",
+                    x : "$Stations.receptionTime", 
                     _id : 0
                 }
             }
