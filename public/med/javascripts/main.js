@@ -45,6 +45,36 @@ angular.module("medApp").factory('medAppFactory', function($http)
                     {
                         "Date": "23/4/2015", 
                         "Time": "18:30:00",
+                        "Treatment_type": "2", // From Treatments Enum
+                        "Place_in_body": "רגל ימין",
+                        "Blood_Preasure":"110/90",
+                        "Heartbeat": "12",
+                        "Temperature": "44",
+                        "Storation": "85%"
+                    },
+                    {
+                        "Date": "23/4/2015", 
+                        "Time": "18:30:00",
+                        "Treatment_type": "3", // From Treatments Enum
+                        "Place_in_body": "רגל ימין",
+                        "Blood_Preasure":"110/90",
+                        "Heartbeat": "12",
+                        "Temperature": "44",
+                        "Storation": "85%"
+                    },
+                    {
+                        "Date": "23/4/2015", 
+                        "Time": "18:30:00",
+                        "Treatment_type": "0", // From Treatments Enum
+                        "Place_in_body": "רגל ימין",
+                        "Blood_Preasure":"110/90",
+                        "Heartbeat": "12",
+                        "Temperature": "44",
+                        "Storation": "85%"
+                    },
+                    {
+                        "Date": "23/4/2015", 
+                        "Time": "18:30:00",
                         "Treatment_type": "5", // From Treatments Enum
                         "Place_in_body": "רגל ימין",
                         "Blood_Preasure":"110/90",
@@ -99,7 +129,7 @@ angular.module("medApp").factory('medAppFactory', function($http)
    "Liquids": [{
                         "Date": "23/4/2015", 
                         "Time": "18:30:00",
-                        "Liquid_id": "123", // From Liquids Enum
+                        "Liquid_id": "18", // From Liquids Enum
                         "Dosage": "10",
                         "Dosage_type": "mg",
                         "Blood_Preasure":"110/90",
@@ -110,7 +140,7 @@ angular.module("medApp").factory('medAppFactory', function($http)
                     {
                         "Date": "23/4/2015", 
                         "Time": "18:30:00",
-                        "Liquid_id": "123", // From Liquids Enum
+                        "Liquid_id": "18", // From Liquids Enum
                         "Dosage": "10",
                         "Dosage_type": "mg",
                         "Blood_Preasure":"110/90",
@@ -121,7 +151,7 @@ angular.module("medApp").factory('medAppFactory', function($http)
                     {
                         "Date": "23/4/2015", 
                         "Time": "18:30:00",
-                        "Liquid_id": "456", // From Liquids Enum
+                        "Liquid_id": "19", // From Liquids Enum
                         "Dosage": "15",
                         "Dosage_type": "cc",
                         "Blood_Preasure":"110/90",
@@ -180,7 +210,9 @@ angular.module("medApp").factory('medAppFactory', function($http)
         "14": {name: "Hexakapron"},
         "15": {name: "Pantenyl"},
         "16": {name: "Akamol"},
-        "17": {name: "nonTREAT"}
+        "17": {name: "nonTREAT"},
+        "18": {name: "מים"},
+        "19": {name: "דם"}
 };
 
 

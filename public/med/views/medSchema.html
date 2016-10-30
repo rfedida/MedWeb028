@@ -2,10 +2,10 @@
       <div ng-controller="myController">
        <br>
         <div class="row">
-             <div class="col-md-4 col-md-offset-4">תיק רפואי - צמיד {{inj.id}}</div>
+             <div class="col-md-4 col-md-offset-4 detailsBorder">תיק רפואי - צמיד {{inj.id}}</div>
        </div>
        <br><br>
-       <div class="row">
+       <div class="row detailsBorder">
              <div class="col-md-3" ng-class="{'redColor': inj.Storation > 97 || inj.Storation < 92 }">
                סטרוציה:{{inj.Storation}}
              </div>
@@ -22,7 +22,8 @@
        <br>
       <div class="row">
        <div class="col-md-6">
-          <table class="table table-bordered">
+         <div class="medTble">
+          <table class="table table-bordered medBackground">
             <tr>
              <th>שם הנוזל</th>
               <th>כמות</th>     
@@ -32,12 +33,12 @@
              <td> {{liquid.Dosage + liquid.Dosage_type}} </td>
           </tr>   
         </table>
+         </div>
        </div>    
 
        <div class="col-md-6">
-     
-        <table class="table table-bordered">
-
+        <div class="medTble">
+         <table class="table table-bordered medBackground">
           <tr>
              <th>לפני</th>
              <th>שם התרופה</th>
@@ -46,19 +47,23 @@
           <tr ng-repeat = "medication in medications">
              <td>{{medication.Time}}</td>
              <td> {{medication.name}} </td>
-<td> {{medication.Dosage + medication.Dosage_type}} </td>
+             <td> {{medication.Dosage + medication.Dosage_type}} </td>
            </tr>
-           
-        </table>
-       </div>
-
+          
+          </table>
+         </div>
       </div>
       <br>
       <div class="row">
-       <div class="col-md-6">
-           <table class="table table-bordered">
+      
+        <div class="col-md-6">
+           <div class = "tableDesignB">
+           <table  class="table table-bordered bBackground">
+             
             <tr>
-              <th rowspan="100">B</th>
+              <th rowspan="100">
+                <div class ="treatLetter">B</div>
+              </th>
             </tr>
            <tr>
              <th>לפני</th>
@@ -68,13 +73,18 @@
              <td>{{treatment.Date}}</td>
              <td> {{treatment.name}} </td>
           </tr>
+          
         </table>
+           </div>
        </div>
-     
+   
       <div class="col-md-6">   
-         <table class="table table-bordered">
+          <div  class = "tableDesignA">
+         <table class="table table-bordered aBackground">
             <tr>
-              <th rowspan="100">A</th>
+              <th rowspan="100">
+                <div class ="treatLetter">A</div>
+              </th>
               </tr>
             <tr>
                <th>לפני</th>
@@ -84,18 +94,23 @@
              <td>{{treatment.Date}}</td>
              <td>{{treatment.name}}</td>
           </tr>
+         
         </table>
-       </div>
+          </div>
+     </div>
       </div>
 
      <br>
      <div class="row">
+        
        <div class="col-md-6">
-
-            <table class="table table-bordered">
+<div  class = "tableDesignD">
+            <table class="table table-bordered dBackground">
 
            <tr>
-              <th rowspan="100">D</th>
+              <th rowspan="100">
+                <div class ="treatLetter">D</div>
+              </th>
            </tr>
            <tr>
               <th>לפני</th>
@@ -109,13 +124,16 @@
         </table>
 
        </div>
-    
+        </div>
+      
        <div class="col-md-6">
-
-<table class="table table-bordered">
+<div  class = "tableDesignC">
+        <table class="table table-bordered cBackground">
    
            <tr>
-              <th rowspan="100">C</th>
+              <th rowspan="100">
+               <div class ="treatLetter">C</div>
+              </th>
            </tr>
             <tr>
                <th>לפני</th>
@@ -127,7 +145,7 @@
           </tr>
 
         </table>
-
+       </div>
        </div>
       </div>
 

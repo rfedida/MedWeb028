@@ -15,3 +15,73 @@ th {
 {
     color:red
 }
+
+.detailsBorder
+{
+ border: 2px groove;
+ border-radius:5px;
+ text-align: center;
+ font-size:20px;
+}
+
+.medTble
+{  
+    height:175px;
+    overflow-y: auto;
+}
+
+.medBackground
+{
+  background: lightblue;  
+}
+
+.tableDesignA
+{  
+    height:200px;
+    overflow-y: auto;
+  
+}
+.aBackground
+{
+  background: lightyellow;
+}
+
+.tableDesignB
+{  
+    height: 200px;
+    overflow-y: auto;
+    
+    
+}
+.bBackground
+{
+  background: lightslategray;
+}
+
+.tableDesignC
+{  
+    height: 200px;
+    overflow-y: auto;
+   
+}
+.cBackground
+{
+  background: lightyellow;
+}
+
+.tableDesignD
+{  
+    height: 200px;
+    overflow-y: auto;
+}
+
+.dBackground
+{
+  background: lightcoral;
+}
+
+.treatLetter
+{
+ font-size:45px;
+ text-align: center;
+}
