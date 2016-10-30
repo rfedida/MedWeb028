@@ -16,6 +16,14 @@ function sortArrayByLastTimestamp(arrayToSort) {
     return newArray;
 }
 
+function sortArrayByReceptionTime(arrayToSort) {
+
+    var newArray = arrayToSort.sort(function(a,b) {
+        return parseFloat(b.receptionTime) - parseFloat(a.receptionTime); 
+    });
+
+    return newArray;
+}
 crudRouter.get('/units', function (req, res, next) {
 
     if (pjson.isWeb) {
@@ -91,6 +99,22 @@ crudRouter.get('/patients/:id', function (req, res, next) {
 //     }
 // });
 
+crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
+    if (pjson.isWeb) {
+         Patient.find({"CurrentStation" : req.params.unitId},  function(err, patients) {
+            if (err) {
+                res.send(err);
+            } else {
+                // Parse to json
+                patients = JSON.parse(JSON.stringify(patients));
+               // sortArrayByReceptionTime
+                res.send(patients);
+            }
+         })
+    }
+})   
+     
+
 // Get patients by unit id
 crudRouter.get('/patients/units/:unitId', function(req, res,next) {   
      if (pjson.isWeb) {
@@ -98,10 +122,8 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
         if (err) {
             res.send(err);
         } else {
+            // Parse to json
             patients = JSON.parse(JSON.stringify(patients));
-            // var x = patients.map(funciton(){
-            //     return patient.toObject();
-            // });
             var result = []; 
             
             // Run all patients and save specific fields
@@ -115,7 +137,9 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
                                     "temperature" :  sortArrayByLastTimestamp(patient.measurements.temperatures)[0].tempreature,
                                     "storation" : sortArrayByLastTimestamp(patient.measurements.storations)[0].storation,
                                     "bloodPressure" : sortArrayByLastTimestamp(patient.measurements.bloodPressures)[0].bloodPressure,
-                                    "heartbeat" : sortArrayByLastTimestamp(patient.measurements.heartbeat)[0].heartbeat };
+                                    "heartbeat" : sortArrayByLastTimestamp(patient.measurements.heartbeat)[0].heartbeat,
+                                    "status" : patient.generalData.emergency,
+                                    "receptionTime" : patient.Stations[0].receptionTime };
                 result.push(newPatient);                
             });
 
@@ -129,14 +153,29 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
  crudRouter.put('/patients/:isTure/:object', function (req, res, next) {
 
      if (pjson.isWeb) {
-        Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new:req.params.isTure}, 
-            function (err, patient){
-                if (err) { 
-                res.send(err);
-                } else {
-                    res.send(patient);
-                }
+
+         // If the patient is new
+         if (req.params.isTure) {
+            Patient.save(function(err, patient){
+                  if (err) { 
+                    res.send(err);
+                  } 
+                  else {
+                        res.send(patient);
+                  }
             })
+         }
+         // Update the patient 
+         else {
+            Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, 
+                function (err, patient){
+                    if (err) { 
+                    res.send(err);
+                    } else {
+                        res.send(patient);
+                    }
+            });
+         }  
      }
  })
 
