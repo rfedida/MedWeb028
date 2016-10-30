@@ -26,12 +26,11 @@ angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', 
                     $scope.currentInj.Medications[i].name =
                                            $scope.treat_Med[$scope.currentInj.Medications[i].Medication_id].name;
                     $scope.medications.push($scope.currentInj.Medications[i]);                      
-               }  
-           }
+               }
+           };
 
            function liqFunc ()
            {
-               debugger;
               var currentAmount=0;
                $scope.amountAccordingId = {};
                for(var i=0; i<$scope.currentInj.Liquids.length; i++)
@@ -39,8 +38,14 @@ angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', 
                    if(!$scope.amountAccordingId[$scope.currentInj.Liquids[i].Liquid_id])
                    {
                        var currentAmount = 0;
+                       //name by Enum
+                       $scope.currentInj.Liquids[i].name =
+                                           $scope.treat_Med[$scope.currentInj.Liquids[i].Liquid_id].name;
+                       var name =  $scope.currentInj.Liquids[i].name;
+                       //inner Json per id: amount ,type, name
                        var type = $scope.currentInj.Liquids[i].Dosage_type;
-                        $scope.amountAccordingId[$scope.currentInj.Liquids[i].Liquid_id] = {amount:currentAmount ,type:type};
+                        $scope.amountAccordingId[$scope.currentInj.Liquids[i].Liquid_id]= 
+                                                           {amount:currentAmount ,type:type, name: name};
                        
                    }
                    else
@@ -52,12 +57,33 @@ angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', 
                }
                   for(var key in  $scope.amountAccordingId)
                   {
-                    $scope.liquids.push({name: key, Dosage: $scope.amountAccordingId[key].amount +  $scope.amountAccordingId[key].type });         
-                  }
-                                       
-                
+                      
+                   $scope.liquids.push({ id:key, name:$scope.amountAccordingId[key].name,     
+                        Dosage: $scope.amountAccordingId[key].amount + $scope.amountAccordingId[key].type});         
+                  } 
            }
 
+           function timeGap(date, time, $scope)
+           {
+               var actionDate = new Date(date.split('-')[2] + '-' + 
+                                date.split('-')[1] + '-' + 
+                                date.split('-')[0] + ':' + 
+                                time);
+
+               var timeDiff = Math.ceil(Math.abs((new Date().getTime() - 
+                                                actDate.getTime()) * (1.667 * Math.pow(10,-5))));
+               var hoursDiff = Math.floor(timeDiff / 60);
+               var minutesDiff = Math.abs(timeDiff % 60);
+
+               var pad = "00";
+    
+              return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
+               ':' + 
+              pad.substring(0, pad.length - minutesDiff.strlength) + minutesDiff);
+           }
+
+
+  
 
     $scope.inj = {
                    "id":  $scope.currentInj.Bracelet_id,
