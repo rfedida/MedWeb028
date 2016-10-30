@@ -37,9 +37,17 @@
         
     </head>
 
-<body ng-controller="GIL ">
+<body ng-controller="medViewCtrl" class="container-fluid">
     <div class="mainBaner row">
-        <div class="col-md-2 col-md-offset-10 mainBannerText"> רפואה שלמה
+         <div class="col-md-2 mainBannerText"> 
+             <div type="button" class="button">
+            </div>
+        </div>
+             <div class="col-md-2 col-md-offset-3 mainBannerText"> 
+                 {{currentCommand}}
+        </div>
+        <div class="col-md-2 col-md-offset-3 mainBannerText"> רפואה שלמה  
+            
         </div>
     </div>
     <div ng-view></div>
