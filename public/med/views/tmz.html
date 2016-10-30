@@ -14,7 +14,7 @@
 
                 <div class="col-md-9">
                     <h1 class="">תמ"צ נפגעים
-                        <small>פלה"ק 943</small>
+                        <small>{{currentStationName}}</small>
                     </h1>
                 </div>
                 
@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="col-md-5 col-xs-5 col-xs-offset-1 portfolio-item fade bodyText" 
-                            ng-repeat="wounded in woundeds | filter: {status:'2'} | filter:filterText 
+                            ng-repeat="wounded in woundeds | filter:myFilter | filter:filterText 
                             | orderBy: ['-status','-receptionTime']"
                                 ng-style="{'background-color':wounded.status == '2' ?  '#FF8A80': 
                                         (wounded.status == '1' ?  '#69F0AE': white) }" 
