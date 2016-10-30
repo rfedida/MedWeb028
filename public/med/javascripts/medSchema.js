@@ -1,5 +1,11 @@
-angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', function($scope, medAppFactory) 
+angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', '$location', 
+function($scope, medAppFactory, $location) 
 {
+    if(Object.keys(medAppFactory.currentInjured).length === 0)
+    {
+        $location.path("/");
+    };
+
     $scope.currentInj = medAppFactory.currentInjured;
     $scope.treat_Med = medAppFactory.treatmentsMed;
 

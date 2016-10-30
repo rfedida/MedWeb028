@@ -6,21 +6,12 @@ var Patient = require('../models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
 var pjson = require('../package.json')
 
-
-function sortArrayByLastTimestamp(arrayToSort) {
-
+function sortDesc(arrayToSort, field){
     var newArray = arrayToSort.sort(function(a,b) {
-        return parseFloat(b.timestamp) - parseFloat(a.timestamp); 
+        return (new Date(b[field]) - new Date(a[field])); 
     });
 
     return newArray;
-}
-
-function sortArrayByLastReceptionTime(arrayToSort) {
-
-    arrayToSort.sort(function(a,b) {
-        return parseFloat(b.receptionTime) - parseFloat(a.receptionTime); 
-    });
 }
 
 function getAllCurrentStationById(arrayToSort, currStationId) {
@@ -126,7 +117,7 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                     patient.Stations = getAllCurrentStationById(patient.Stations, req.params.unitId);
 
                     // Sort the array by last reception time
-                    sortArrayByLastReceptionTime(patient.Stations);
+                    sortDesc(patient.Stations, "receptionTime");
                 })
 
                 var lastReceptionPatient = patients[0];
@@ -143,7 +134,6 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
          })
     }
 })   
-     
 
 // Get patients by unit id
 crudRouter.get('/patients/units/:unitId', function(req, res,next) {   
@@ -164,19 +154,18 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
                 // Sort each array in measurements according to last timestamps and set the last into json
                 var newPatient = {
                                     "braceletId" : patient.braceletId,
-                                    "temperature" :  sortArrayByLastTimestamp(patient.measurements.temperatures)[0].tempreature,
-                                    "storation" : sortArrayByLastTimestamp(patient.measurements.storations)[0].storation,
-                                    "bloodPressure" : sortArrayByLastTimestamp(patient.measurements.bloodPressures)[0].bloodPressure,
-                                    "heartbeat" : sortArrayByLastTimestamp(patient.measurements.heartbeat)[0].heartbeat,
+                                    "temperature" :  sortDesc(patient.measurements.temperatures, "timestamp")[0].tempreature,
+                                    "storation" : sortDesc(patient.measurements.storations, "timestamp")[0].storation,
+                                    "bloodPressure" : sortDesc(patient.measurements.bloodPressures, "timestamp")[0].bloodPressure,
+                                    "heartbeat" : sortDesc(patient.measurements.heartbeat, "timestamp")[0].heartbeat,
                                     "status" : patient.generalData.emergency,
-                                    "receptionTime" : patient.Stations[0].receptionTime };
+                                    "receptionTime" : sortDesc(patient.Stations, "receptionTime")[0].receptionTime };
                 result.push(newPatient);                
             });
 
             res.send(result);
         }    
-    })
-    }
+    })}
 });
 
 // Update patient details
@@ -184,9 +173,11 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 
      if (pjson.isWeb) {
 
+        req.params.object.LastUpdate = new Date().getTime();
+
          // If the patient is new
          if (req.params.isTure) {
-            Patient.save(function(err, patient){
+            Patient.create(req.params.object, function(err, patient){
                   if (err) { 
                     res.send(err);
                   } 
@@ -197,6 +188,7 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
          }
          // Update the patient 
          else {
+            
             Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, 
                 function (err, patient){
                     if (err) { 
@@ -207,6 +199,23 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
             });
          }  
      }
+ })
+
+// Update patient details
+ crudRouter.put('/units/:object', function (req, res, next) {
+
+     if (pjson.isWeb) {
+
+            Unit.findByIdAndUpdate(req.params.object.id, {$set: req.params.object}, {new: false}, 
+                function (err, unit){
+                    if (err) { 
+                    res.send(err);
+                    } else {
+                        res.send(unit);
+                    }
+            });
+         }  
+     
  })
 
 // Get the name of unit by id
