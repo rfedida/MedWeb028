@@ -184,7 +184,7 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 
          // If the patient is new
          if (req.params.isTure) {
-            Patient.save(function(err, patient){
+            Patient.create(req.params.object, function(err, patient){
                   if (err) { 
                     res.send(err);
                   } 
@@ -195,6 +195,7 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
          }
          // Update the patient 
          else {
+            req.params.object.LastUpdate = new Date().getTime();
             Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, 
                 function (err, patient){
                     if (err) { 
