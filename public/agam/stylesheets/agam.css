@@ -8,6 +8,7 @@ th
     width: 60;  
 }
 
+<<<<<<< HEAD
 @font-face {
     font-family: alef;
     src: url(Alef-Regular.ttf);
@@ -42,4 +43,9 @@ body
     margin-left: 60px;
     font-size: 20px;  
     background-color: white; 
+}
+
+.belkinClass{
+    padding: 0 30px 0 0;
+    direction: rtl;
 }

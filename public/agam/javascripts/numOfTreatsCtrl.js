@@ -1,8 +1,10 @@
 myApp.controller('numOfTreatsCtrl', function($scope, $http) {
     $scope.unit = '1_1_1_1';
-    $http.get("/crud/units/" + $scope.unit).then(function(response){
-        var treatments = response.data.Treatments;
 
+    $http.get("/crud/units/" + $scope.unit).then(function(response){
+
+        var treatments = response.data.Treatments;
+        debugger;
         var emptyChart = [
             {
                 key: 'אין נתונים להציג',
@@ -73,7 +75,34 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                 ];
             }
         }
-    })
+
+//  debugger;
+//         // for timeline
+//         for (i=0; i<treatments.length; i++)
+//         {
+//             var dates = [];
+
+//             for (j=0; j<treatments[i].Stock.Usage.length; j++)
+//             {
+//                dates.push(d3.time.format('%x %H:%M')(new Date(treatments[i].Stock.Usage[j])));
+//             }
+
+//             dates.sort(function(a,b) {
+//                 return new Date(b) - new Date(a);
+//             });
+
+//             var map = {};
+//             var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
+
+//             dates.forEach(function(d)
+//             {
+//                 countStock--;
+//                 map[d] = countStock;
+//             });
+//         }
+    });
+
+
 
     $scope.colorArray = ['gray','#660000'];
     
@@ -106,8 +135,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     bottom: 5,
                     left: 0
                 }
-            },
-            noData:"אין נתונים"
+            }
         }        
     };   
 });
