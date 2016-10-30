@@ -2,7 +2,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
     $scope.unit = '1_1_1_1';
     $http.get("/crud/units/" + $scope.unit).then(function(response){
         var medications = response.data.Medications;
-
+debugger;
           var emptyChart = [
             {
                 key: 'אין נתונים להציג',
@@ -18,7 +18,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
         $scope.dataMorphium = emptyChart;
 
         $scope.mlay;
-
+        debugger;
 //             "0": { name: "A.W", group: "A" },
 //             "1": { name: "קוניוטו", group: "A" },
 //             "2": { name: "איטוב", group: "A" },
@@ -39,7 +39,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
 //             "17": { name: "nonTREAT" }
         for (i=0; i<medications.length; i++)
         {
-            $scope.mlay = medications[i].Standard - medications[i].Stock;
+            $scope.mlay = medications[i].Standard - medications[i].Stock.CurrStock;
 
             if (medications[i].id == 13)
             {
@@ -50,7 +50,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: medications[i].Stock
+                        y: medications[i].Stock.CurrStock
                     }
                 ];
             }
@@ -63,7 +63,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: medications[i].Stock
+                        y: medications[i].Stock.CurrStock
                     }
                 ];
             }
@@ -76,7 +76,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: medications[i].Stock
+                        y: medications[i].Stock.CurrStock
                     }
                 ];
             }
@@ -89,7 +89,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: medications[i].Stock
+                        y: medications[i].Stock.CurrStock
                     }
                 ];
             }
@@ -102,7 +102,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: medications[i].Stock
+                        y: medications[i].Stock.CurrStock
                     }
                 ];
             }
@@ -115,7 +115,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: medications[i].Stock
+                        y: medications[i].Stock.CurrStock
                     }
                 ];
             }

@@ -6,13 +6,18 @@ var unitSchema = new mongoose.Schema({
 	Medications: [{
 		id: String,
 		Standard: Number,
-		Stock: Number
+		Stock: {
+			CurrStock: Number,
+			Usage: [String]
+		}
 	}],
 	Treatments: [{
 		id: String,
 		Standard: Number,
-		Stock: Number
-
+		Stock: {
+			CurrStock: Number,
+			Usage: [String]
+		}
 	}],	
 	Max_Capacity: Number,
 	Doctors_num: Number
