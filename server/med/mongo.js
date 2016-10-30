@@ -113,7 +113,7 @@ module.exports = {
     },
     updatePatient: (patient, callback) => {
         patient.LastUpdate = new Date().getTime();
-        Patient.findByIdAndUpdate(patient._id, {$set: patient}, {new: false}, function (err, patient){
+        Patient.findByIdAndUpdate(patient.braceletId, {$set: patient}, {new: false}, function (err, patient){
             if (err) { 
                 callback(err);
             } else {
@@ -139,25 +139,37 @@ module.exports = {
             }
         });
     },
-    updatePatientsAfterConnection: (tempPatients, callback) => {
+    updatePatientsAfterConnection: (tempPatients) => {
         for (var i=0; i<tempPatients.length; i++) {
             Patient.findOne({"braceletId" : tempPatients[i].braceletId}, function(err, patient) {
                 if (err) {
-                    // Insert to db
-                    callback(err);
+                    Patient.create(patient, function(err, patient){
+                        if (!err) { 
+                            console.log("Insert db")
+                        } 
+                    });
                 } else {
                     // check if data need to update according timestamps
                     if (tempPatients[i].LastUpdate > patient.LastUpdate) {
-
+                        Patient.findByIdAndUpdate(patient.braceletId, {$set: patient}, {new: false}, function (err, patient){
+                            if (!err) { 
+                                console.log("Update db");
+                            }
+                        });
                     }
-                    callback(patient);
                 }
             })
         }
     },
     updateUnitsAfterConnection: (tempUnits, callback) => {
         for (var i=0; i<tempUnits.length; i++) {
-
+            Unit.findOne({'id' : tempUnits[i].id}, function(err, unit) {
+                if (err) { 
+                    callback(err);
+                } else {
+                    callback(unit);
+                }
+            })
         }
     },
     getAllCurrentStationById: getAllCurrentStationById,
