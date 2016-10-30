@@ -24,7 +24,7 @@ var patientSchema = new mongoose.Schema({
 	},
 	treatments: [{
 			date: {type: Date, default: Date.now},
-			treatmentType: {type: Number, enum : [0, 1, 2 , 3, 4, 5, 6, 7, ,8]}, // Treatments enum
+			treatmentType: {type: Number, enum : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}, // Treatments enum
 			location: String,
 			bloodPressure: String,
 			heartbeat: Number,
@@ -33,7 +33,7 @@ var patientSchema = new mongoose.Schema({
 	}],
 	medications: [{
 		date: {type: Date, default: Date.now},
-		medicationId: {type: Number, enum: [0, 1, 2, 3, 4, 5]}, // From medications enum
+		medicationId: {type: Number, enum: [11, 12, 13, 14, 15, 16]}, // From medications enum
 		dosage: Number,
 		dosageUnit: String,
 		bloodPressure: String,
