@@ -66,8 +66,17 @@
 
         </div>
 
-        <!-- Basic info bar -->
-        <div class="row component basicInfo">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs right-to-left">
+            <li ng-click="changeTab(1)" role="presentation" ng-class="{'active' : selectedTab == 1}"><a showtab="">נתונים כלליים</a></li>
+            <li ng-click="changeTab(2)" role="presentation" ng-class="{'active' : selectedTab == 2}"><a showtab="">פעולות שבוצעו</a></li>
+            <li ng-click="changeTab(3)" role="presentation" ng-class="{'active' : selectedTab == 3}"><a showtab="">תרופות שניתנו</a></li>
+            <li ng-click="changeTab(4)" role="presentation" ng-class="{'active' : selectedTab == 4}"><a showtab="">נוזלים שניתנו</a></li>
+            <li ng-click="changeTab(5)" role="presentation" ng-class="{'active' : selectedTab == 5}"><a showtab="">מגמות מדדים</a></li>
+        </ul>
+
+        <!-- Basic info tab -->
+        <div class="row component basicInfo" ng-if="selectedTab == 1">
             <div class="col-md-4">
                 <img class="humanImg" src="\med\img\Human-Body.jpeg">
             </div>
@@ -75,26 +84,27 @@
             <div class="col-md-8">
                 <div class="row dataRow">
                     <div class="col-md-4">
-                        <select class="form-control" ng-model="injured.General_Data.Injury_mechanism" ng-options="Injury_mechanism.id as Injury_mechanism.name for Injury_mechanism in InjuryMechanismType" convert-to-number ng-change="SaveInj()">                            
+                        <select class="form-control" ng-model="injured.General_Data.Injury_mechanism" ng-options="Injury_mechanism.id as Injury_mechanism.name for Injury_mechanism in InjuryMechanismType"
+                            convert-to-number ng-change="SaveInj()">                            
                         </select>
                     </div>
                     <div class="col-md-2">
                         <label>מנגנון הפציעה</label>
                     </div>
-                    <div class="col-md-4">       
-                        <div class="btn-group btn-group-sm" data-toggle="buttons" ng-click="SaveInj()">                            
+                    <div class="col-md-4">
+                        <div class="btn-group btn-group-sm" data-toggle="buttons" ng-click="SaveInj()">
                             <label class="btn btn-default" ng-click='injured.General_Data.Emergency = 0' ng-class="{'active': injured.General_Data.Emergency == 0}"><input type="radio" class="btn btn-default" >לא נקבע</label>
                             <label class="btn btn-default btnNotEmergency" ng-click='injured.General_Data.Emergency = 1' ng-class="{'active': injured.General_Data.Emergency == 1}"><input type="radio" class="btn btn-default">לא דחוף</label>
                             <label class="btn btn-default btnEmergency" ng-click='injured.General_Data.Emergency = 2' ng-class="{'active': injured.General_Data.Emergency == 2}"><input type="radio" class="btn btn-default">דחוף</label>
                         </div>
                     </div>
-                    <div  class="col-md-2">
+                    <div class="col-md-2">
                         <label> דחוף / לא דחוף</label>
                     </div>
                 </div>
                 <div class="row dataRow">
                     <div class="col-md-4">
-                        <div class="btn-group btn-group-sm" data-toggle="buttons" ng-click="SaveInj()">                            
+                        <div class="btn-group btn-group-sm" data-toggle="buttons" ng-click="SaveInj()">
                             <label class="btn btn-default" ng-click="injured.General_Data.Consciousness = 'U'" ng-class="{'active': injured.General_Data.Consciousness == 'U'}"><input type="radio" class="btn btn-default">U</button></label>
                             <label class="btn btn-default" ng-click="injured.General_Data.Consciousness = 'P'" ng-class="{'active': injured.General_Data.Consciousness == 'P'}"><input type="radio" class="btn btn-default">P</button></label>
                             <label class="btn btn-default" ng-click="injured.General_Data.Consciousness = 'V'" ng-class="{'active': injured.General_Data.Consciousness == 'V'}"><input type="radio" class="btn btn-default">V</button></label>
@@ -104,42 +114,54 @@
                     <div class="col-md-2">
                         <label>מצב הכרה</label>
                     </div>
-                    <div class="col-md-4">                        
-                        <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין"
-                            off=" לא תקין " ng-model="injured.General_Data.Breathing_hit" ng-change="changed()" ng-click="SaveInj()"></toggle>
+                    <div class="col-md-4">
+                        <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין" off=" לא תקין " ng-model="injured.General_Data.Breathing_hit"
+                            ng-change="changed()" ng-click="SaveInj()"></toggle>
                     </div>
                     <div class="col-md-2">
                         <label>פגיעה בנשימה</label>
                     </div>
                 </div>
                 <div class="row dataRow">
-                    <div class="col-md-10">                        
-                        <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין"
-                            off=" לא תקין " ng-model="injured.General_Data.Airway_hit" ng-change="changed()" ng-click="SaveInj()"></toggle>
+                    <div class="col-md-10">
+                        <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין" off=" לא תקין " ng-model="injured.General_Data.Airway_hit"
+                            ng-change="changed()" ng-click="SaveInj()"></toggle>
                     </div>
                     <div class="col-md-2" style="padding-left: 1px;">
                         <label>פגיעה בנתיב אוויר</label>
                     </div>
                 </div>
-                <div class="row dataRow">                    
-                    <div class="col-md-10">                        
-                        <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין"
-                            off=" לא תקין " ng-model="injured.General_Data.Shock" ng-change="changed()" ng-click="SaveInj()"></toggle>
+                <div class="row dataRow">
+                    <div class="col-md-10">
+                        <toggle type="checkbox" onstyle="btn-success" offstyle="btn-danger" size="btn-sm" on="תקין" off=" לא תקין " ng-model="injured.General_Data.Shock"
+                            ng-change="changed()" ng-click="SaveInj()"></toggle>
                     </div>
                     <div class="col-md-2">
                         <label>הלם</label>
                     </div>
                 </div>
-                 <div class="row dataRow">
-                    <div class="col-md-12">              
-                        <label>הערות</label>                            
-                        <textarea class="form-control" rows="6"></textarea> 
+                <div class="row dataRow">
+                    <div class="col-md-12">
+                        <label>הערות</label>
+                        <textarea class="form-control" rows="6"></textarea>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Actions preformed tab -->
+        <div class="row component basicInfo" ng-if="selectedTab == 2">פעולות שבוצעו</div>
+
+        <!-- Med info tab -->
+        <div class="row component basicInfo" ng-if="selectedTab == 3">תרופות שניתנו</div>
+
+        <!-- Liquid info tab -->
+        <div class="row component basicInfo" ng-if="selectedTab == 4">נוזלים שניתנו</div>
+
+        <!-- Megama tab -->
+        <div class="row component basicInfo" ng-if="selectedTab == 5">מגמות מדדים</div>
+
     </div>
-    
-    <a href="#/">מעבר לתמצ</a> 
+
+    <a href="#/">מעבר לתמצ</a>
 </div>

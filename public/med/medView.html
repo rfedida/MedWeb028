@@ -1,12 +1,13 @@
 <!DCOTYPE html>
 <html ng-app="medApp">
 <head>
-      <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">
-       <link href="/med/css/injInfo.css" rel="stylesheet">
+      <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">       
        <link href="/med/css/medSchema.css" rel="stylesheet">
+       <link href="/med/css/medView.css" rel="stylesheet">
         <link href="/components/bootstrap/css/angular-bootstrap-toggle.min.css" rel="stylesheet ">
+        <link href="/med/css/injInfo.css" rel="stylesheet">
         <script src="/components/jQuery/jquery-3.1.1.min.js">
-        </script>
+        </script>        
         <script>
             try {
                 $ = jQuery = module.exports;
@@ -36,7 +37,19 @@
         
     </head>
 
-<body ng-controller="GIL ">
+<body ng-controller="medViewCtrl" class="container-fluid">
+    <div class="mainBaner row">
+         <div class="col-md-2 mainBannerText"> 
+             <div type="button" class="button">
+            </div>
+        </div>
+             <div class="col-md-2 col-md-offset-3 mainBannerText"> 
+                 {{currentCommand}}
+        </div>
+        <div class="col-md-2 col-md-offset-3 mainBannerText"> רפואה שלמה  
+            
+        </div>
+    </div>
     <div ng-view></div>
 </body>
 

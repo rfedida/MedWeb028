@@ -1,0 +1,11 @@
+.mainBaner
+{
+    height: 40px;
+    background-color: rgba(95, 143, 185, 0.75);
+    font-size: 20px;
+}
+
+.mainBannerText
+{
+    margin-top:6px;
+}
