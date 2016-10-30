@@ -63,9 +63,10 @@ angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', 
                   } 
            }
 
-           function timeGap(date, time, $scope)
+           function timeGap(date, $scope)
            {
-               var actionDate = new Date(date.split('-')[2] + '-' + 
+               var newDate=new Date(date);///////
+               var actionDate = new Date(newDate.split('-')[2] + '-' + 
                                 date.split('-')[1] + '-' + 
                                 date.split('-')[0] + ':' + 
                                 time);
