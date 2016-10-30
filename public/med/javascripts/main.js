@@ -84,9 +84,9 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
         "19": {name: "דם"}
 };
 
-    factory.currentInjured = {
+    factory.currentInjured = {};
 
-        "Bracelet_id": "920140140",
+      /*  "Bracelet_id": "920140140",
         "IsDead": false,
         "General_Data": {
             "Emergency": 1, // 0 - Undifiened, 1 - no emergency, 2 - emenrgency
@@ -270,7 +270,7 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
             "LeavingDate": "31/3/2016",
             "LeavingTime": "8:00:00" //Evacucation time
         }]
-    };
+    };*/
 
     factory.InjuryMechanismType = [
         { id: 0, name: "תלול מסלול" },
