@@ -29,7 +29,7 @@ var patientSchema = new mongoose.Schema({
 			bloodPressure: String,
 			heartbeat: Number,
 			temperature: Number,
-			storation: Number
+			storation: String
 	}],
 	medications: [{
 		date: {type: Date, default: Date.now},
