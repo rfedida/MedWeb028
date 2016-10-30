@@ -62,8 +62,8 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
-        "1234": {name: "קוניוטו", group:"A"}, 
-        "123": {name: "איטוב", group:"A"},
+        "1": {name: "קוניוטו", group:"A"}, 
+        "2": {name: "איטוב", group:"A"},
         "3": {name: "N.A", group:"B"},
         "4": {name: "נקז חזה", group:"B"},
         "5": {name: "C.A.T", group:"B"},
