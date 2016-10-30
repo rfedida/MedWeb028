@@ -49,18 +49,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
                 length) + minutesDiff);
     }
 
-    $scope.addRow = function() {
-        $scope.treatments.push({
-                        "Date": "28-10-2016", 
-                        "Time": "07:30:00",
-                        "Treatment_type": "1234", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    });
-    }
+    $scope.Alo = [{"1":"GIL"},{"2":"2"},{"3":"3"},{"4":"4"}];
 
     $scope.showComplex = function() {
     var url = $sce.getTrustedResourceUrl(app.remote + "/med/views/operationModal.html");
