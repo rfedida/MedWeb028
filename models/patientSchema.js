@@ -14,7 +14,7 @@ var patientSchema = new mongoose.Schema({
 		shock: Boolean,
 		injuryMechanism: {
 			type: Number,
-			enum: [0 , 1 , 2, 3, 4, 5]
+			enum: [0 ,1 ,2, 3, 4, 5, 6]
 		},
 		consciousness: {
 			type: String,

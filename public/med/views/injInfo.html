@@ -4,7 +4,7 @@
 
         <!-- Injured Info Bar -->
         <div class="row headBar component">
-            <div class="col-md-4 border-right status">
+            <div class="col-md-4 borderRight status">
                 <div class="row">
                     <div class="col-md-4">
                         <button type="button" class="btn btn-success btnStatus">גמר טיפול</button>
@@ -50,14 +50,14 @@
                     </div>
                     <div class="col-md-3">
                         <h4>דופק:
-                            <small ng-class="{'redColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat >= 105, 'greenColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat < 105}">
-                                {{injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat}}
+                            <small ng-class="{'redColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat >= 105, 'greenColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat < 105}">
+                                {{injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat}}
                             </small>
                         </h4>
                     </div>
                     <div class="col-md-6">
                         <h4>זמן קליטה:
-                            <small> {{injured.Stations[injured.Stations.length -1].receptionTime | date :  'M/d/yy' }} </small>
+                            <small> {{injured.Stations[injured.Stations.length -1].receptionTime | date :'dd/MM/yyyy HH:mm' }} </small>
                         </h4>
                     </div>
 
@@ -143,7 +143,7 @@
                 <div class="row dataRow">
                     <div class="col-md-12">
                         <label>הערות</label>
-                        <textarea class="form-control" rows="6"></textarea>
+                        <textarea class="form-control" rows="6" ng-model="injured.generalData.comments"></textarea>
                     </div>
                 </div>
             </div>

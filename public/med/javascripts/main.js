@@ -24,7 +24,7 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
 
     factory.currentStation = "1_1_1_1";
     factory.newInjured = {
-        "Bracelet_id": "12",
+        "Bracelet_id": "",
         "IsDead":false,
     "General_Data" :{
                         "Emergency": 0, // 0 - Undifiened, 1 - no emergency, 2 - emenrgency
