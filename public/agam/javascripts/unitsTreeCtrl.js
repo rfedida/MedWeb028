@@ -85,8 +85,9 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
     $scope.loadUnits();
 
     $scope.loadPatients = function(unitid){
-        $http.get('/agam/getPatients/'+unitid).success(function(data){
-        });
+        console.log(unitid.id);
+         $http.get('/agam/getPatients/'+unitid).success(function(data){
+         });
     };
 
 });
