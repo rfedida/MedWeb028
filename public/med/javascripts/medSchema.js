@@ -26,12 +26,11 @@ angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', 
                     $scope.currentInj.Medications[i].name =
                                            $scope.treat_Med[$scope.currentInj.Medications[i].Medication_id].name;
                     $scope.medications.push($scope.currentInj.Medications[i]);                      
-               }  
-           }
+               }
+           };
 
            function liqFunc ()
            {
-               debugger;
               var currentAmount=0;
                $scope.amountAccordingId = {};
                for(var i=0; i<$scope.currentInj.Liquids.length; i++)
