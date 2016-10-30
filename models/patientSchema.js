@@ -7,20 +7,21 @@ var patientSchema = new mongoose.Schema({
 	generalData: {
 		emergency: {
 			type: Number,
-			enum: [0, 1, 2, 3] // 0 - unknwon, not-urgent, urgent, dead
+			enum: [0, 1, 2, 3, 4] // 0 - unknwon, not-urgent, urgent, dead, transfer
 		},
 		breathingHit: Boolean,
 		airwayHit: Boolean,
 		shock: Boolean,
 		injuryMechanism: {
-			type: String,
-			enum: []
+			type: Number,
+			enum: [0 , 1 , 2, 3, 4, 5]
 		},
 		consciousness: {
 			type: String,
 			enum: ["A", "P", "U", "V"]
 		},
-		injuryLocation: String
+		injuryLocation: String,
+		comments: String
 	},
 	treatments: [{
 			date: {type: Date, default: Date.now},
