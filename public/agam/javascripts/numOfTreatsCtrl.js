@@ -1,6 +1,6 @@
 myApp.controller('numOfTreatsCtrl', function($scope, $http) {
-
-    $http.get("/crud/units/1_1_1_1").then(function(response){
+    $scope.unit = '1_1_1_1';
+    $http.get("/crud/units/" + $scope.unit).then(function(response){
         var treatments = response.data.Treatments;
 
         var emptyChart = [
@@ -19,7 +19,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
 
         for (i=0; i<treatments.length; i++)
         {
-            $scope.mlay = treatments[i].Standard - treatments[i].Stock;
+            $scope.mlay = treatments[i].Standard - treatments[i].Stock.CurrStock;
             if (treatments[i].id == 10)
             {
                 $scope.dataVygon = [
@@ -29,7 +29,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: treatments[i].Stock
+                        y: treatments[i].Stock.CurrStock
                     }
                 ];
             }
@@ -42,7 +42,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: treatments[i].Stock
+                        y: treatments[i].Stock.CurrStock
                     }
                 ];
             }
@@ -55,7 +55,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: treatments[i].Stock
+                        y: treatments[i].Stock.CurrStock
                     }
                 ];
             }
@@ -68,7 +68,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     },
                     {
                         key: 'שימוש',
-                        y: treatments[i].Stock
+                        y: treatments[i].Stock.CurrStock
                     }
                 ];
             }
