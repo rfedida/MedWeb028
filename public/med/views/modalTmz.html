@@ -14,7 +14,9 @@
                     <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" placeholder="הכנס מספר צמיד" ng-model="braceId">
+                        <input type="text" class="form-control" id="braceId" 
+                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
+                          maxlength="8" placeholder="הכנס מספר צמיד" ng-model="braceId">
                         </div>
                         <label for="braceId" class="col-sm-2 control-label">מזהה צמיד</label>
                     </div>
