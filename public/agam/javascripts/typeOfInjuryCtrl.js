@@ -61,66 +61,51 @@ myApp.controller('statisticController', function($scope, $http) {
     //    throw err;
     //});
 
-    $scope.injury = [];
+    $scope.injuryMechanismData = [];
     $http.get("/crud/injuryMechanism").success(function(data){
         $scope.injuryMechanismData = data; 
-    //     [
-    //         {
-    //             key: 'תלול מסלול',
-    //             y: $scope.injury
-    //         },
-    //         {
-    //             key: 'ירי',
-    //             y: 36
-    //         },
-    //         {
-    //             key: 'אב"כ',
-    //             y: 8
-    //         },
-    //         {
-    //             key: 'כוויה',
-    //             y: 49
-    //         },
-    //         {
-    //             key: 'שאיפה',
-    //             y: 49
-    //         },
-    //         {
-    //             key: 'תאונת דרכים',
-    //             y: 49
-    //         }
-    //    ];
     }).error(function(data){
         console.log(data);
     });
     
     
-    $scope.injuryLocationData = [];
-    $http.get("/crud/injuryMechanism").success(function(data){
+   $scope.injuryLocationData = [];
+    $http.get("/crud/patients").success(function(data){
         $scope.injuryLocationData = buildData(data);
     }).error(function(data){
         console.log(data);
     }); 
 
-function buildData(data){
-        var tempData = [
-                        {
-                key: $scope.injury[0].generalData.injuryLocation,
-                y: 7
-            },
+    function buildData(data){
+        var temp = [];
+        
+        for (var index in data)
+        {
+            temp.push(
             {
-                key: 'פגיעות חזה',
-                y: 36
-            },
-            {
-                key: 'פגיעות גפיים',
-                y: 8
-            },
-            {
-                key: 'פגיעות ראש',
-                y: 49
-            }
-        ];
+                key : data[index].generalData.injuryLocation,
+                y : 25
+            });
+        }
+        
+        // var tempData = [
+        //     {
+        //         key: data[0].generalData.injuryLocation,
+        //         y: 7
+        //     },
+        //     {
+        //         key: 'פגיעות חזה',
+        //         y: 36
+        //     },
+        //     {
+        //         key: 'פגיעות גפיים',
+        //         y: 8
+        //     },
+        //     {
+        //         key: 'פגיעות ראש',
+        //         y: 49
+        //     }
+        // ];
 
         // for (var statIndex in currInjury.values)
         // {
@@ -132,8 +117,8 @@ function buildData(data){
         // }
 
 
-        return tempData;
-}
+        return temp;
+    }
    
    
 
