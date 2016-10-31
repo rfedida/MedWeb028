@@ -284,41 +284,40 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
         });
     }
 
-factory.navagationBar = [{name: "", location:""}];
+    factory.navagationBar =  [{id: "0", location: "/pikud", name:"", currentStation: ""}, // pikud
+                       {id: "1", location: "/ogda", name:"", currentStation: ""}, // ogda
+                       {id: "2", location: "/hativa", name:"", currentStation: ""}, // hativa
+                       {id: "3", location: "/tmz", name:"", currentStation: ""}, // plhak
+                       {id: "4", location: "/tmz", name:"", currentStation: ""}];
 
     return factory;
 });
 
 app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http, currentUser) 
 {
-
     $scope.currentStaionNameLocation = medAppFactory.navagationBar;
                                           
-        $scope.logout = function(){
-            currentUser.logout();            
-        };
-
+    $scope.logout = function(){
+        currentUser.logout();            
+    };
 
     medAppFactory.getCommand().then(function (response)
     {
         $scope.currentCommand = medAppFactory.currentCommand;
     });
 
-
-    var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
-    $location.path("/tmz");
-
     medAppFactory.getStationName().then(function(res)
     {
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
-        $scope.currentStaionNameLocation[0].name = medAppFactory.currentStationName;   
-        $scope.currentStaionNameLocation[0].location =  "/tmz";
+        $scope.currentStaionNameLocation[0].name = medAppFactory.currentStationName;  
+        $scope.currentStaionNameLocation[0].location =  medAppFactory.navagationBar[amountLine].location;
+        $scope.currentStaionNameLocation[0].currentStation =  medAppFactory.currentStation;
     });
-    $scope.changeLocation = function(num)
-    {
-        $location.path($scope.currentStaionNameLocation[num].location);
-    }
 
+    $scope.changePage  = function (url)
+    {
+        $location.path(url);
+    }
 
     function checkInput(){
         $interval(function(){
