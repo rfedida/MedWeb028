@@ -1,6 +1,6 @@
 myApp.controller('statisticController', function($scope, $http) {
 
-    $scope.colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec']; 
+    $scope.colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];
 
     $scope.roundMinutes = function(date){
         date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
