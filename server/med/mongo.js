@@ -197,11 +197,17 @@ module.exports = {
     writePatientOrUpdateFromUsb: function(p) {
         Patient.findOne({"braceletId" : p.braceletId}, function(err, patient) {
             if (err || patient == null) {
-                Patient.create(p, function(err, patient){
+                pNew = new Patient(p);
+                pNew.save(function(err) {
                     if (!err) { 
                         console.log("Insert db")
                     } 
                 });
+                // Patient.create(p, function(err, patient){
+                //     if (!err) { 
+                //         console.log("Insert db")
+                //     } 
+                // });
             } else {
                 // check if data need to update according timestamps
                 if (p.LastUpdate > patient.LastUpdate) {
