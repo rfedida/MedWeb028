@@ -1,14 +1,11 @@
 // Server
 var express = require('express');
-var bodyParser = require('body-parser');
 var path = require('path');
 var routes = require('./routes/index');
 var agamRoutes = require('./routes/agam'); 
 var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-var crud = require('./routes/crud');
 var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
 var udpServer = dgram.createSocket('udp4');
@@ -16,9 +13,13 @@ var pjson = require('./package.json');
 var bodyParser = require("body-parser");
 var temp = require('./server/med/temp');
 var mongo = require('./server/med/mongo');
+var files = require('./server/med/files');
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var auth = require("./server/infrastructure/BL/authentication")
+var crud = require('./routes/crud');
+var helpers = require('./routes/helpers');
+helpers.patient = "dasdsaa";
 
 var server = express();
 
@@ -41,9 +42,10 @@ server.use(function(req, res, next)
         // url.startsWith("/agam/javascripts")||
         url.startsWith("/common/views") ||
         url.startsWith("/common/javascripts")||
-        url.startsWith("/components") ||
+        url.startsWith("/common/img")||
+        url.startsWith("/components") ||        
         url.startsWith("/infrastructure/views") ||
-        url.startsWith("/infrastructure/javascripts")||
+        url.startsWith("/infrastructure/javascripts")||        
         // url.startsWith("/med/views") ||
         // url.startsWith("/med/css") ||
         // url.startsWith("/med/javascripts")||
@@ -96,7 +98,7 @@ server.use('/agam', agamRoutes);
 server.use('/infrastructure', infrastructureRoutes);
 
 server.use('/crud', crud);
-
+//server.use('/crud', pollinghelper);
 
 // Listening to port 9000
 var port = process.env.PORT || 9000;
@@ -105,34 +107,40 @@ server.listen(port, function() {
 });
 
 // MongoDB part
-var isOnline = false;
+helpers.isOnline = false;
 
 function connectToMongo () {
     mongoose.connect('mongodb://150.0.0.56:27017/DB');
     // Getting the data from the db
     var db = mongoose.connection;
     db.on('error', function(err) {
-        isOnline = false;
+        helpers.isOnline = false;
         console.log('Connection to mongo failed');
     });
     db.once('open', function(){
-        isOnline = true;
+        helpers.isOnline = true;
         console.log("connect to mongo");
         
         // Update db according files
         if (!pjson.isWeb) {
-            var tempUnits, tempPatients;
             temp.getTempPatients(function(data) {
-                tempPatients = data;
+                mongo.updatePatientsAfterConnection(data);
             });
             temp.getTempUnits(function(data) {
-                tempUnits = data;
+                mongo.updateUnitsAfterConnection(data);
+            });
+            mongo.getAllUnits(function(data) {
+                for (var i=0; i<data.length; i++) {
+                    files.updateUnit(data[i].id, function(data) {
+                        // Decide to check if there was update
+                    });
+                }
             });
         }
     });
     db.on('close', function(){
         console.log("connection to mongo closed");
-        isOnline = false;
+        helpers.isOnline = false;
     });
 }
 
@@ -141,47 +149,56 @@ if (pjson.isWeb) {
     connectToMongo();
 } else {
     setInterval(function() {
-        if (mongoose.connection.readyState != 1) {
+        if (!helpers.isOnline) {
             connectToMongo();
         }
     }, 3000);
 }
-// UDP Server
-var patient = undefined;
 
-udpServer.on('error', (err) => {
-    console.log('UDP server error' + err);
-});
+if (!pjson.isWeb) {
+    // UDP Server
+    helpers.udpServer = udpServer;
 
-udpServer.on('message', (msg, rinfo) => {
-    patient = JSON.parse(msg.toString("utf8"));
-    console.log(patient);
-    sendToBracelet(patient);
-});
-
-udpServer.on('listening', () => {
-    console.log("UDP server is listening");
-});
-
-udpServer.bind(9001);
-
-function sendToBracelet(data) {
-    var toSend = JSON.stringify(data);
-    var buf = new Buffer(toSend.length);
-    buf.write(toSend);
-    udpServer.send(buf, 0, buf.length, 9002, '150.0.0.123', (err)=> {
-        if(err) {
-            console.log(err);
-        }
+    udpServer.on('error', (err) => {
+        console.log('UDP server error' + err);
     });
+
+    udpServer.on('message', (msg, rinfo) => {
+        patient = JSON.parse(msg.toString("utf8"));
+        helpers.patient = patient;
+
+        // write to file
+        files.writePatientOrUpdateFromUsb(patient);
+
+        // write to db
+        if (helpers.isOnline) {
+            mongo.writePatientOrUpdateFromUsb(patient);
+        } else {
+            // write to temp file
+            temp.writePatientOrUpdateFromUsb(patient);
+        }
+        console.log(patient);
+        helpers.sendToBracelet(patient);
+    });
+
+    udpServer.on('listening', () => {
+        console.log("UDP server is listening");
+    });
+
+    udpServer.bind(9001);
+
+    helpers.sendToBracelet = (data) => {
+        var toSend = JSON.stringify(data);
+        var buf = new Buffer(toSend.length);
+        buf.write(toSend);
+        udpServer.send(buf, 0, buf.length, 9002, '150.0.0.123', (err)=> {
+            if(err) {
+                console.log(err);
+            }
+        });
+    }
 }
 
-var exports = {
-    server: server,
-    udpServer: udpServer,
-    patient: patient,
-    sendToBracelet: sendToBracelet,
-    isOnline: isOnline
-};
+helpers.server = server;
 
-module.exports = exports;
+module.exports = server;

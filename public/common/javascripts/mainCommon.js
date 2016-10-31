@@ -12,8 +12,9 @@ function ($scope, $http, loginCardService, currentUser, $cookies)
     },
     function(newVal)
     {
-         if (currentUser.details.permission && 
-             currentUser.details.permission.split("_").length < 4)
+         if (currentUser.getDetails() &&
+             currentUser.getDetails().permission && 
+             currentUser.getDetails().permission.split("_").length < 4)
          {
              $scope.isMed = false;        
          }
@@ -25,9 +26,7 @@ function ($scope, $http, loginCardService, currentUser, $cookies)
 
     $scope.logout = function()
     {
-        $cookies.remove("user");
-        $cookies.remove("hash");
-        loginCardService.showLoginCard();    
+        currentUser.logout();
     }
     
     loginCardService.showLoginCard();

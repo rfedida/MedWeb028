@@ -1,6 +1,6 @@
 angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFactory', '$http', 
-                                                '$interval', 'ModalService', '$sce',
-    function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce) {
+                                                '$interval', 'ModalService', '$sce','currentUser',
+    function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce, currentUser) {
         $scope.injured = medAppFactory.currentInjured;
         $scope.InjuryMechanismType = medAppFactory.InjuryMechanismType;
         $scope.selectedTab = 1;
@@ -116,8 +116,8 @@ angular.module("medApp").directive("presentTable", function() {
         restrict: 'E',
         scope:
         {
-            tableTitle: '@',
-            fieldName: '@',
+            tabletitle: '@',
+            fieldname: '@',
             data: '=',
         },
         templateUrl:'/med/views/directiveTable.html',
@@ -130,17 +130,15 @@ angular.module("medApp").controller("presentTableCtrl", function($scope, medAppF
 
     $scope.treat_Med = medAppFactory.treatmentsMed;
 
-    $scope.tableTitle = "תרופה";
-    $scope.fieldName = "liquidId";
- 
     $scope.getNameById = function(num)
     {
         return $scope.treat_Med[num].name;
     };
 
-    /*$scope.calcDateDiff = function(dateTime){
+    $scope.calcDateDiff = function(dateTime){
+        debugger;
     
-        var dateBefore = new Date(dateTime.replace('T',':').split('.')[0]);
+        var dateBefore = new Date(parseInt(dateTime));
         var timeDiffByMinutes = Math.ceil(Math.abs((new Date().getTime() - 
                                             dateBefore.getTime()) * 
                                             (1.667 * Math.pow(10,-5))));
@@ -153,7 +151,7 @@ angular.module("medApp").controller("presentTableCtrl", function($scope, medAppF
                  ':' + 
                 pad.substring(0, pad.length - minutesDiff.
                 length) + minutesDiff);
-    }*/
+    }
 });
 
 
