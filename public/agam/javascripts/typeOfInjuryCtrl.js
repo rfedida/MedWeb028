@@ -1,5 +1,7 @@
 myApp.controller('statisticController', function($scope, $http) {
 
+    $scope.colorArray = ['#132639', '#2d5986', '#538cc6', '#9fbfdf', '#ecf2f9', '#ffffff']; 
+
     $scope.roundMinutes = function(date){
         date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
         date.setMinutes(0)
@@ -16,9 +18,8 @@ myApp.controller('statisticController', function($scope, $http) {
             width: 350,
             x: function(d){return d.key},
             y: function(d){return d.y},
-            color: function(d, i) {
-                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
-                return colorArray[i];        
+            color: function(d, i) {                
+                return $scope.colorArray[i];        
             },
             showLables: true,
             duration: 500,
@@ -48,21 +49,31 @@ myApp.controller('statisticController', function($scope, $http) {
             width: 300,
             margin: {
                 top: 20,
-                right: 20,
+                right: 50,
                 bottom: 45,
-                left: 45
+                left: 50
             },
             x: function(d){return d.x},
             y: function(d){return d.y},            
-            color: function(d, i) {
-                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
-                return colorArray[i];        
+            color: function(d, i) {                                
+                return $scope.colorArray[i];        
+            },            
+            legend: {
+                margin:
+                {
+                    top: 5,
+                    right: 0,
+                    bottom: 5,
+                    left: 0
+                }
             },
             duration: 500, 
-            useInteractiveGuideLine: true,                   
+            useInteractiveGuideLine: true,   
+            yDomain1: [0,10],             
             xAxis:
             {
-                axisLable: 'זמן',            
+                axisLable: 'זמן',    
+                displayMinMax: false,        
                 tickFormat: function(d){
                     return d3.time.format('%x %H:%M')(new Date(d));
                 }
@@ -70,7 +81,7 @@ myApp.controller('statisticController', function($scope, $http) {
             yAxis:
             { 
                 axisLable: 'כמות נפגעים',                
-                axisLabelDistance: 0
+                axisLabelDistance: 0,
             }
         }        
     };
@@ -92,68 +103,34 @@ myApp.controller('statisticController', function($scope, $http) {
 
     $scope.injuryLocationTimeData = [];
     $http.get("/crud/patientsInjuryLocationByTime").success(function(data){
-        $scope.injuryLocationTimeData = $scope.buildLocationData(data);
+        $scope.injuryLocationTimeData = $scope.buildData(data);
     }).error(function(data){
         console.log(data);
     }); 
-
-    $scope.buildLocationData = function(data){        
-        var locations = [];
-
-        for (var index in data) {
-            if (!(data[index]._id.key in locations)) {
-                locations[data[index]._id.key] = data[index]._id.key;
-            }
-        }
-
-        var newData = [];
-
-        for (var index in locations) {
-            var injuryValues = [];
-
-            for (var innerIndex in data) {
-                if (data[innerIndex]._id.key == locations[index]) {
-                    injuryValues.push({
-                        x: $scope.roundMinutes(new Date(parseInt(data[innerIndex]._id.x))),
-                        y: data[innerIndex].y
-                    });
-                }
-            }
-
-            newData.push({
-                key: locations[index],
-                type: 'line',
-                yAxis: 1,
-                values: injuryValues
-            });
-        }        
-
-        return newData;
-    };
 
     $scope.injuryMechanismTimeData = [];
     $http.get("/crud/patientsInjuryMechanismByTime").success(function(data){
-        $scope.injuryMechanismTimeData = $scope.buildMechanismData(data);
+        $scope.injuryMechanismTimeData = $scope.buildData(data);
     }).error(function(data){
         console.log(data);
     }); 
 
-    $scope.buildMechanismData = function(data){        
-        var mechanisms = [];
+    $scope.buildData = function(data){    
+        var keys = [];
 
         for (var index in data) {
-            if (!(data[index]._id.key in mechanisms)) {
-                mechanisms[data[index]._id.key] = data[index]._id.key;
+            if (!(data[index]._id.key in keys)) {
+                keys[data[index]._id.key] = data[index]._id.key;
             }
         }
 
         var newData = [];
 
-        for (var index in mechanisms) {
+        for (var index in keys) {
             var injuryValues = [];
 
             for (var innerIndex in data) {
-                if (data[innerIndex]._id.key == mechanisms[index]) {
+                if (data[innerIndex]._id.key == keys[index]) {
                     injuryValues.push({
                         x: $scope.roundMinutes(new Date(parseInt(data[innerIndex]._id.x))),
                         y: data[innerIndex].y
@@ -162,7 +139,7 @@ myApp.controller('statisticController', function($scope, $http) {
             }
 
             newData.push({
-                key: mechanisms[index],
+                key: keys[index],
                 type: 'line',
                 yAxis: 1,
                 values: injuryValues
