@@ -149,6 +149,73 @@ angular.module("medApp").controller('ComplexControllerOperation', [
             $element.modal('hide');
 
         }
+
+    //$http.get("/crud/injuryMechanism").success(function(data){
+    //    $scope.injuryMechanismData = data;
+    //
+    //}).error(function(data){
+    //    console.log(data);
+    //});
+
+    $scope.indicatorsTrendsData = [
+        {
+            key: 'line1',
+            color: '#660000',
+            values: [
+                {x: 1, y: 12}
+            ]
+        },
+        {
+            key: 'line2',
+            color: '#660000',
+            values: [
+                {x: 1, y: 12}
+            ]
+        }
+    ];
+
+   $scope.lineChartOptions = {
+        chart: {
+            type: 'lineChart',
+            height: 350,
+            width:350,
+            x: function(d){return d.x},
+            y: function(d){return d.y},
+            color: function(d, i) {
+                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];
+                return colorArray[i];
+            },
+            showLables: true,
+            duration: 500,
+            labelThreshold: 0.01,
+            labelSunbeamLayout: true,
+            useInteractiveGuideline: true,
+            showLegend: true,
+            showXAxis: true,
+            showYAxis: true,
+            legend: {
+                margin: {
+                    top: 5,
+                    right: 35,
+                    bottom: 5,
+                    left: 100
+                }
+            },
+            xScale: d3.time.scale(),
+            xAxis: {
+                axisLabel: 'WW',
+                tickFormat: d3.format(',r')
+            },
+            yAxis: {
+                axisLabel: 'WW',
+                tickFormat: d3.format('0.2f')
+            },
+            callback: function(){
+                d3.selectAll('.nv-legend-text').style('fill', 'black');
+                d3.selectAll('.nv-pieLabels text').style('fill', 'black');
+            }
+        }
+    };
     }]);
 /******************  Gil *****************************************************************************************/
 
