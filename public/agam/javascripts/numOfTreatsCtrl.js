@@ -1,40 +1,108 @@
 myApp.controller('numOfTreatsCtrl', function($scope, $http) {
+    $scope.unit = '1_1_1_1';
 
-    $http.get("/crud/units").then(function(response){
-        var data = response.data;
-         $scope.dataVygon = [
+    $http.get("/crud/units/" + $scope.unit).then(function(response){
+
+        var treatments = response.data.Treatments;
+        debugger;
+        var emptyChart = [
             {
-                key: 'במלאי',
-                y: 8
-            },
-            {
-                key: 'שימוש',
-                y: 50
+                key: 'אין נתונים להציג',
+                x: [[]]
             }
         ];
 
-        $scope.dataHosemOrakim = [
-            {
-                key: 'במלאי',
-                y: 33
-            },
-            {
-                key: 'שימוש',
-                y: 50
-            }
-        ];
+        $scope.dataVygon = emptyChart;
+        $scope.dataCAT = emptyChart;
+        $scope.dataNekezHaze = emptyChart;
+        $scope.dataCombatGauze = emptyChart;
 
-        $scope.dataNekezHaze = [
+        $scope.mlay;
+
+        for (i=0; i<treatments.length; i++)
+        {
+            $scope.mlay = treatments[i].Standard - treatments[i].Stock.CurrStock;
+            if (treatments[i].id == 10)
             {
-                key: 'במלאי',
-                y: 67
-            },
-            {
-                key: 'שימוש',
-                y: 36
+                $scope.dataVygon = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock.CurrStock
+                    }
+                ];
             }
-        ];
-    })
+            else if (treatments[i].id == 5)
+            {
+                $scope.dataCAT = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock.CurrStock
+                    }
+                ];
+            }
+            else if (treatments[i].id == 4)
+            {
+                $scope.dataNekezHaze = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock.CurrStock
+                    }
+                ];
+            }
+            else if (treatments[i].id == 7)
+            {
+                $scope.dataCombatGauze = [
+                    {
+                        key: 'במלאי',
+                        y: $scope.mlay
+                    },
+                    {
+                        key: 'שימוש',
+                        y: treatments[i].Stock.CurrStock
+                    }
+                ];
+            }
+        }
+
+//  debugger;
+//         // for timeline
+//         for (i=0; i<treatments.length; i++)
+//         {
+//             var dates = [];
+
+//             for (j=0; j<treatments[i].Stock.Usage.length; j++)
+//             {
+//                dates.push(d3.time.format('%x %H:%M')(new Date(treatments[i].Stock.Usage[j])));
+//             }
+
+//             dates.sort(function(a,b) {
+//                 return new Date(b) - new Date(a);
+//             });
+
+//             var map = {};
+//             var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
+
+//             dates.forEach(function(d)
+//             {
+//                 countStock--;
+//                 map[d] = countStock;
+//             });
+//         }
+    });
+
+
 
     $scope.colorArray = ['gray','#660000'];
     
@@ -48,8 +116,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'pieChart',
-            height: 200,
-            width: 230,
+            height: 300,
+            width: 300,
             donut: true,
             x: function(d){return d.key},
             y: function(d){return d.y},
@@ -67,7 +135,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     bottom: 5,
                     left: 0
                 }
-            } 
+            }
         }        
     };   
 });

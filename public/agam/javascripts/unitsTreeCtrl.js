@@ -1,5 +1,15 @@
 myApp.controller('unitsTreeController', function ($scope, $http) {
     $scope.treeInd = true;
+    $scope.showTree=false;
+    $scope.sizestatic = "col-md-8";
+    $scope.openTree = function(){
+        $scope.showTree = !$scope.showTree;
+        if ($scope.sizestatic == "col-md-6"){
+            $scope.sizestatic = "col-md-8";
+        }else{
+            $scope.sizestatic = "col-md-6";
+        }
+    }
     $scope.window = "col-md-6";
     $scope.treeOptions = {
           nodeChildren: "children",
@@ -16,37 +26,68 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
           }
     }
     
+    $scope.heirarchyUnits = {};
+    $scope.heirarchyUnits.children = [];
+    $scope.orgenizeHierarchy = function(id){
+        var unit;
+        var pattern = new RegExp('^'+id+'_[0-9]$');
+        var result = [];
+        var currentRoot = {};
+        // SECOND LEVEL TREE
+        for (unit in $scope.dataForTheTree){
+            if ($scope.dataForTheTree[unit].id.match(pattern)){
+                result.push($scope.dataForTheTree[unit]);
+            }else if($scope.dataForTheTree[unit].id.match('^'+id+'$')){
+               currentRoot = $scope.dataForTheTree[unit];
+            }
+        }
+        // IF THERE IS A THIRD LEVEL
+        if (result.length > 0)
+        {
+            currentRoot.children = [];
+            // ADD FOR EACH NODE HIS SONS
+            for (index in result)
+            {
+                var secondPattern = new RegExp('^'+result[index].id+'_[0-9]$');
+                var secondHeirarchyObject = result[index];
+                secondHeirarchyObject.children=[];
+                for (secondUnit in $scope.dataForTheTree){
+                    if ( $scope.dataForTheTree[secondUnit].id.match(secondPattern)){
+                        var thirdId = $scope.dataForTheTree[secondUnit].id;
+                        var thirdPattern = new RegExp('^'+$scope.dataForTheTree[secondUnit].id+'_[0-9]$');
+                        var thirdHeirarchyObject = $scope.dataForTheTree[secondUnit];
+                        thirdHeirarchyObject.children = [];
+                        for (thirdUnit in  $scope.dataForTheTree){
+                            if ( $scope.dataForTheTree[thirdUnit].id.match(thirdPattern)){
+                                thirdHeirarchyObject.children.push($scope.dataForTheTree[thirdUnit]);
+                            }
+                        }
+                        secondHeirarchyObject.children.push(thirdHeirarchyObject);
+                    }
+                }
+                currentRoot.children.push(secondHeirarchyObject);  
+            }
+        }
+
+        $scope.heirarchyUnits.children.push(currentRoot);
+        $scope.dataForTheTree = $scope.heirarchyUnits.children[0];
+    }
+
     $scope.units = [];
-    $scope.user_id = '1_1_1';
+    $scope.user_id = '1';
     $scope.loadUnits = function(){
-        $http.get('/agam/units/'+'1').success(function(data){
+        $http.get('/agam/units/'+ $scope.user_id).success(function(data){
              $scope.dataForTheTree = data;
+             $scope.orgenizeHierarchy($scope.user_id);
         });
     };
 
     $scope.loadUnits();
 
-    //   [
-    //       {"name" : "Joe", "age" : "21", "children" : [
-    //           {"name" : "Smith", "age" : "42", "children" : []},
-    //           {"name" : "Gary", "age" : "21", "children" : [
-    //               {"name" : "Jenifer", "age" : "23", "children" : [
-    //                   {"name" : "Dani", "age" : "32", "children" : []},
-    //                   {"name" : "Max", "age" : "34", "children" : []}
-    //               ]}
-    //           ]}
-    //       ]},
-    //       {"name" : "Albert", "age" : "33", "children" : []},
-    //       {"name" : "Ron", "age" : "29", "children" : []}
-    //   ];
+    $scope.loadPatients = function(unitid){
+        console.log(unitid.id);
+         $http.get('/agam/getPatients/'+unitid).success(function(data){
+         });
+    };
 
-        $scope.treeEvent = function(){
-        $scope.treeInd = !$scope.treeInd;
-       
-        if ( $scope.window == "col-md-6"){
-             $scope.window = "col-md-8";
-        }else{
-            $scope.window = "col-md-6"
-        }
-    }
 });

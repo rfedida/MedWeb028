@@ -3,37 +3,38 @@ var mongoose = require('mongoose');
 var patientSchema = new mongoose.Schema({
 	braceletId: String,
 	CurrentStation: String,
-	LastUpdate: Date,
+	LastUpdate: Number,
 	generalData: {
 		emergency: {
 			type: Number,
-			enum: [0, 1, 2, 3] // 0 - unknwon, not-urgent, urgent, dead
+			enum: [0, 1, 2, 3, 4] // 0 - unknwon, not-urgent, urgent, dead, transfer
 		},
 		breathingHit: Boolean,
 		airwayHit: Boolean,
 		shock: Boolean,
 		injuryMechanism: {
-			type: String,
-			enum: []
+			type: Number,
+			enum: [0 ,1 ,2, 3, 4, 5, 6]
 		},
 		consciousness: {
 			type: String,
 			enum: ["A", "P", "U", "V"]
 		},
-		injuryLocation: String
+		injuryLocation: String,
+		comments: String
 	},
 	treatments: [{
-			date: {type: Date, default: Date.now},
-			treatmentType: {type: Number, enum : [0, 1, 2 , 3, 4, 5, 6, 7, ,8]}, // Treatments enum
+			date: Number,
+			treatmentType: {type: Number, enum : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}, // Treatments enum
 			location: String,
 			bloodPressure: String,
 			heartbeat: Number,
 			temperature: Number,
-			storation: Number
+			storation: String
 	}],
 	medications: [{
-		date: {type: Date, default: Date.now},
-		medicationId: {type: Number, enum: [0, 1, 2, 3, 4, 5]}, // From medications enum
+		date: Number,
+		medicationId: {type: Number, enum: [11, 12, 13, 14, 15, 16]}, // From medications enum
 		dosage: Number,
 		dosageUnit: String,
 		bloodPressure: String,
@@ -42,7 +43,7 @@ var patientSchema = new mongoose.Schema({
 		storation: Number
 	}],
 	liquids: [{
-		date: {type: Date, default: Date.now},
+		date: Number,
 		liquidId: {type: Number, enum: [0, 1 ,2]}, // From liquids enum
 		dosage: Number,
 		dosageUnit: String,
@@ -70,9 +71,9 @@ var patientSchema = new mongoose.Schema({
 		}]
 	},
 	Stations: [{		
-		receptionTime: {type: Date, default: Date.now},
+		receptionTime: Number,
 		stationId: String,
-		leavingDate: {type: Date}
+		leavingDate: Number
 	}]
 }, {collection: 'Patients'});
 

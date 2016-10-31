@@ -1,0 +1,62 @@
+
+
+<div class="modal ">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <center>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><strong>פצוע חדש</strong>
+                    </h4>
+                </div>
+                </center>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <div class="col-sm-10" style="padding-top: 10px;">
+                        <input type="text" class="form-control" id="braceId" 
+                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
+                          maxlength="10" placeholder="הכנס מספר צמיד" ng-model="braceId">
+                        </div>
+                        <label for="braceId" class="col-sm-2 control-label">מזהה צמיד</label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10" style="padding-top: 10px;">
+                            <div class="input-group date">
+                                <input type="date" id="date" class="form-control" 
+                                placeholder="הכנס תאריך קליטה" ng-model="date" 
+                                value="{{date}}" style="border-radius: 3px;"/>
+                                <span class="input-group-addon" dir="rtl">
+                                    <span class="glyphicon glyphicon-calendar" ></span>
+                                </span>
+
+                            </div>
+                        </div>
+                        <label for="date" class="col-sm-2 control-label">תאריך קליטה</label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10" style="padding-top: 10px;">
+                            <div class="input-group date" >
+                                <input type="time" id="time"class="form-control"  
+                                placeholder="הכנס שעת קליטה" ng-model="time" 
+                                value="{{time}}" style="border-radius: 3px;"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <label for="time" class="col-sm-2 control-label">שעת קליטה</label>
+                    </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">אישור</button>
+                    <button type="button" ng-click="cancel()" class="btn">ביטול</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    

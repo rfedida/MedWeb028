@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var graphOccupation = require('../server/agam/OccupationControl.js');
-var Units = require('../server/common/models/unitSchema.js');
+var Units = require('../server/common/modelss/unitSchema.js');
+var Patient = require('../server/common/models/patientSchema.js');
 
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {
@@ -27,6 +28,37 @@ router.get('/units/:userHirarchy', function(req, res, next){
             } else {
                 res.send(units);
             }
+    });
+});
+
+router.get('/getPatients/:unitid', function(req, res, next){
+    var x= res.req.params;
+    var unitid = res.req.params.unitid;
+    Patient.aggregate(
+	[
+		{
+			$match: {
+              
+				"CurrentStation" :  {"$regex": "^" + unitid }
+			}
+		},
+		{
+			$group: {
+				_id : "$generalData.emergency",
+				 count : {$sum : 1}
+			}
+		},
+		{
+			$sort: {
+			_id : 1
+			}
+		},
+	], function(err, result){
+        if (err){
+            res.send(err);
+        }else{
+             res.send(result);
+        }
     });
 });
 

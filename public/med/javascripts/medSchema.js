@@ -1,5 +1,13 @@
-angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', function($scope, medAppFactory) 
+angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', '$location','$interval', 
+function($scope, medAppFactory, $location, $interval) 
 {
+    if(Object.keys(medAppFactory.currentInjured).length === 0)
+    {
+        $location.path("/");
+    };
+
+    refresh();
+
     $scope.currentInj = medAppFactory.currentInjured;
     $scope.treat_Med = medAppFactory.treatmentsMed;
 
@@ -7,68 +15,125 @@ angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', 
            $scope.medications = [];
            $scope.liquids = [];
 
+           function refresh($scope)
+           {
+               $interval(function(){},60000);
+           }
+     
            function divByGrp ()
            {
-               for(var i=0; i<$scope.currentInj.Treatments.length; i++)
+               for(var i=0; i<$scope.currentInj.treatments.length; i++)
                {
-                   $scope.currentInj.Treatments[i].name =
-                                           $scope.treat_Med[$scope.currentInj.Treatments[i].Treatment_type].name;
+                   $scope.currentInj.treatments[i].name =
+                                           $scope.treat_Med[$scope.currentInj.treatments[i].treatmentType].name;
 
-                   var group =$scope.treat_Med[$scope.currentInj.Treatments[i].Treatment_type].group;
-                   $scope.treatments[group].push($scope.currentInj.Treatments[i]);
+                   var group =$scope.treat_Med[$scope.currentInj.treatments[i].treatmentType].group;
+                   $scope.treatments[group].push($scope.currentInj.treatments[i]);
                }
+
+               //$scope.treatments.A.sort
+               //
            }
 
           function medFunc ()
            {
-               for(var i=0; i<$scope.currentInj.Medications.length; i++)
+               for(var i=0; i<$scope.currentInj.medications.length; i++)
                {
-                    $scope.currentInj.Medications[i].name =
-                                           $scope.treat_Med[$scope.currentInj.Medications[i].Medication_id].name;
-                    $scope.medications.push($scope.currentInj.Medications[i]);                      
-               }  
-           }
+                    $scope.currentInj.medications[i].name =
+                                           $scope.treat_Med[$scope.currentInj.medications[i].medicationId].name;
+                    $scope.medications.push($scope.currentInj.medications[i]);                      
+               }
+
+               // med.sort
+           };
 
            function liqFunc ()
            {
-               debugger;
               var currentAmount=0;
                $scope.amountAccordingId = {};
-               for(var i=0; i<$scope.currentInj.Liquids.length; i++)
+               for(var i=0; i<$scope.currentInj.liquids.length; i++)
                {
-                   if(!$scope.amountAccordingId[$scope.currentInj.Liquids[i].Liquid_id])
+                   if(!$scope.amountAccordingId[$scope.currentInj.liquids[i].liquidId])
                    {
                        var currentAmount = 0;
-                       var type = $scope.currentInj.Liquids[i].Dosage_type;
-                        $scope.amountAccordingId[$scope.currentInj.Liquids[i].Liquid_id] = {amount:currentAmount ,type:type};
+                       //name by Enum
+                       $scope.currentInj.liquids[i].name =
+                                           $scope.treat_Med[$scope.currentInj.liquids[i].liquidId].name;
+                       var name =  $scope.currentInj.liquids[i].name;
+                       //inner Json per id: amount ,type, name
+                       var type = $scope.currentInj.liquids[i].dosageUnit;
+                        $scope.amountAccordingId[$scope.currentInj.liquids[i].liquidId]= 
+                                                           {amount:currentAmount ,type:type, name: name};
                        
                    }
                    else
                    {
-                       currentAmount = $scope.amountAccordingId[$scope.currentInj.Liquids[i].Liquid_id].amount;
+                       currentAmount = $scope.amountAccordingId[$scope.currentInj.liquids[i].liquidId].amount;
                    }
-                   $scope.amountAccordingId[$scope.currentInj.Liquids[i].Liquid_id].amount =currentAmount + 
-                          parseInt($scope.currentInj.Liquids[i].Dosage);
+                   $scope.amountAccordingId[$scope.currentInj.liquids[i].liquidId].amount =currentAmount + 
+                          parseInt($scope.currentInj.liquids[i].dosage);
                }
                   for(var key in  $scope.amountAccordingId)
                   {
-                    $scope.liquids.push({name: key, Dosage: $scope.amountAccordingId[key].amount +  $scope.amountAccordingId[key].type });         
-                  }
-                                       
-                
+                      
+                   $scope.liquids.push({ id:key, name:$scope.amountAccordingId[key].name,     
+                        Dosage: $scope.amountAccordingId[key].amount + $scope.amountAccordingId[key].type});         
+                  } 
            }
 
 
+        $scope.timeGap = function(date)
+           {
+               var actionDate = new Date(parseInt(date));            
+               var now = new Date();
+               var timeDiff = Math.ceil(Math.abs((now - actionDate.getTime()) * 
+                                                 (1.667 * Math.pow(10,-5))));
+               var hoursDiff = "" + Math.floor(timeDiff / 60);
+               var minutesDiff = "" +  Math.abs(timeDiff % 60);
+
+               var pad = "00";
+    
+              return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
+               ':' + 
+              pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
+
+           }
+
+       //    $scope.sortCol = function(col)
+         //  {
+           //    col.sort(function(a,b){return a-b});
+
+           //}
+
+      /*     $scope.timeGap = function(date)
+           {
+               var actionDate = new Date(date);            
+
+               var timeDiff = Math.ceil(Math.abs((new Date().getTime() - 
+                                                actionDate.getTime()) * 
+                                                (1.667 * Math.pow(10,-5))));
+               var hoursDiff = "" + Math.floor(timeDiff / 60);
+               var minutesDiff = "" +  Math.abs(timeDiff % 60);
+
+               var pad = "00";
+    
+              return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
+               ':' + 
+              pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
+           }*/
+
+      
+
     $scope.inj = {
-                   "id":  $scope.currentInj.Bracelet_id,
-                   "temp":  $scope.currentInj.Measurements
-                        .Temperatures[$scope.currentInj.Measurements.Temperatures.length-1].Temperature,
-                   "HeartBeat": $scope.currentInj.Measurements
-                        .Heartbeat[$scope.currentInj.Measurements.Heartbeat.length-1].Heartbeat,
-                   "BloodPressure":  $scope.currentInj.Measurements
-                        .Bloodpressures[$scope.currentInj.Measurements.Bloodpressures.length-1].Bloodpressure,
-                   "Storation":  $scope.currentInj.Measurements
-                        .Storations[$scope.currentInj.Measurements.Storations.length-1].Storation,
+                   "id":  $scope.currentInj.braceletId,
+                   "temp": $scope.currentInj.measurements.temperatures[$scope.currentInj
+                            .measurements.temperatures.length-1].tempreature,
+                   "HeartBeat": $scope.currentInj.measurements
+                        .heartbeat[$scope.currentInj.measurements.heartbeat.length-1].Heartbeat,
+                   "BloodPressure":  $scope.currentInj.measurements
+                        .bloodPressures[$scope.currentInj.measurements.bloodPressures.length-1].bloodPressure,
+                   "Storation":  $scope.currentInj.measurements
+                        .storations[$scope.currentInj.measurements.storations.length-1].storation,
            };
 
          
