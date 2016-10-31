@@ -212,7 +212,6 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
     }
 });
 
-<<<<<<< HEAD
 crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
     console.log("get requst for db");
     Patient.aggregate(
@@ -263,7 +262,6 @@ crudRouter.get('/patientsInjuryLocationByTime', function(req, res, next) {
         else {}
     });
 });
-=======
 
 var InjuryMechanismType = {
    0:  "תלול מסלול" ,
@@ -274,7 +272,6 @@ var InjuryMechanismType = {
    5: "שאיפה" ,
    6: "תאונת דרכים"
 };
->>>>>>> cf74bd7979f1794cd7beaf85e81f9550a5af1e28
 
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
