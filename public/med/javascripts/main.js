@@ -23,7 +23,12 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                         hativa: "", 
                         tagad: ""};
                         debugger;
+<<<<<<< HEAD
     factory.currentStation = "1_1_1_1"
+=======
+
+    factory.currentStation = currentUser.getDetails().permission;
+>>>>>>> e26141518b049127b5e2c3bd8abe1856be5654b4
     // currentUser.details.permission;
     
     factory.newInjured = {
@@ -299,12 +304,19 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
     }
     return factory;
 });
-app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http) 
+
+app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http, currentUser) 
 {
     $scope.currentStaionNameLocation = [{name: "", location: "/injInfo"},
                                         {name: "", location: "/injInfo"},
                                         {name: "", location: "/injInfo"},
                                         {name: "", location: "/tmz"}];
+
+                                        
+        $scope.logout = function(){
+            currentUser.logout();            
+        };
+
     medAppFactory.getCommand().then(function (response)
     {
         $scope.currentCommand = medAppFactory.currentCommand;
