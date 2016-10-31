@@ -26,7 +26,7 @@ crudRouter.get('/units', function (req, res, next) {
 
 crudRouter.get('/units/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        mongo.getUnitByUnitId(req.params.id, function(data) {
+        mongo.getUnitByUnitId(req.params.id, function(data) {  
             res.send(data);
         });
     } else {
