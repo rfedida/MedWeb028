@@ -239,4 +239,16 @@ crudRouter.get('/injuryMechanism' , function(req , res ){
     
 });
 
+crudRouter.get('/newPatient', function (req, res, next){
+    if(!pjson.isWeb) {
+        if(index.patient != undefined) {
+            var ptnNew = index.Patient;
+            index.Patient = undefined;
+            res.send(ptnNew);
+        }
+    }
+
+    res.send(undefined);
+});
+
 module.exports = crudRouter;

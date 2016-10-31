@@ -317,9 +317,8 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
     return factory;
 });
 
-app.controller('medViewCtrl',  function ($scope, $location, medAppFactory) 
+app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval) 
 {
-
     medAppFactory.getCommand().then(function (response)
     {
         $scope.currentCommand = medAppFactory.currentCommand;
@@ -337,4 +336,16 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory)
             $location.path("/tmz");
         }
     });
+
+    $scope.check = 0;
+    
+
+    function checkInput(){
+        $interval(function(){
+            $scope.check = $scope.check + 1;
+        }, 3000);
+    }
+
+    checkInput();
+
 });
