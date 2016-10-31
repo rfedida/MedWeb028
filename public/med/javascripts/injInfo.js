@@ -69,8 +69,16 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
           medAppFactory.currentInjured = newUser;
 
       });
-    });
+    });   
 };
+
+
+
+
+
+/******************  SHIR *******************/
+$scope.medicationId = "medicationId";
+$scope.liquidId = "medicationId";
     }]);
    
 angular.module("medApp").controller('ComplexControllerOperation', [
@@ -102,3 +110,58 @@ angular.module("medApp").controller('ComplexControllerOperation', [
     
   }
 }]);
+
+angular.module("medApp").directive("presentTable", function() {
+    return {
+        restrict: 'E',
+        scope:
+        {
+            tableTitle: '@',
+            fieldName: '@',
+            data: '=',
+        },
+        templateUrl:'/med/views/directiveTable.html',
+        controller: "presentTableCtrl"
+    };
+});
+
+
+angular.module("medApp").controller("presentTableCtrl", function($scope, medAppFactory) {
+
+    $scope.treat_Med = medAppFactory.treatmentsMed;
+
+    $scope.tableTitle = "תרופה";
+    $scope.fieldName = "liquidId";
+ 
+    $scope.getNameById = function(num)
+    {
+        return $scope.treat_Med[num].name;
+    };
+
+    /*$scope.calcDateDiff = function(dateTime){
+    
+        var dateBefore = new Date(dateTime.replace('T',':').split('.')[0]);
+        var timeDiffByMinutes = Math.ceil(Math.abs((new Date().getTime() - 
+                                            dateBefore.getTime()) * 
+                                            (1.667 * Math.pow(10,-5))));
+        var hoursDiff = "" + Math.floor(timeDiffByMinutes / 60);
+        var minutesDiff = "" +  Math.abs(timeDiffByMinutes % 60);
+
+        var pad = "00";
+    
+        return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
+                 ':' + 
+                pad.substring(0, pad.length - minutesDiff.
+                length) + minutesDiff);
+    }*/
+});
+
+
+
+
+
+
+
+
+
+
