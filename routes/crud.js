@@ -87,19 +87,6 @@ crudRouter.get('/patients/:id', function (req, res, next) {
     }
 });
 
-// Get patient by id
-// crudRouter.get('/patients/:id', function(req, res,next) {
-//     if (pjson.isWeb) {
-//         Patient.find({"braceletId": req.params.id}, function(err, patient) {
-//             if (err) {  
-//                 res.send(err);
-//             } else {
-//                 res.send(patient);
-//             }
-//         })
-//     }
-// });
-
 // Get the last patient who arrived to current station
 crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
     if (pjson.isWeb) {
@@ -160,6 +147,31 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
                                     "heartbeat" : sortDesc(patient.measurements.heartbeat, "timestamp")[0].heartbeat,
                                     "status" : patient.generalData.emergency,
                                     "receptionTime" : sortDesc(patient.Stations, "receptionTime")[0].receptionTime };
+                result.push(newPatient);                
+            });
+
+            res.send(result);
+        }    
+    })}
+});
+
+// Get patients by unit id
+crudRouter.get('/patients/underUnit/:unitId', function(req, res,next) {   
+     if (pjson.isWeb) {
+        Patient.find({"CurrentStation" : new RegExp("^" + req.params.unitId + "(_[0-9]+)+$")},  function(err, patients) {
+        if (err) {
+            res.send(err);
+        } else {
+            // Parse to json
+            patients = JSON.parse(JSON.stringify(patients));
+            var result = []; 
+            
+            // Run all patients and save specific fields
+            patients.forEach(function(patient){
+
+                var newPatient = {
+                                    "braceletId" : patient.braceletId,    
+                                    "status" : patient.generalData.emergency};
                 result.push(newPatient);                
             });
 
@@ -242,7 +254,8 @@ crudRouter.get('/units/:unitId/units', function(req, res, next) {
                 res.send(err); 
             } else {
 
-                var pattern = "^" + req.params.unitId + "(_[0-9]+)+$";
+            //    var pattern = "^" + req.params.unitId + "(_[0-9]+)+$";
+                var pattern = "^" + req.params.unitId + "[_\d]{1}[0-9]+$";
                 var list = [];
                 var regex = new RegExp(pattern);
                 var bIsIdExist = false;

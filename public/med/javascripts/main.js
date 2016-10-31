@@ -1,4 +1,4 @@
-var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize"]);
+var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "nvd3"]);
 app.remote="";
 
 app.config(['$routeProvider', '$sceDelegateProvider',
@@ -15,14 +15,46 @@ function($routeProvider, $sceDelegateProvider){
 		templateUrl: app.remote + "/med/views/medSchema.html"
 		}).when('/tmz', {
 		templateUrl: app.remote + "/med/views/tmz.html"
-		});
+		}).when('/commandTmz', {
+		templateUrl: app.remote + "/med/views/commandTmz.html"
+    	});
 }]);
 
 
 angular.module("medApp").factory('medAppFactory', function ($http) {
     var factory = {};
 
-    factory.currentStation = "1_1_1";
+    // 0 - unknwon, not-urgent, urgent, dead
+    factory.EMERGENCY_CONSTANTS = {
+        // לא נקבע
+        "unknwon" : {
+            "value" : "0",
+            "hebrew" : "לא סווג"
+        }, 
+        // לא דחוף
+        "notUrgent" :
+        {
+            "value" : "1",
+            "hebrew" : "לא דחוף"
+        },
+        //דחוף 
+        "urgent" :{
+            "value" : "2",
+            "hebrew" : "דחוף"
+        },
+        //חלל
+        "dead" :{
+            "value" : "3",
+            "hebrew" : "חלל"
+        }, 
+        // במעבר
+        "passage": {
+            "value" : "4",
+            "hebrew" : "במעבר"
+        }                          
+    };
+
+    factory.currentStation = "1";
     factory.newInjured = {
         "Bracelet_id": "",
         "IsDead":false,
@@ -327,11 +359,11 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory)
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
         if(amountLine == 0 || amountLine == 1)
         {
-            $location.path("/injInfo");
+            $location.path("/tmz");
         }
         else
         {
-            $location.path("/tmz");
+            $location.path("/commandTmz");
         }
     });
 });
