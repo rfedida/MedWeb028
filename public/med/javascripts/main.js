@@ -1,6 +1,5 @@
 var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial"]);
 app.remote="";
-
 app.config(['$routeProvider', '$sceDelegateProvider',
 function($routeProvider, $sceDelegateProvider){
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -17,17 +16,13 @@ function($routeProvider, $sceDelegateProvider){
 		templateUrl: app.remote + "/med/views/tmz.html"
 		});
 }]);
-
-
 angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
     var factory = {};
-
     factory.roleList = {command: "", 
                         ogda: "", 
                         hativa: "", 
                         tagad: ""};
                         debugger;
-
     factory.currentStation = "1_1_1_1"
     // currentUser.details.permission;
     
@@ -44,19 +39,13 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                         "Injury_place_in_body": ""
                             },
             "Treatments": [],
-
             "Medications": [],
-
         "Liquids": [],
         "Measurements": {
                     "Temperatures": [],
-
                     "Storations": [],
-
                     "Bloodpressures": [],
-
                     "Heartbeat": []
-
                   },
     "Stations":[{
                     "ReceptionDate": "",
@@ -66,7 +55,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                     "LeavingTime": "" //Evacucation time
                 }]
 };
-
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
@@ -90,9 +78,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
         "18": {name: "מים"},
         "19": {name: "דם"}
 };
-
     factory.currentInjured = {};
-
       /*  "Bracelet_id": "920140140",
         "IsDead": false,
         "General_Data": {
@@ -174,7 +160,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                         "Temperature": "44",
                         "Storation": "85%"
                     }],
-
         "Medications": [{
             "Date": "23/4/2015",
             "Time": "18:30:00",
@@ -197,7 +182,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                 "Temperature": "44",
                 "Storation": "85%"
             }],
-
         "Liquids": [{
                         "Date": "23/4/2015", 
                         "Time": "18:30:00",
@@ -241,7 +225,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                     "Timestamp": "06072016183100",
                     "Temperature": "38"
                 }],
-
             "Storations": [{
                 "Timestamp": "06072016183000",
                 "Storation": "40"
@@ -250,7 +233,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                     "Timestamp": "06072016183100",
                     "Storation": "89"
                 }],
-
             "Bloodpressures": [{
                 "Timestamp": "06072016183000",
                 "Bloodpressure": "40"
@@ -259,7 +241,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                     "Timestamp": "06072016183100",
                     "Bloodpressure": "41"
                 }],
-
             "Heartbeat": [{
                 "Timestamp": "06072016183000",
                 "Heartbeat": "40"
@@ -268,7 +249,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                     "Timestamp": "06072016183100",
                     "Heartbeat": "66"
                 }]
-
         },
         "Stations": [{
             "ReceptionDate": "20/3/2016",
@@ -278,7 +258,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
             "LeavingTime": "8:00:00" //Evacucation time
         }]
     };*/
-
     factory.InjuryMechanismType = [
         { id: 0, name: "תלול מסלול" },
         { id: 1, name: "ירי" },
@@ -288,10 +267,8 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
         { id: 5, name: "שאיפה" },
         { id: 6, name: "תאונת דרכים" }
     ];
-
     factory.currentCommand = "";
     factory.currentStationName = "";
-
     // checnku
     factory.getStationName = function()
     {
@@ -311,7 +288,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
             //factory.currentCommand = "פיקוד צפון";
         });
     }
-
     // lior - login
     factory.getRole = function()
     {
@@ -321,54 +297,50 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
             factory.currentStation = "1_1_1_1";
         });
     }
-
     return factory;
 });
-
-app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval) 
+app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http) 
 {
-<<<<<<< HEAD
-=======
     $scope.currentStaionNameLocation = [{name: "", location: "/injInfo"},
                                         {name: "", location: "/injInfo"},
                                         {name: "", location: "/injInfo"},
                                         {name: "", location: "/tmz"}];
-
->>>>>>> e5d5313f8b4be68e478369d5207027e4df6fa3a2
     medAppFactory.getCommand().then(function (response)
     {
         $scope.currentCommand = medAppFactory.currentCommand;
     });
-
     medAppFactory.getRole().then(function(res)
     {
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
         $location.path($scope.currentStaionNameLocation[amountLine].location);
     });
-
     medAppFactory.getStationName().then(function(res)
     {
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
         $scope.currentStaionNameLocation[amountLine].name = medAppFactory.currentStationName;
     });
-
-<<<<<<< HEAD
-    $scope.check = 0;
-    
-
-    function checkInput(){
-        $interval(function(){
-            $scope.check = $scope.check + 1;
-        }, 3000);
-    }
-
-    checkInput();
-
-=======
     $scope.changeLocation = function(num)
     {
         $location.path($scope.currentStaionNameLocation[num].location);
     }
+
+        $scope.check = 0;
     
->>>>>>> e5d5313f8b4be68e478369d5207027e4df6fa3a2
+
+    function checkInput(){
+        $interval(function(){
+            $http.get('/crud/newPatient').then(function(response){
+                if(response.data != undefined)
+                {
+                    medAppFactory.currentInjured = response.data;
+                    $location.path("/medSchema");
+                }
+            });
+        }, 3000);
+    }
+
+    checkInput();
+    
 });
+
+
