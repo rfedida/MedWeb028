@@ -126,7 +126,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         {
             type: 'multiChart',
             height: 400,
-            width: 600,
+            width: 700,
             margin: {
                 top: 20,
                 right: 20,
@@ -136,7 +136,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             x: function(d){return d.x},
             y: function(d){return d.y},            
             color: function(d, i) {
-                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
+                var colorArray = ['#132639', '#25517e', '#00d4ff', '#004aff', '#06a5c6', '#5d6ea9'];                
                 return colorArray[i];        
             },
             duration: 500, 
@@ -156,7 +156,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         }        
     };
 
-    $scope.colorArray = ['gray','#660000'];
+    $scope.colorArray = ['#494d1b','#a63807'];
     
     $scope.colorFunction = function() {
         return function(d,i){
