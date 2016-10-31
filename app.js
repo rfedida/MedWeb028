@@ -15,6 +15,7 @@ var pjson = require('./package.json');
 var bodyParser = require("body-parser");
 var temp = require('./server/med/temp');
 var mongo = require('./server/med/mongo');
+var files = require('./server/med/files');
 
 var server = express();
 server.use(function(req, res, next)
@@ -66,12 +67,18 @@ function connectToMongo () {
         
         // Update db according files
         if (!pjson.isWeb) {
-            var tempUnits, tempPatients;
             temp.getTempPatients(function(data) {
-                tempPatients = data;
+                mongo.updatePatientsAfterConnection(data);
             });
             temp.getTempUnits(function(data) {
-                tempUnits = data;
+                mongo.updateUnitsAfterConnection(data);
+            });
+            mongo.getAllUnits(function(data) {
+                for (var i=0; i<data.length; i++) {
+                    files.updateUnit(data[i].id, function(data) {
+                        // Decide to check if there was update
+                    });
+                }
             });
         }
     });
@@ -86,40 +93,52 @@ if (pjson.isWeb) {
     connectToMongo();
 } else {
     setInterval(function() {
-        if (mongoose.connection.readyState != 1) {
+        if (!isOnline) {
             connectToMongo();
         }
     }, 3000);
 }
 
-// UDP Server
-var patient = undefined;
+if (!pjson.isWeb) {
+    // UDP Server
+    var patient = undefined;
 
-udpServer.on('error', (err) => {
-    console.log('UDP server error' + err);
-});
-
-udpServer.on('message', (msg, rinfo) => {
-    patient = JSON.parse(msg.toString("utf8"));
-    console.log(patient);
-    sendToBracelet(patient);
-});
-
-udpServer.on('listening', () => {
-    console.log("UDP server is listening");
-});
-
-udpServer.bind(9001);
-
-function sendToBracelet(data) {
-    var toSend = JSON.stringify(data);
-    var buf = new Buffer(toSend.length);
-    buf.write(toSend);
-    udpServer.send(buf, 0, buf.length, 9002, '150.0.0.123', (err)=> {
-        if(err) {
-            console.log(err);
-        }
+    udpServer.on('error', (err) => {
+        console.log('UDP server error' + err);
     });
+
+    udpServer.on('message', (msg, rinfo) => {
+        patient = JSON.parse(msg.toString("utf8"));
+        // write to file
+        files.writePatientOrUpdateFromUsb(patient);
+
+        // write to db
+        if (isOnline) {
+            mongo.writePatientOrUpdateFromUsb(patient);
+        } else {
+            // write to temp file
+            temp.writePatientOrUpdateFromUsb(patient);
+        }
+        console.log(patient);
+        sendToBracelet(patient);
+    });
+
+    udpServer.on('listening', () => {
+        console.log("UDP server is listening");
+    });
+
+    udpServer.bind(9001);
+
+    function sendToBracelet(data) {
+        var toSend = JSON.stringify(data);
+        var buf = new Buffer(toSend.length);
+        buf.write(toSend);
+        udpServer.send(buf, 0, buf.length, 9002, '150.0.0.123', (err)=> {
+            if(err) {
+                console.log(err);
+            }
+        });
+    }
 }
 
 var exports = {
