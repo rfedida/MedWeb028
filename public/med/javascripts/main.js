@@ -19,15 +19,18 @@ function($routeProvider, $sceDelegateProvider){
 }]);
 
 
-angular.module("medApp").factory('medAppFactory', function ($http) {
+angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
     var factory = {};
 
     factory.roleList = {command: "", 
                         ogda: "", 
                         hativa: "", 
                         tagad: ""};
+                        debugger;
 
-    factory.currentStation = "1_1_1_1";
+    factory.currentStation = "1_1_1_1"
+    // currentUser.details.permission;
+    
     factory.newInjured = {
         "Bracelet_id": "",
         "IsDead":false,

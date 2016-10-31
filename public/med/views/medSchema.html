@@ -1,9 +1,18 @@
 <div ng-controller="myController">
-<br>
+   
+    
     <div class="row MarginTB">
-          <div class="col-md-4 col-md-offset-4 detailsBorder title">תיק רפואי - צמיד {{inj.id}}</div>
+      <div class="col-xs-1">
+        <button type="button" class="button2" ng-click="onClick()">
+           נתוני פצוע 
+        </button>
+      </div>
+          <div class="col-md-4 col-md-offset-3 detailsBorder title">
+            תיק רפואי - צמיד {{inj.id}}
+          </div>
+     
     </div>
-
+  
     <div class="col-md-12 detailsBorder MarginTB">
       <div class="row">
           <div class="col-md-3" ng-class="{'redColor': inj.Storation > 97 || inj.Storation < 92 }">
@@ -73,10 +82,10 @@
           <th>לפני</th>
           <th>תיאור</th>
         </tr>
-      <tr ng-repeat = "treatment in treatments.B">
+        <tr ng-repeat = "treatment in treatments.B">
           <td>{{timeGap(treatment.date)}}</td>
           <td> {{treatment.name}} </td>
-      </tr>
+        </tr>
     </table>
    </div>
   </div>
@@ -151,6 +160,4 @@
     </div>
   </div>
   </div>
-
-  <a href="#injInfo">מעבר לנתוני פצוע</a> 
   </div>
