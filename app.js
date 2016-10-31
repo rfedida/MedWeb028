@@ -132,7 +132,7 @@ function connectToMongo () {
             });
             mongo.getAllUnits(function(data) {
                 for (var i=0; i<data.length; i++) {
-                    files.updateUnit(data[i].id, function(data) {
+                    files.updateUnit(data[i], function(data) {
                         // Decide to check if there was update
                     });
                 }
