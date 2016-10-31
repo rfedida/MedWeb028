@@ -93,7 +93,7 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
     $scope.patientsNum.total;
     $scope.loadPatients = function(unit){
         $scope.currUnitName = unit.name;
-         $http.get('/agam/getPatients/'+unit.id).success(function(data){
+         $http.get('/agam/getPatientsAmount/'+unit.id).success(function(data){
              $scope.currentStationPatients = data;
              // Checks if there are unInitialize emergency fields
              for (index = 0; index < 4; index++){
