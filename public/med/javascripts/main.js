@@ -90,6 +90,15 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
 
     factory.currentInjured = {};
 
+     factory.newTreatment= {
+                date: new Date(),
+                treatmentType: "",
+                location: "",
+                bloodPressure: "",
+                heartbeat: "",
+                temperature: "",
+                storation: ""
+            };
       /*  "Bracelet_id": "920140140",
         "IsDead": false,
         "General_Data": {
