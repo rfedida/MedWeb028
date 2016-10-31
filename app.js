@@ -1,14 +1,11 @@
 // Server
 var express = require('express');
-var bodyParser = require('body-parser');
 var path = require('path');
 var routes = require('./routes/index');
 var agamRoutes = require('./routes/agam'); 
 var medRoutes = require('./routes/med');
 var infrastructureRoutes = require('./routes/infrastructure');
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-var crud = require('./routes/crud');
 var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
 var udpServer = dgram.createSocket('udp4');
@@ -20,6 +17,9 @@ var files = require('./server/med/files');
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var auth = require("./server/infrastructure/BL/authentication")
+var crud = require('./routes/crud');
+var helpers = require('./routes/helpers');
+helpers.patient = "dasdsaa";
 
 var server = express();
 
@@ -98,7 +98,7 @@ server.use('/agam', agamRoutes);
 server.use('/infrastructure', infrastructureRoutes);
 
 server.use('/crud', crud);
-
+//server.use('/crud', pollinghelper);
 
 // Listening to port 9000
 var port = process.env.PORT || 9000;
@@ -107,18 +107,18 @@ server.listen(port, function() {
 });
 
 // MongoDB part
-var isOnline = false;
+helpers.isOnline = false;
 
 function connectToMongo () {
     mongoose.connect('mongodb://150.0.0.56:27017/DB');
     // Getting the data from the db
     var db = mongoose.connection;
     db.on('error', function(err) {
-        isOnline = false;
+        helpers.isOnline = false;
         console.log('Connection to mongo failed');
     });
     db.once('open', function(){
-        isOnline = true;
+        helpers.isOnline = true;
         console.log("connect to mongo");
         
         // Update db according files
@@ -140,7 +140,7 @@ function connectToMongo () {
     });
     db.on('close', function(){
         console.log("connection to mongo closed");
-        isOnline = false;
+        helpers.isOnline = false;
     });
 }
 
@@ -149,7 +149,7 @@ if (pjson.isWeb) {
     connectToMongo();
 } else {
     setInterval(function() {
-        if (!isOnline) {
+        if (!helpers.isOnline) {
             connectToMongo();
         }
     }, 3000);
@@ -157,7 +157,7 @@ if (pjson.isWeb) {
 
 if (!pjson.isWeb) {
     // UDP Server
-    var patient = undefined;
+    helpers.udpServer = udpServer;
 
     udpServer.on('error', (err) => {
         console.log('UDP server error' + err);
@@ -165,18 +165,20 @@ if (!pjson.isWeb) {
 
     udpServer.on('message', (msg, rinfo) => {
         patient = JSON.parse(msg.toString("utf8"));
+        helpers.patient = patient;
+
         // write to file
         files.writePatientOrUpdateFromUsb(patient);
 
         // write to db
-        if (isOnline) {
+        if (helpers.isOnline) {
             mongo.writePatientOrUpdateFromUsb(patient);
         } else {
             // write to temp file
             temp.writePatientOrUpdateFromUsb(patient);
         }
         console.log(patient);
-        sendToBracelet(patient);
+        helpers.sendToBracelet(patient);
     });
 
     udpServer.on('listening', () => {
@@ -185,7 +187,7 @@ if (!pjson.isWeb) {
 
     udpServer.bind(9001);
 
-    function sendToBracelet(data) {
+    helpers.sendToBracelet = (data) => {
         var toSend = JSON.stringify(data);
         var buf = new Buffer(toSend.length);
         buf.write(toSend);
@@ -197,12 +199,6 @@ if (!pjson.isWeb) {
     }
 }
 
-var exports = {
-    server: server,
-    udpServer: udpServer,
-    patient: patient,
-    sendToBracelet: sendToBracelet,
-    isOnline: isOnline
-};
+helpers.server = server;
 
-module.exports = exports;
+module.exports = server;

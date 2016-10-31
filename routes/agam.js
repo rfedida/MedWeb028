@@ -42,7 +42,7 @@ router.get('/MapUnits/:userHirarchy',function(req,res,next){
         res.json(UnitsArr)})
 });
 
-router.get('/getPatients/:unitid', function(req, res, next){
+router.get('/getPatientsAmount/:unitid', function(req, res, next){
     var x= res.req.params;
     var unitid = res.req.params.unitid;
     Patient.aggregate(
