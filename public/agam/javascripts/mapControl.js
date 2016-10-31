@@ -1,10 +1,9 @@
 
 // module.controller(שם, מערך של כל מה שהקונטרולר תלוי בו כשהאובייקט האחרון הוא הפונקציה)
-myApp.controller('mapControl', ['$scope','$http', 'leafletData','unitService', function($scope,$http,leafletData, unitService){
+myApp.controller('mapControl', ['$scope','$http', 'leafletData', function($scope,$http,leafletData){
     $scope.markers = [];
     $scope.selectedMarker = null;
     var htmlAbove, htmlBelow, iconSize;
-    $scope.unitDetails = unitService.unitDetails;
     angular.extend($scope, {
         TaagadIcon:{
             iconUrl: '../../common/img/1.png',
