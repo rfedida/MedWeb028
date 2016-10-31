@@ -51,31 +51,32 @@
         </div>
         <span  ng-controller="unitsTreeController">
         <div class="{{sizestatic}}">
-            <div class="row" style="background: gray">
+            <div class="row" style="background: #B3E5FC">
                 <span class="col-md-4">  
-            <button type="button" class="btn btn-warning">
-               <a href="/med"> צפה בפרטים </a>
+            <button type="button" class="btn" style="font-size: 15px;background-color: white;">
+               <a  href="/med"> צפה בפרטים </a>
                 </button>
               </span>
-                <span class="col-md-4 text-center" style="color:white">{{patientsNum.total}}   :סה"כ פצועים</span>
-                <span class="col-md-4 text-right" style="color:white" ng-model="currUnitName"> {{currUnitName}} </span>
+                <span class="col-md-4 text-center" style="color:black">{{patientsNum.total}}   :סה"כ פצועים</span>
+                <span class="col-md-4 text-right" style="color:black" ng-model="currUnitName"> {{currUnitName}} </span>
                 <div class="progress">
               
                 </div>
             </div>
-            <div class="row" style="background: gray">
+            <div class="row" style="background: #B3E5FC">
+             
                 <div class="progress">
-                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                        18{{ptzuim}}
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{(patientsNum.notEmergencyInjured/patientsNum.total)*100}}%">
+                        {{patientsNum.notEmergencyInjured}}
                     </div>
-                    <div class="progress-bar progress-bar-warning" role="progressbar" style="width:35%">
-                       12 {{ptzuimDacuf}}
+                    <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{(patientsNum.emergencyInjured/patientsNum.total)*100}}%">
+                        {{patientsNum.emergencyInjured}}
                     </div>
-                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width:15%">
-                        2{{chalalim}}
+                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{(patientsNum.deads/patientsNum.total)*100}}%">
+                        {{patientsNum.deads}}
                     </div>
-                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width:15%">
-                      3  {{unknown}}
+                    <div class="progress-bar progress-bar-default" role="progressbar" style="width:{{(patientsNum.unknownInjured/patientsNum.total)*100}}%">
+                        {{patientsNum.unknownInjured}}
                     </div>
                 </div>
             </div>
@@ -94,7 +95,7 @@
         </div> 
         <div>
           {{X}}
-      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="dataForTheTree.children[0]">
                 {{node.name}}
         </treecontrol>
         <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node) ;loadPatients(node)" selected-node="node1">
