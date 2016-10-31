@@ -42,7 +42,7 @@ router.get('/MapUnits/:userHirarchy',function(req,res,next){
         res.json(UnitsArr)})
 });
 
-router.get('/getPatients/:unitid', function(req, res, next){
+router.get('/getPatientsAmount/:unitid', function(req, res, next){
     var x= res.req.params;
     var unitid = res.req.params.unitid;
     Patient.aggregate(
@@ -72,6 +72,23 @@ router.get('/getPatients/:unitid', function(req, res, next){
         }
 
     });
+});
+
+router.get('/allPatientsAmount/:userHirarchy', function(req, res, next){
+    var userHirarchy = res.req.params.userHirarchy;
+    Patient.aggregate(
+        [{"$match": {"CurrentStation" : {"$regex": "^" + userHirarchy}}},
+        {"$group" : {
+            "_id" : {"Station": "$CurrentStation",
+                "Emergency": "$generalData.emergency"},
+            "count": {"$sum": 1}
+            }},
+        {"$group":{
+            "_id" : "$_id.Emergency",
+            "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
+        }, {"$sort":{"_id" : 1}}], function(err, result){
+            res.send(result);
+        });
 });
 
 module.exports = router;

@@ -1,100 +1,111 @@
-
-
-<div class="modal ">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <center>
+<div class="modal" ng-app="medApp" ng-controller="InjuredController">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <center>
                 <div class="modal-header">
                     <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title"><strong>טיפול חדש</strong>
                     </h4>
                 </div>
-                </center>
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-                   
-                   <!--הליך שבוצע-->
-                    <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="treatID" 
-                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="*****" ng-model="treatID">
-                        </div>
-                        <label for="treatID" class="col-sm-2 control-label">הליך שבוצע</label>
-                    </div>
-
-                   <!--מיקום טיפול-->
-                    <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="treatLocation" 
-                         onkeypress='return event.charCode >= 128 && event.charCode <= 154' 
-                          maxlength="10" placeholder="הזן מיקום טיפול" ng-model="treatLocation">
-                        </div>
-                        <label for="treatLocation" class="col-sm-2 control-label">מיקום הטיפול</label>
-                    </div>
-                    
-                    <!--ל"ד-->
-                    <div class="form-group">
-                    <div class ="row">
-                    <div class="col-sm-3" style="padding-right: 10px;">
-                        <input type="text" class="form-control" id="bloodPressure" 
-                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="לד" ng-model="bloodPressure">
-                         <div class="col-sm-3" style="padding-left: 10px;">
-                        <input type="text" class="form-control" id="bloodPressure" 
-                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="לד" ng-model="bloodPressure">
-            
-                        </div>
-                        <label for="bloodPressure" class="col-sm-2 control-label">לחץ דם</label>
-                    </div>
-                    </div>
-                   
-                    <!--דופק-->
-                    <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="heartbeat" 
-                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="דופק" ng-model="heartbeat">
-                        </div>
-                        <label for="heartbeat" class="col-sm-2 control-label">דופק</label>
-                    </div>
-
-                    <!--חום-->
-                    <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="temperature" 
-                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="חום" ng-model="temperature">
-                        </div>
-                        <label for="temperature" class="col-sm-2 control-label">חום</label>
-                    </div>
-
-                    <!--סטורציה-->
-                    <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="storation" 
-                         onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="סטורציה" ng-model="storation">
-                        </div>
-                        <label for="storation" class="col-sm-2 control-label">סטורציה</label>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">אישור</button>
-                    <button type="button" ng-click="cancel()" class="btn">ביטול</button>
-                </div>
+            </center>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <table>
+                        <!--הליך שבוצע-->
+                        <tr class="form-group">
+                            <td>
+                                <label for="selectedTreatMed" class="col-sm-20 control-label">הליך שבוצע</label>
+                            </td>
+                            <td colspan="3">
+                                <div class="col-sm-12" style="padding-top: 10px;">
+                                    <select class="form-control" id="selectedTreatMed" ng-model="selectedTreatMed" ng-options="treatMed.id as treatMed.name for treatMed in treat_Med">                            
+                        </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <!--מיקום טיפול-->
+                        <tr class="form-group">
+                            <td>
+                                <label for="treatLocation" class="col-sm-20 control-label">מיקום הטיפול</label>
+                            </td>
+                            <td colspan="3">
+                                <div class="col-sm-12" style="padding-top: 10px;">
+                                    <input type="text" class="form-control" id="treatLocation" maxlength="10" placeholder="מיקום טיפול" ng-model="treatLocation">
+                                </div>
+                            </td>
+                        </tr>
+                        <!--ל"ד-->
+                        <tr class="form-group">
+                            <td>
+                                <label for="lowBloodPressure" class="col-sm-20 control-label">לחץ דם</label>
+                            </td>
+                            <td>
+                                <div class="col-sm-12" style="padding-top: 10px;">
+                                    <input type="text" class="form-control" id="lowBloodPressure" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                        maxlength="2" placeholder="נמוך" ng-model="lowBloodPressure">
+                                </div>
+                            </td>
+                            <td>
+                                <label for="highBloodPressure" class="col-sm-15 control-label">/</label>
+                            </td>
+                            <td>
+                                <div class="col-sm-12" style="padding-top: 10px;">
+                                    <input type="text" class="form-control" id="highBloodPressure" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                        maxlength="3" placeholder="גבוה" ng-model="highBloodPressure">
+                                </div>
+                            </td>
+                        </tr>
+                        <!--דופק-->
+                        <tr class="form-group">
+                            <td>
+                                <label for="heartbeat" class="col-sm-20 control-label">דופק</label>
+                            </td>
+                            <td colspan="3">
+                                <div class="col-sm-12" style="padding-top: 10px;">
+                                    <input type="text" class="form-control" id="heartbeat" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="3"
+                                        placeholder="דופק" ng-model="heartbeat">
+                                </div>
+                            </td>
+                        </tr>
+                        <!--חום-->
+                        <tr class="form-group">
+                            <td>
+                                <label for="temperature" class="col-sm-20 control-label">חום</label>
+                            </td>
+                            <td colspan="3">
+                                <div class="col-sm-12" style="padding-top: 10px;">
+                                    <input type="number" class="form-control" id="temperature" step = 0.1
+                                            min="36" max="44" placeholder="(C)" ng-model="temperature" required>
+                                </div>
+                            </td>
+                        </tr>
+                        <!--סטורציה-->
+                        <tr class="form-group">
+                            <td>
+                                <label dir="center" for="storation" class="col-sm-20 control-label">סטורציה</label>
+                            </td>
+                            <td colspan="3">
+                                <div class="col-sm-12" style="padding-top: 10px;">
+                                    <input type="text" class="form-control" id="storation" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="3"
+                                        placeholder="(%)" ng-model="storation">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--מיקום טיפול
+                   onkeypress='return event.charCode >= 128 && event.charCode <= 154' -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">אישור</button>
+                <button type="button" ng-click="cancel()" class="btn">ביטול</button>
             </div>
         </div>
     </div>
-    
+</div>
+
 
 <!--
-
-
-
-
 <div class="modal ">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -164,5 +175,4 @@
             </div>
         </div>
     </div>
-    
 -->
