@@ -84,9 +84,33 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
 
     $scope.loadUnits();
 
-    $scope.loadPatients = function(unitid){
-        console.log(unitid.id);
-         $http.get('/agam/getPatients/'+unitid).success(function(data){
+    $scope.currentStationPatients = [];
+    $scope.patientsNum = {};
+    $scope.patientsNum.unknownInjured = 0;
+    $scope.patientsNum.notEmergencyInjured = 0;
+    $scope.patientsNum.emergencyInjured = 0;
+    $scope.patientsNum.deads = 0;
+    $scope.patientsNum.total;
+    $scope.loadPatients = function(unit){
+        $scope.currUnitName = unit.name;
+         $http.get('/agam/getPatients/'+unit.id).success(function(data){
+             $scope.currentStationPatients = data;
+             // Checks if there are unInitialize emergency fields
+             for (index = 0; index < 4; index++){
+                if ($scope.currentStationPatients[index] == null){
+                    $scope.currentStationPatients[index] = {count:0}
+                }
+             }
+             
+             // get the current station num of patients of each emergency type
+             $scope.patientsNum.unknownInjured = $scope.currentStationPatients[0].count;
+             $scope.patientsNum.notEmergencyInjured = $scope.currentStationPatients[1].count;
+             $scope.patientsNum.emergencyInjured = $scope.currentStationPatients[2].count;
+             $scope.patientsNum.deads =  $scope.currentStationPatients[3].count; 
+             $scope.patientsNum.total = $scope.patientsNum.unknownInjured +
+                                        $scope.patientsNum.notEmergencyInjured +
+                                        $scope.patientsNum.emergencyInjured +
+                                        $scope.patientsNum.deads;
          });
     };
 
