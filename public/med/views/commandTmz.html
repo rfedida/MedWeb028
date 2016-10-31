@@ -1,7 +1,7 @@
 <div ng-controller="CommandController">
     <div ng-repeat="unit in unitsUnderCommand"  >
         
-        <div class="col-md-6" ng-click="stepIntoUnit(unit)">
+        <div class="col-md-6" ng-click="stepIntoUnit(unit)" class="statusGraph">
         <center>
             <h1 style="background:gray">{{unit.name}}</h1>
         </center>

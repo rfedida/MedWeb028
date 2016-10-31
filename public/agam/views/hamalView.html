@@ -1,0 +1,44 @@
+
+
+<div class="modal ">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <center>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><strong>תצוגת חמ"ל</strong>
+                    </h4>
+                </div>
+                </center>
+                <div class="modal-body">
+                      <table class="table">
+                          <thead>
+                            <tr>
+                                <th>שם התחנה</th>
+                                <th>מספר פצועים</th>
+                                <th>מספר פצועים דחוף</th>
+                                <th>חללים</th>
+                                <th>סטטוס לא ידוע</th>
+                                <th>תפוסה מקסימלית</th>
+                                <th>אחוזי תפוסה</th>
+                                <th>חוזי להתמלאות</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="station in dataset">
+                                <td>{{station.name}}</td>
+                                <td>{{station.totalPatients}}</td>
+                                <td>{{station.urgent}}</td>
+                                <td>{{station.dead}}</td>
+                                <td>{{station.unknown}}</td>
+                                <td>{{station.maxCapacity}}</td>
+                                <td>{{station.Precent}}</td>                                
+                                <td>{{station.prediction}}</td>
+                            </tr>
+                            </tbody>
+                      </table>  
+                </div>
+            </div>
+        </div>
+    </div>
+    

@@ -1,32 +1,16 @@
 var express = require('express');
 var crudRouter = express.Router();
 var mongoose = require('mongoose');
-var Unit = require('../models/unitSchema');
-var Patient = require('../models/patientSchema');
+var Unit = require('../server/common/models/unitSchema');
+var Patient = require('../server/common/models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
-var pjson = require('../package.json')
-
-function sortDesc(arrayToSort, field){
-    var newArray = arrayToSort.sort(function(a,b) {
-        return (new Date(b[field]) - new Date(a[field])); 
-    });
-
-    return newArray;
-}
-
-function getAllCurrentStationById(arrayToSort, currStationId) {
-
-    var onlyCurrentStationArray = [];
-    arrayToSort.forEach(function(station) {
-        if (station.stationId == currStationId) {
-            onlyCurrentStationArray.push(station);
-        }
-    });
-    return onlyCurrentStationArray;
-}
+var pjson = require('../package.json');
+var mongo = require('../server/med/mongo');
+var files = require('../server/med/files');
+var temp = require('../server/med/temp');
+var helpers = require('./helpers');
 
 crudRouter.get('/units', function (req, res, next) {
-
     if (pjson.isWeb) {
         Unit.find(function (err, units) {
             if (err) {
@@ -37,19 +21,17 @@ crudRouter.get('/units', function (req, res, next) {
         });
     }
 });
-
 crudRouter.get('/units/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        Unit.findOne({'id' : req.params.id}, function(err, unit) {
-            if (err) { 
-                res.send(err);
-            } else {
-                res.send(unit);
-            }
+        mongo.getUnitByUnitId(req.params.id, function(data) {  
+            res.send(data);
+        });
+    } else {
+        files.getUnitByUnitId(req.params.id, function(data) {
+            res.send(data);
         })
     }
 });
-
 crudRouter.delete('/units/:id', function (req, res, next) {
     if (pjson.isWeb) {
         Unit.findOneAndRemove({"id": req.params.id}, function(err, unit) {
@@ -61,29 +43,26 @@ crudRouter.delete('/units/:id', function (req, res, next) {
         });
     }
 });
-
 crudRouter.get('/patients', function(req, res, next) {
     if (pjson.isWeb) {
-        Patient.find(function (err, patients) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(patients);
-            }
+        mongo.getAllPatients(function(data) {
+            res.send(data);
+        });
+    } else {
+        files.getAllPatients(function(data) {
+            res.send(data);
         });
     }
 });
-
-
 crudRouter.get('/patients/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        Patient.findOne({"braceletId" : req.params.id}, function(err, patient) {
-            if (err) { 
-                res.send(err);
-            } else {
-                res.send(patient);
-            }
-        })
+        mongo.getPatientByBraceletId(req.params.id, function(data) {
+            res.send(data);
+        });
+    } else {
+        files.getPatientByBraceletId(req.params.id, function(data) {
+            res.send(data);
+        });
     }
 });
 
@@ -99,60 +78,54 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                 
                 // Run all patients and sort each station by reception time
                 patients.forEach(function(patient){
-
                     // Pull out all station which equals to current station
-                    patient.Stations = getAllCurrentStationById(patient.Stations, req.params.unitId);
-
+                    patient.Stations = mongo.getAllCurrentStationById(patient.Stations, req.params.unitId);
                     // Sort the array by last reception time
-                    sortDesc(patient.Stations, "receptionTime");
+                    mongo.sortDesc(patient.Stations, "receptionTime");
                 })
-
                 var lastReceptionPatient = patients[0];
-
                 // Run all patients and check what is the last patient who arrived to station
                 patients.forEach(function(patient){
                     if (patient.Stations[0].receptionTime > lastReceptionPatient.Stations[0].receptionTime) {
                         lastReceptionPatient = patient;
                     }
                 })
-
+                res.setHeader('Access-Control-Allow-Origin', '*');
                 res.send(lastReceptionPatient);
             }
          })
     }
 })   
-
 // Get patients by unit id
 crudRouter.get('/patients/units/:unitId', function(req, res,next) {   
      if (pjson.isWeb) {
-        Patient.find({"CurrentStation" : req.params.unitId},  function(err, patients) {
-        if (err) {
-            res.send(err);
-        } else {
-            // Parse to json
-            patients = JSON.parse(JSON.stringify(patients));
-            var result = []; 
-            
-            // Run all patients and save specific fields
-            patients.forEach(function(patient){
-
-                // Create new json which inculdes the following fields:
-                // braceletId, temperature, storation, bloodPressure, heartbeat
-                // Sort each array in measurements according to last timestamps and set the last into json
-                var newPatient = {
-                                    "braceletId" : patient.braceletId,
-                                    "temperature" :  sortDesc(patient.measurements.temperatures, "timestamp")[0].tempreature,
-                                    "storation" : sortDesc(patient.measurements.storations, "timestamp")[0].storation,
-                                    "bloodPressure" : sortDesc(patient.measurements.bloodPressures, "timestamp")[0].bloodPressure,
-                                    "heartbeat" : sortDesc(patient.measurements.heartbeat, "timestamp")[0].heartbeat,
-                                    "status" : patient.generalData.emergency,
-                                    "receptionTime" : sortDesc(patient.Stations, "receptionTime")[0].receptionTime };
-                result.push(newPatient);                
+        mongo.getPatientsByUnitId(req.params.unitId, function(data) {
+            res.send(data);
+        });
+     } else {
+         mongo.getPatientsByUnitId(req.params.unitId, function(data) {
+            res.send(data);
+         });
+     }    
+});
+// Insert patient details
+crudRouter.post('/patients', function (req, res, next) {
+    if (pjson.isWeb) {
+        mongo.insertPatient(req.body.patient, function(data) {
+            res.send(data);
+        });
+    } else {
+        files.insertPatient(req.body.patient);
+        
+        // check if online insert to db else insert to temp file
+        if (helpers.isOnline) {
+            mongo.insertPatient(req.body.patient, function(data) {
+                res.send(data);
             });
-
-            res.send(result);
-        }    
-    })}
+        } else {
+            temp.insertPatient(req.body.patient);
+        }
+    }
 });
 
 // Get patients by unit id
@@ -181,121 +154,64 @@ crudRouter.get('/patients/underUnit/:unitId', function(req, res,next) {
 });
 
 // Update patient details
- crudRouter.put('/patients/:isTure/:object', function (req, res, next) {
-
+ crudRouter.put('/patients', function (req, res, next) {
      if (pjson.isWeb) {
-
-        req.params.object.LastUpdate = new Date().getTime();
-
-         // If the patient is new
-         if (req.params.isTure) {
-            Patient.create(req.params.object, function(err, patient){
-                  if (err) { 
-                    res.send(err);
-                  } 
-                  else {
-                        res.send(patient);
-                  }
-            })
-         }
-         // Update the patient 
-         else {
-            
-            Patient.findByIdAndUpdate(req.params.object.braceletId, {$set: req.params.object}, {new: false}, 
-                function (err, patient){
-                    if (err) { 
-                    res.send(err);
-                    } else {
-                        res.send(patient);
-                    }
+         mongo.updatePatient(req.body.patient, function(data) {
+             res.send(data);
+         });
+     } else {
+        files.updatePatient(req.body.patient, function(isUpdataed) {
+            // Decide what to do if the patient didnt updated 
+        });
+        
+        // check if online update db else update temp file
+        if (helpers.isOnline) {
+            mongo.updatePatient(req.body.patient, function(data) {
+                res.send(data);
             });
-         }  
+        } else {
+            temp.updatePatient(req.body.patient, function(data) {
+                res.send(data);
+            });
+        }
      }
  })
-
-// Update patient details
- crudRouter.put('/units/:object', function (req, res, next) {
-
-     if (pjson.isWeb) {
-
-            Unit.findByIdAndUpdate(req.params.object.id, {$set: req.params.object}, {new: false}, 
-                function (err, unit){
-                    if (err) { 
-                    res.send(err);
-                    } else {
-                        res.send(unit);
-                    }
+// Update unit details
+ crudRouter.put('/units', function (req, res, next) {
+    if (pjson.isWeb) {
+        mongo.updateUnit(req.body.unit, function(data) {
+            res.send(data);
+        });
+    } else {
+        files.updateUnit(req.body.unit, function(data) {
+            // Decide what to do if the patient didnt updated
+        });
+        // check if online update db else update temp file
+        if (helpers.isOnline) {
+            mongo.updateUnit(req.body.unit, function(data) {
+                res.send(data);
             });
-         }  
-     
+        } else {
+            temp.updateUnit(req.body.unit, function(data) {
+                res.send(data);
+            });
+        }
+    }
  })
-
-// Get the name of unit by id
-// crudRouter.get('/unitName/:id', function(req, res,next) {
-//     Unit.findOne({"id": req.params.id} , "name", function(err, unit) {
-  //  if (pjson.isWeb) {
-//         if (err) {
-//             res.send(err);
-//         } else {
-//             res.send(unit);
-//         }
-    //}
-//     });
-    
-// });
-
 // Get all units under specific unit
 crudRouter.get('/units/:unitId/units', function(req, res, next) {
-    
     if (pjson.isWeb) {
-       Unit.find(function (err, units) {
-              if (err) {
-                console.log(err);
-                res.send(err); 
-            } else {
 
-            //    var pattern = "^" + req.params.unitId + "(_[0-9]+)+$";
-                var pattern = "^" + req.params.unitId + "[_\d]{1}[0-9]+$";
-                var list = [];
-                var regex = new RegExp(pattern);
-                var bIsIdExist = false;
-                units = JSON.parse(JSON.stringify(units));
-                
-                // Find if the unit id is existed
-                for (var i=0; i<units.length; i++) {
-                    if(units[i].id === req.params.unitId)
-                    bIsIdExist = true;
-                }
-                
-                // If the id exist
-                if (bIsIdExist) {
-                    
-                    // Run all units and find if the are units which match the regex
-                    for (var i=0; i<units.length; i++) {
-                        if (regex.test(units[i].id))
-                            list.push(units[i]);
-                    }
-                }
+        mongo.getUnitsOfUnderUnit(req.params.unitId, function(data) {
+            res.send(data);
 
-                res.send(list);
-            }
         });
-    }    
+    } else {
+        files.getUnitsOfUnderUnit(req.params.unitId, function(data) {
+            res.send(data);
+        });
+    }
 });
-
-
-// crudRouter.get('/units/:id', function(req, res,next) {
-//     if (pjson.isWeb) {
-//         Patient.findOne({"id": req.params.id} , "name", function(err, unit) {
-//             if (err) {
-//                 res.send(err);
-//             } else {
-//                 res.send(unit);
-//             }
-//         });
-//     }
-// });
-
 crudRouter.delete('/patients/:id', function (req, res, next) {
     if (pjson.isWeb) {
         Patient.findOneAndRemove({"id": req.params.id}, function(err, unit) {
@@ -307,14 +223,12 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
         });
     }
 });
-
-//trying
-crudRouter.get('/injuryMechanism' , function(req , res ){
+crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
     console.log("get requst for db");
     Patient.aggregate(
         [
             {$group :
-                { _id : "$generalData.injuryMechanism", 
+                { _id : "$generalData.injuryLocation", 
                   count : {$sum : 1}}},
             {$sort : {_id : 1}},
             { $project : 
@@ -333,7 +247,114 @@ crudRouter.get('/injuryMechanism' , function(req , res ){
         }
         else {}
     });
+});
+crudRouter.get('/patientsInjuryLocationByTime', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate([
+            {
+                $group : {
+                    _id : {key: "$generalData.injuryLocation", x: "$Stations.receptionTime"},
+                    y : {$sum : 1}
+                }
+            },
+            {
+                $sort : {
+                    _id : 1,
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             res.json(patients);
+             console.log(patients);
+        }
+        else {}
+    });
+});
+var InjuryMechanismType = {
+   0:  "תלול מסלול" ,
+   1: "ירי" ,
+   2: "הדף" ,
+   3: "אבכ" ,
+   4: "כוויה" ,
+   5: "שאיפה" ,
+   6: "תאונת דרכים"
+};
+//trying
+crudRouter.get('/injuryMechanism' , function(req , res ){
+    console.log("db get requst for injuryMechanism");
+    Patient.aggregate(
+        [
+            {$group :
+                { _id : "$generalData.injuryMechanism", 
+                  count : {$sum : 1}}},
+            {$sort : {_id : 1}},
+            { $project : 
+                {
+                    key : "$_id",
+                    y : "$count",
+                    _id : 0
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             var lior = patients.map(function(currPatient){
+                 currPatient.key = InjuryMechanismType[currPatient.key];
+                 return currPatient;
+             });
+             res.json(lior);
+        }
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
+    });
     
 });
+crudRouter.get('/patientsInjuryMechanismByTime', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate([
+            {
+                $group : {
+                    _id : {key: "$generalData.injuryMechanism", x: "$Stations.receptionTime"},
+                    y : {$sum : 1}
+                }
+            },
+            {
+                $sort : {
+                    _id : 1,
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             var lior = patients.map(function(currPatient){
+                 currPatient._id.key = InjuryMechanismType[currPatient._id.key];
+                 return currPatient;
+             });
+             res.json(lior);
+        }
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
+    });
+});
+
 
 module.exports = crudRouter;
+
+
+crudRouter.get('/newPatient', function (req, res, next){
+    if(!pjson.isWeb) {
+        if(helpers.patient != undefined) {
+            var ptnNew = helpers.patient;
+            helpers.patient = undefined;
+            res.send(ptnNew);
+        }
+    }
+
+    res.send(undefined)
+});

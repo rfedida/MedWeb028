@@ -1,4 +1,4 @@
-var Patient = require('../../models/patientSchema');
+var Patient = require('../../server/common/models/patientSchema');
 
  var  getOcupationAmoutGraph = function(hirarchCode, callback){
      var jsonDataOne = {};

@@ -1,10 +1,12 @@
-angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', '$location', 
-function($scope, medAppFactory, $location) 
+angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', '$location','$interval', 
+function($scope, medAppFactory, $location, $interval) 
 {
     if(Object.keys(medAppFactory.currentInjured).length === 0)
     {
         $location.path("/");
     };
+
+    refresh();
 
     $scope.currentInj = medAppFactory.currentInjured;
     $scope.treat_Med = medAppFactory.treatmentsMed;
@@ -12,6 +14,12 @@ function($scope, medAppFactory, $location)
            $scope.treatments = {"A": [], "B": [], "C": [], "D": []};
            $scope.medications = [];
            $scope.liquids = [];
+
+           function refresh($scope)
+           {
+               $interval(function(){},60000);
+           }
+      
 
            function divByGrp ()
            {
@@ -23,6 +31,24 @@ function($scope, medAppFactory, $location)
                    var group =$scope.treat_Med[$scope.currentInj.treatments[i].treatmentType].group;
                    $scope.treatments[group].push($scope.currentInj.treatments[i]);
                }
+
+                $scope.treatments.A.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+                 $scope.treatments.B.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+                 $scope.treatments.C.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+                 $scope.treatments.D.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+             
            }
 
           function medFunc ()
@@ -33,6 +59,11 @@ function($scope, medAppFactory, $location)
                                            $scope.treat_Med[$scope.currentInj.medications[i].medicationId].name;
                     $scope.medications.push($scope.currentInj.medications[i]);                      
                }
+                 $scope.medications.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+         
            };
 
            function liqFunc ()
@@ -69,30 +100,51 @@ function($scope, medAppFactory, $location)
                   } 
            }
 
-           function timeGap(date, time, $scope)
-           {
-               var actionDate = new Date(date.split('-')[2] + '-' + 
-                                date.split('-')[1] + '-' + 
-                                date.split('-')[0] + ':' + 
-                                time);
 
-               var timeDiff = Math.ceil(Math.abs((new Date().getTime() - 
-                                                actDate.getTime()) * (1.667 * Math.pow(10,-5))));
-               var hoursDiff = Math.floor(timeDiff / 60);
-               var minutesDiff = Math.abs(timeDiff % 60);
+        $scope.timeGap = function(date)
+           {
+               var actionDate = new Date(parseInt(date));            
+               var now = new Date();
+               var timeDiff = Math.ceil(Math.abs((now - actionDate.getTime()) * 
+                                                 (1.667 * Math.pow(10,-5))));
+               var hoursDiff = "" + Math.floor(timeDiff / 60);
+               var minutesDiff = "" +  Math.abs(timeDiff % 60);
 
                var pad = "00";
     
               return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
                ':' + 
-              pad.substring(0, pad.length - minutesDiff.strlength) + minutesDiff);
+              pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
+
            }
 
+       //    $scope.sortCol = function(col)
+         //  {
+           //    col.sort(function(a,b){return a-b});
 
-  
+           //}
+
+      /*     $scope.timeGap = function(date)
+           {
+               var actionDate = new Date(date);            
+
+               var timeDiff = Math.ceil(Math.abs((new Date().getTime() - 
+                                                actionDate.getTime()) * 
+                                                (1.667 * Math.pow(10,-5))));
+               var hoursDiff = "" + Math.floor(timeDiff / 60);
+               var minutesDiff = "" +  Math.abs(timeDiff % 60);
+
+               var pad = "00";
+    
+              return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
+               ':' + 
+              pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
+           }*/
+
+      
 
     $scope.inj = {
-                   "id":  $scope.currentInj.Bracelet_id,
+                   "id":  $scope.currentInj.braceletId,
                    "temp": $scope.currentInj.measurements.temperatures[$scope.currentInj
                             .measurements.temperatures.length-1].tempreature,
                    "HeartBeat": $scope.currentInj.measurements
@@ -103,6 +155,10 @@ function($scope, medAppFactory, $location)
                         .storations[$scope.currentInj.measurements.storations.length-1].storation,
            };
 
+$scope.onClick = function()
+{
+ $location.path("/injInfo");
+}
          
 divByGrp();
 medFunc();

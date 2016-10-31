@@ -1,6 +1,7 @@
-var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "nvd3"]);
-app.remote="";
 
+var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial", "nvd3"  ]);
+
+app.remote="";
 app.config(['$routeProvider', '$sceDelegateProvider',
 function($routeProvider, $sceDelegateProvider){
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -19,9 +20,7 @@ function($routeProvider, $sceDelegateProvider){
 		templateUrl: app.remote + "/med/views/commandTmz.html"
     	});
 }]);
-
-
-angular.module("medApp").factory('medAppFactory', function ($http) {
+angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
     var factory = {};
 
     // 0 - unknwon, not-urgent, urgent, dead
@@ -55,47 +54,59 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
     };
 
     factory.currentStation = "1";
+
+    factory.roleList = {command: "", 
+                        ogda: "", 
+                        hativa: "", 
+                        tagad: ""};
+                        debugger;
+    // currentUser.details.permission;
+    //factory.currentStation = currentUser.getDetails().permission;
+    factory.currentStation = "1";    
+
     factory.newInjured = {
-        "Bracelet_id": "",
-        "IsDead":false,
-    "General_Data" :{
-                        "Emergency": 0, // 0 - Undifiened, 1 - no emergency, 2 - emenrgency
-                        "Breathing_hit": false,
-                        "Airway_hit": false,
-                        "Shock": false,
-                        "Injury_mechanism": "",
-                        "Consciousness": "",  // Enum - A O V P L
-                        "Injury_place_in_body": ""
-                            },
-            "Treatments": [],
-
-            "Medications": [],
-
-        "Liquids": [],
-        "Measurements": {
-                    "Temperatures": [],
-
-                    "Storations": [],
-
-                    "Bloodpressures": [],
-
-                    "Heartbeat": []
-
-                  },
-    "Stations":[{
-                    "ReceptionDate": "",
-                    "ReceptionTime": "",
-                    "StationId": "",
-                    "LeavingDate":"", 
-                    "LeavingTime": "" //Evacucation time
-                }]
+    "braceletId" : "",
+    "CurrentStation" : factory.currentStation,
+    "LastUpdate" : 0,
+    "generalData" : {
+        "emergency" : 0,
+        "breathingHit" : true,
+        "airwayHit" : true,
+        "shock" : true,
+        "injuryMechanism" : 2,
+        "consciousness" : "P",
+        "injuryLocation" : "",
+        "comments" : ""
+    },
+    "treatments" : [],
+    "medications" : [],
+    "liquids" : [],
+    "measurements" : {
+        "temperatures" : [],
+        "storations" : [],
+        "bloodPressures" : [],
+        "heartbeat" : []
+    },
+    "Stations" : [
+        {
+            "receptionTime" : 0,
+            "stationId" : factory.currentStation,
+            "leavingDate" : 0
+        }
+    ]
 };
+
+
+
+
+
+
 
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
-        "1234": {name: "קוניוטו", group:"A"}, 
-        "123": {name: "איטוב", group:"A"},
+        "1": {name: "קוניוטו", group:"A"}, 
+        "2": {name: "איטוב", group:"A"},
         "3": {name: "N.A", group:"B"},
         "4": {name: "נקז חזה", group:"B"},
         "5": {name: "C.A.T", group:"B"},
@@ -114,8 +125,17 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
         "18": {name: "מים"},
         "19": {name: "דם"}
 };
-
     factory.currentInjured = {};
+    
+     factory.newTreatment= {
+                date: new Date(),
+                treatmentType: "",
+                location: "",
+                bloodPressure: "",
+                heartbeat: "",
+                temperature: "",
+                storation: ""
+            };
 
       /*  "Bracelet_id": "920140140",
         "IsDead": false,
@@ -198,7 +218,6 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
                         "Temperature": "44",
                         "Storation": "85%"
                     }],
-
         "Medications": [{
             "Date": "23/4/2015",
             "Time": "18:30:00",
@@ -221,7 +240,6 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
                 "Temperature": "44",
                 "Storation": "85%"
             }],
-
         "Liquids": [{
                         "Date": "23/4/2015", 
                         "Time": "18:30:00",
@@ -265,7 +283,6 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
                     "Timestamp": "06072016183100",
                     "Temperature": "38"
                 }],
-
             "Storations": [{
                 "Timestamp": "06072016183000",
                 "Storation": "40"
@@ -274,7 +291,6 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
                     "Timestamp": "06072016183100",
                     "Storation": "89"
                 }],
-
             "Bloodpressures": [{
                 "Timestamp": "06072016183000",
                 "Bloodpressure": "40"
@@ -283,7 +299,6 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
                     "Timestamp": "06072016183100",
                     "Bloodpressure": "41"
                 }],
-
             "Heartbeat": [{
                 "Timestamp": "06072016183000",
                 "Heartbeat": "40"
@@ -292,7 +307,6 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
                     "Timestamp": "06072016183100",
                     "Heartbeat": "66"
                 }]
-
         },
         "Stations": [{
             "ReceptionDate": "20/3/2016",
@@ -302,7 +316,6 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
             "LeavingTime": "8:00:00" //Evacucation time
         }]
     };*/
-
     factory.InjuryMechanismType = [
         { id: 0, name: "תלול מסלול" },
         { id: 1, name: "ירי" },
@@ -312,15 +325,16 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
         { id: 5, name: "שאיפה" },
         { id: 6, name: "תאונת דרכים" }
     ];
-
     factory.currentCommand = "";
     factory.currentStationName = "";
-
     // checnku
-    $http.get("/crud/units/" + factory.currentStation).then(function(res)
+    factory.getStationName = function()
     {
-           factory.currentStationName = res.data.name;
-    });
+        return $http.get("/crud/units/" + factory.currentStation).then(function(res)
+        {
+            factory.currentStationName = res.data.name;
+        });
+    }
   
     // Check after insert to DB;
     factory.getCommand = function()
@@ -329,41 +343,69 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
         .then(function(res)
         {
             factory.currentCommand = res.data.name;
-            factory.currentCommand = "פיקוד צפון";
+            //factory.currentCommand = "פיקוד צפון";
         });
     }
-
     // lior - login
     factory.getRole = function()
     {
         return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.indexOf('_')))
         .then(function(res)
         {
-            factory.currentStation = "1_1_1";
+            factory.currentStation = "1_1_1_1";
         });
     }
-
     return factory;
 });
 
-app.controller('medViewCtrl',  function ($scope, $location, medAppFactory) 
+app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http, currentUser) 
 {
+    $scope.currentStaionNameLocation = [{name: "", location: "/injInfo"},
+                                        {name: "", location: "/injInfo"},
+                                        {name: "", location: "/injInfo"},
+                                        {name: "", location: "/tmz"}];
+
+                                        
+        $scope.logout = function(){
+            currentUser.logout();            
+        };
 
     medAppFactory.getCommand().then(function (response)
     {
         $scope.currentCommand = medAppFactory.currentCommand;
     });
-
     medAppFactory.getRole().then(function(res)
+    { 
+        var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
+        $location.path($scope.currentStaionNameLocation[amountLine].location);
+    });
+    medAppFactory.getStationName().then(function(res)
     {
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
-        if(amountLine == 0 || amountLine == 1)
-        {
-            $location.path("/tmz");
-        }
-        else
-        {
-            $location.path("/commandTmz");
-        }
+
+        $scope.currentStaionNameLocation[amountLine].name = medAppFactory.currentStationName;
+
     });
+    $scope.changeLocation = function(num)
+    {
+        $location.path($scope.currentStaionNameLocation[num].location);
+    }
+
+
+    function checkInput(){
+        $interval(function(){
+            $http.get('/crud/newPatient').then(function(response){
+                if(response.data != "")
+                {
+                    medAppFactory.currentInjured = response.data;
+                    $location.path("/medSchema");
+                }
+            });
+        }, 3000);
+    }
+
+    checkInput();
+    
 });
+
+

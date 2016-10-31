@@ -7,3 +7,43 @@ th
 {
     width: 60;  
 }
+
+@font-face {
+    font-family: alef;
+    src: url(Alef-Regular.ttf);
+}
+
+body
+{
+    font-family: "alef";
+}
+
+.mainBaner
+{
+    height: 40px;
+    background-color: #90CAF9;
+    direction: rtl;
+}
+
+.mainBannerText
+{
+    font-size: 18px;
+    width: 200px;
+    float: right;  
+}
+
+.hamalBtn
+{
+    background-color: white; 
+    float: left;
+}
+
+.belkinClass{
+    padding: 0 30px 0 0;
+    direction: rtl;
+}
+
+.table
+{
+    direction: rtl;
+}

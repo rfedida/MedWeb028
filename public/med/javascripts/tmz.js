@@ -3,33 +3,36 @@
 angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce', '$http',
 function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
 
+  // HEADER
+  medAppFactory.getStationName().then(function(res)
+  {
+    $scope.currentStationName = medAppFactory.currentStationName;
+  });
 
-  $scope.woundeds = [
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"urgent", date:"26/10/2016", time:"11:15"},
-    {"id":"6098793", "pulse":"90", "bp":"160/70", "Saturation":"95%",status:"notUrgent", date:"26/10/2016", time:"11:15"},
-    {"id":"8066610", "pulse":"100", "bp":"110/20", "Saturation":"95%",status:"notClassified", date:"28/10/2016", time:"13:15"},
-    {"id":"8066610", "pulse":"100", "bp":"111/20", "Saturation":"95%",status:"notClassified", date:"28/10/2016", time:"11:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"moved", date:"26/10/2016", time:"11:15"},
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"dead", date:"26/10/2016", time:"11:15"},
-    {"id":"8066610", "pulse":"100", "bp":"110/20", "Saturation":"95%",status:"notUrgent", date:"26/10/2016", time:"11:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"dead", date:"26/10/2016", time:"11:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"dead", date:"26/10/2016", time:"11:15"},
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"moved", date:"26/10/2016", time:"11:15"},
-    {"id":"8021165", "pulse":"82", "bp":"120/30", "Saturation":"95%",status:"moved", date:"26/10/2016", time:"11:15"},
-    {"id":"6098793", "pulse":"90", "bp":"160/70", "Saturation":"95%",status:"notClassified", date:"28/10/2016", time:"12:15"},
-    {"id":"8122215", "pulse":"160", "bp":"80/100", "Saturation":"95%",status:"urgent", date:"25/10/2016", time:"11:15"}
-  ];
+  // TABLE
 
-  $scope.injureds = null;
-          
-  $http.get("/crud/patients/units/" + medAppFactory.currentStation).then(function(response)
+  // get woundeds
+  $scope.woundeds = null;    
+  $http.get("/crud/patients/units/" + medAppFactory.currentStation).then(function(response){
+    $scope.woundeds = response.data;
+  });
+  
+  // order by func to table
+  $scope.myFilter = function (wounded){
+    return wounded.status == '1' || wounded.status == '2';
+  };
+
+  // Move by click on div to schema
+  $scope.moveToSchema = function(id) {
+      $http.get("/crud/patients/" + id).then(function(response)
       {
-         $scope.woundeds = response.data;
+         medAppFactory.currentInjured = response.data;
+         $location.path("/medSchema");
       });
+  };
 
-
-$scope.showComplex = function() {
-
+  // MODAL
+  $scope.showComplex = function() {
     var url = $sce.getTrustedResourceUrl(app.remote + "/med/views/modalTmz.html");
     ModalService.showModal({
       templateUrl: url,
@@ -40,39 +43,72 @@ $scope.showComplex = function() {
     }).then(function(modal) {
       modal.element.modal();
       modal.close.then(function(result){
+
+          // get date by mili
+          var fullDate = result.date + ":" + result.time;
+          var dateBefore = new Date(fullDate);
+          var dateMili = dateBefore.getTime();
+
+          // create new patient object by factory
           var newInjured = angular.copy(medAppFactory.newInjured);
-          newInjured.Bracelet_id = result.braceId;
-          newInjured.Stations.ReceptionDate = result.date;
-          newInjured.Stations.ReceptionTime = result.time;
+          newInjured.braceletId = result.braceId;
+          newInjured.LastUpdate = dateMili;
+          newInjured.Stations.receptionTime = dateMili;
           medAppFactory.currentInjured = newInjured;
 
-      $location.path("/injInfo");
+          // insert the new patient to the db
+          $http.post('/crud/patients' , { "patient": newInjured }).then(function(response)
+          {});
+
+          // move to injured info screen 
+          $location.path("/injInfo");
       });
     });
-};
-
-$scope.moveToSchema = function(id) {
-      var id="920140140";
-      $http.get("/crud/patients/" + id).then(function(response)
-      {
-         medAppFactory.currentInjured = response.data;
-         $location.path("/medSchema");
-      });
-     
-};
+  };
 
 }]);
 
+// Modal controller
 angular.module("medApp").controller('ComplexController', [
   '$scope', '$element', '$filter', 'title', 'close', 
   function($scope, $element, $filter, title, close) {
 
   var currDate = new Date();
-  var currTime = currDate.getHours() + ":" + currDate.getMinutes();
+  var h = currDate.getHours();
+  var m = currDate.getMinutes();
+  
+  // Current time
+  if (h < 10){
+    h = "0" + h;
+  }
+
+  if (m < 10){
+    m = "0" + m;
+  }
+
+  var currTime = h + ":" + m;
+  $scope.time = currTime;
+
+  // Current date
+
+  /*var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1;
+  var yyyy = today.getFullYear();
+
+  if (dd < 10){
+    dd='0'+ dd;
+  }
+  if (mm < 10){
+    mm = '0'+ mm;
+  }
+
+  var today = dd+"/"+mm+"/"+yyyy;
+  $scope.date = today;*/
+
+  $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
 
   $scope.braceId = null;
-  $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
-  $scope.time = currTime;
   $scope.title = title;
   
   //  This close function doesn't need to use jQuery or bootstrap, because
@@ -95,3 +131,4 @@ angular.module("medApp").controller('ComplexController', [
   };
 
 }]);
+ 

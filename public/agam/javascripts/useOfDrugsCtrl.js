@@ -1,9 +1,11 @@
 myApp.controller('useOfDrugsCtrl', function($scope, $http) {
     $scope.unit = '1_1_1_1';
+
     $http.get("/crud/units/" + $scope.unit).then(function(response){
         var medications = response.data.Medications;
-debugger;
-          var emptyChart = [
+        debugger;
+
+        var emptyChart = [
             {
                 key: 'אין נתונים להציג',
                 x: [[]]
@@ -16,27 +18,11 @@ debugger;
         $scope.dataKetamine = emptyChart;
         $scope.dataPantenyl = emptyChart;
         $scope.dataMorphium = emptyChart;
+        $scope.drugsStockTimeData = emptyChart;
 
         $scope.mlay;
         debugger;
-//             "0": { name: "A.W", group: "A" },
-//             "1": { name: "קוניוטו", group: "A" },
-//             "2": { name: "איטוב", group: "A" },
-//             "3": { name: "N.A", group: "B" },
-//             "4": { name: "נקז חזה", group: "B" },
-//             "5": { name: "C.A.T", group: "B" },
-//             "6": { name: "BIG", group: "C" },
-//             "7": { name: "Combat Gauze", group: "C" },
-//             "8": { name: "AVPU", group: "D" },
-//             "9": { name: "AT" },
-//             "10": { name: "Vygon" },
-//             "11": { name: "Ketamine" },
-//             "12": { name: "Morphium" },
-//             "13": { name: "Dormikom" },
-//             "14": { name: "Hexakapron" },
-//             "15": { name: "Pantenyl" },
-//             "16": { name: "Akamol" },
-//             "17": { name: "nonTREAT" }
+        
         for (i=0; i<medications.length; i++)
         {
             $scope.mlay = medications[i].Standard - medications[i].Stock.CurrStock;
@@ -54,7 +40,7 @@ debugger;
                     }
                 ];
             }
-            else if (medications[i].id == 14) // Assumming it means 'c.a.t'
+            else if (medications[i].id == 14)
             {
                 $scope.dataHexakapron = [
                     {
@@ -120,9 +106,89 @@ debugger;
                 ];
             }
         }
+
+        // for timeline
+        var lines = [];
+        for (i=0; i<medications.length; i++)
+        {
+            medications[i].Stock.Usage.sort(function (a,b) {
+                return new Date(parseInt(a)) - new Date(parseInt(b));
+            });
+
+            var countStock = medications[i].Stock.CurrStock + medications[i].Stock.Usage.length;
+            var params = [];
+            var currParam;
+
+            for (j=0; j < medications[i].Stock.Usage.length; j++)
+            {
+                countStock--;
+                currParam = {
+                    "x" : medications[i].Stock.Usage[j],
+                    "y" : countStock
+                }
+
+                params.push(currParam);
+            }
+
+            var keyName;
+            if (medications[i].id == 13)
+                keyName = "Dormikom";
+            else if (medications[i].id == 14)
+                keyName = "Hexakapron";
+            else if (medications[i].id == 16)
+                keyName = "Akamol";
+            else if (medications[i].id == 11)
+                keyName = "Ketamine";
+            else if (medications[i].id == 15)
+                keyName = "Pantenyl";
+            else if (medications[i].id == 12)
+                keyName = "Morphium";
+                
+            lines.push({key : keyName,
+                        values: params,
+                        type: 'line',
+                        yAxis: 1,});
+        }
+
+        $scope.drugsStockTimeData = lines;
     });
 
-    $scope.colorArray = ['gray','#660000'];
+     $scope.lineChartOptions = {
+        chart:
+        {
+            type: 'multiChart',
+            height: 300,
+            width: 700,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 45,
+                left: 45
+            },
+            x: function(d){return d.x},
+            y: function(d){return d.y},            
+            color: function(d, i) {
+                var colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a'];      
+                return colorArray[i];        
+            },
+            duration: 500, 
+            useInteractiveGuideLine: true,                   
+            xAxis:
+            {
+                axisLable: 'זמן',            
+                tickFormat: function(d){
+                    return d3.time.format('%x %H:%M')(new Date(d));
+                }
+            },
+            yAxis:
+            { 
+                axisLable: 'כמות טיפולים במלאי',                
+                axisLabelDistance: 0
+            }
+        }        
+    };
+
+    $scope.colorArray = ['#668cff','#a63807'];
     
     $scope.colorFunction = function() {
         return function(d,i){
@@ -134,7 +200,7 @@ debugger;
         chart:
         {
             type: 'pieChart',
-            height: 200,
+            height: 150,
             width: 230,
             donut: true,
             x: function(d){return d.key},
@@ -156,6 +222,4 @@ debugger;
             } 
         }        
     };
-    
-   
 });
