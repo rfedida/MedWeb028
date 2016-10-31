@@ -72,13 +72,16 @@
             <div class="row" style="background: gray">
                 <div class="progress">
                     <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                        18
+                        18{{ptzuim}}
                     </div>
                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:35%">
-                        12
+                       12 {{ptzuimDacuf}}
                     </div>
                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:15%">
-                        4
+                        2{{chalalim}}
+                    </div>
+                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width:15%">
+                      3  {{unknown}}
                     </div>
                 </div>
             </div>
@@ -96,10 +99,11 @@
             </div>
         </div> 
         <div>
-      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" ng-click="loadPatients('1_1_1')" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+          {{X}}
+      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
                 {{node.name}}
         </treecontrol>
-        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)"  selected-node="node1">
+        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node) ;loadPatients(node)" selected-node="node1">
             {{node.name}}
         </div>
       </div>       
