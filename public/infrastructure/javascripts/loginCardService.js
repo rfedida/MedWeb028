@@ -21,8 +21,18 @@ angular.module('infra').service("loginCardService", function($mdDialog, $cookies
                         {
                             $cookies.put("hash", data.hash);
                             $cookies.put("user",JSON.stringify(data));
-                            currentUser.details = data;
+                            currentUser.setDetails(data);
+                            //window.location="/med";
                             $mdDialog.hide();
+
+                            if (data.permission.split("_").length == 4)
+                            {
+                                window.location="/med";
+                            }
+                            else
+                            {
+                                window.location="/";
+                            }
                         })
                         .error(function(data, status, headers, config){
                             $scope.loginError = true;
@@ -31,9 +41,9 @@ angular.module('infra').service("loginCardService", function($mdDialog, $cookies
                 }
             });
         }
-        else if (currentUser.details.permission == null)
+        else if (currentUser.getDetails().permission == null)
         {
-            currentUser.details = JSON.parse($cookies.get("user"));
+            currentUser.setDetails(JSON.parse($cookies.get("user")));
         }
     }
 
