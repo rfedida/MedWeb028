@@ -80,13 +80,18 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
                 modal.element.modal();
                 modal.close.then(function (result) {
                     var newTreat = angular.copy(medAppFactory.newTreatment);
-                   newTreat.treatmentType = $scope.selectedTreatMed;
-                    newTreat.location = $scope.treatLocation;
-                    newTreat.bloodPressure = $scope.highBloodPressure + "/" + $scope.lowBloodPressure;
-                    newTreat.heartbeat = $scope.heartbeat;
-                    newTreat.temperature = $scope.temperature;
-                    newTreat.storation = $scope.storation;
-                });
+                   newTreat.treatmentType = result.selectedTreatMed;
+                    newTreat.location = result.treatLocation;
+                    newTreat.bloodPressure =result.highBloodPressure + "/" + result.lowBloodPressure;
+                    newTreat.heartbeat = result.heartbeat;
+                    newTreat.temperature = result.temperature;
+                    newTreat.storation = result.storation;
+                    $scope.treatments.push(newTreat);
+
+                     $http.put('/crud/patients', { "patient": $scope.injured }).then(function (response) {
+
+                    });   
+             });
                 debugger;
             });
         };
@@ -106,11 +111,13 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
 */
 
-        /******************  SHIR *****************************************************************************************/
+/******************  SHIR *****************************************************************************************/
         $scope.medicationId = "medicationId";
         $scope.liquidId = "medicationId";
-    }]);
+/******************  SHIR *****************************************************************************************/    
+}]);
 
+/******************  Gil *****************************************************************************************/
 angular.module("medApp").controller('ComplexControllerOperation', [
     '$scope', '$element', '$filter', 'title', 'close',
     function ($scope, $element, $filter, title, close) {
@@ -125,9 +132,12 @@ angular.module("medApp").controller('ComplexControllerOperation', [
         //  the button has the 'data-dismiss' attribute.
         $scope.close = function () {
             close({
-                braceId: $scope.braceId,
-                date: $scope.date,
-                time: $scope.time
+                selectedTreatMed: selectedTreatMed.selectedIndex,
+                treatLocation: treatLocation.value,
+                bloodPressure: highBloodPressure.value + "/" + lowBloodPressure.value,
+                heartbeat: heartbeat.value,
+                temperature: temperature.value,
+                storation: storation.value
             }, 500); // close, but give 500ms for bootstrap to animate
         };
 
@@ -140,7 +150,9 @@ angular.module("medApp").controller('ComplexControllerOperation', [
 
         }
     }]);
+/******************  Gil *****************************************************************************************/
 
+/******************  SHIR *****************************************************************************************/
 angular.module("medApp").directive("presentTable", function () {
     return {
         restrict: 'E',
@@ -183,7 +195,7 @@ angular.module("medApp").controller("presentTableCtrl", function ($scope, medApp
                 length) + minutesDiff);
     }
 });
-
+/******************  SHIR *****************************************************************************************/
 
 
 

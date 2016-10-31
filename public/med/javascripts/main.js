@@ -26,34 +26,43 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
     // currentUser.details.permission;
     factory.currentStation = currentUser.getDetails().permission;
     factory.newInjured = {
-        "Bracelet_id": "",
-        "IsDead":false,
-    "General_Data" :{
-                        "Emergency": 0, // 0 - Undifiened, 1 - no emergency, 2 - emenrgency
-                        "Breathing_hit": false,
-                        "Airway_hit": false,
-                        "Shock": false,
-                        "Injury_mechanism": "",
-                        "Consciousness": "",  // Enum - A O V P L
-                        "Injury_place_in_body": ""
-                            },
-            "Treatments": [],
-            "Medications": [],
-        "Liquids": [],
-        "Measurements": {
-                    "Temperatures": [],
-                    "Storations": [],
-                    "Bloodpressures": [],
-                    "Heartbeat": []
-                  },
-    "Stations":[{
-                    "ReceptionDate": "",
-                    "ReceptionTime": "",
-                    "StationId": "",
-                    "LeavingDate":"", 
-                    "LeavingTime": "" //Evacucation time
-                }]
+    "braceletId" : "",
+    "CurrentStation" : factory.currentStation,
+    "LastUpdate" : 0,
+    "generalData" : {
+        "emergency" : 0,
+        "breathingHit" : true,
+        "airwayHit" : true,
+        "shock" : true,
+        "injuryMechanism" : 2,
+        "consciousness" : "P",
+        "injuryLocation" : "",
+        "comments" : ""
+    },
+    "treatments" : [],
+    "medications" : [],
+    "liquids" : [],
+    "measurements" : {
+        "temperatures" : [],
+        "storations" : [],
+        "bloodPressures" : [],
+        "heartbeat" : []
+    },
+    "Stations" : [
+        {
+            "receptionTime" : 0,
+            "stationId" : factory.currentStation,
+            "leavingDate" : 0
+        }
+    ]
 };
+
+
+
+
+
+
+
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
