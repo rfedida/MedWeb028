@@ -20,7 +20,7 @@ function($routeProvider, $sceDelegateProvider){
 		templateUrl: app.remote + "/med/views/commandTmz.html"
     	});
 }]);
-angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
+angular.module("medApp").factory('medAppFactory', function ($http, currentUser, $location) {
     var factory = {};
 
     factory.currentStation = currentUser.getDetails().permission;
@@ -159,6 +159,49 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
 
     factory.currentNavagationBar = [{name:'', location:'', currentStation: '', parentCurrentStation: ''}];
 
+    factory.stepIntoUnit = function (unit) {
+
+            var unitIdToStepInto;
+
+            // If the unit is defined -> push the current station and name into factory(for drealdown)
+            if (unit != undefined) 
+            {
+                var amountUnderscore;
+                if(!unit.id)
+                    amountUnderscore = (unit.currentStation.match(/_/g) || []).length;
+                    else
+                    amountUnderscore = (unit.id.match(/_/g) || []).length;
+                 var jsnToPush = {};
+                 var length = factory.currentNavagationBar.length;
+                 if (amountUnderscore == 3) 
+                 {
+                    jsnToPush.location = "/tmz";
+              
+                 }
+                else {
+                    jsnToPush.location = "/commandTmz";
+                }
+                 if(!unit.id)
+                   unitIdToStepInto = jsnToPush.currentStation = factory.currentStation = unit.currentStation;
+                    else
+                    unitIdToStepInto = jsnToPush.currentStation = factory.currentStation = unit.id;
+                      
+                    jsnToPush.name = factory.currentStationName = unit.name;
+                    jsnToPush.parentCurrentStation = factory.currentNavagationBar[length-1].name;             
+                    factory.currentNavagationBar.push(jsnToPush);
+                    $location.path(jsnToPush.location);
+            }
+            else {
+                unitIdToStepInto = factory.currentStation;
+            }
+
+            // Get all unit under current units
+            return $http.get("/crud/units/" + unitIdToStepInto + "/units").then(function(res)
+            {
+                factory.unitsUnderCommand = res.data;
+            });
+        }
+
     return factory;
 });
 
@@ -196,8 +239,10 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
     {
         medAppFactory.currentNavagationBar.splice(index + 1);
         $location.path($scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].location);
+        
         medAppFactory.currentStation = 
                 $scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].currentStation;
+                 medAppFactory.stepIntoUnit(medAppFactory.currentNavagationBar[medAppFactory.currentNavagationBar.length-1]);
     }
 
     function checkInput(){
