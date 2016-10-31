@@ -136,7 +136,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             x: function(d){return d.x},
             y: function(d){return d.y},            
             color: function(d, i) {
-                var colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a'];           
+                var colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];        
                 return colorArray[i];        
             },
             duration: 500, 
@@ -145,7 +145,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             {
                 axisLable: 'זמן',            
                 tickFormat: function(d){
-                    return d3.time.format('%x %H:%M')(new Date(d));
+                    return d3.time.format('%d/%m %H:%M')(new Date(d));
                 }
             },
             yAxis:
@@ -156,7 +156,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         }        
     };
 
-    $scope.colorArray = ['#668cff','#a63807'];
+    $scope.colorArray = ['#008000','#800000'];
     
     $scope.colorFunction = function() {
         return function(d,i){

@@ -1,6 +1,6 @@
 myApp.controller('statisticController', function($scope, $http) {
 
-    $scope.colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a']; 
+    $scope.colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec']; 
 
     $scope.roundMinutes = function(date){
         date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
@@ -9,7 +9,7 @@ myApp.controller('statisticController', function($scope, $http) {
 
         return date;
     };
-// timePieChartOptions
+
     $scope.pieChartOptions = {
         chart:
         {
@@ -72,51 +72,6 @@ myApp.controller('statisticController', function($scope, $http) {
         }        
     };  
 
-    // $scope.lineChartOptions = {
-    //     chart:
-    //     {
-    //         type: 'multiChart',
-    //         height: 250,
-    //         width: 300,
-    //         margin: {
-    //             top: 20,
-    //             right: 50,
-    //             bottom: 45,
-    //             left: 50
-    //         },
-    //         x: function(d){return d.x},
-    //         y: function(d){return d.y},            
-    //         color: function(d, i) {                                
-    //             return $scope.colorArray[i];        
-    //         },            
-    //         legend: {
-    //             margin:
-    //             {
-    //                 top: 5,
-    //                 right: 0,
-    //                 bottom: 5,
-    //                 left: 0
-    //             }
-    //         },
-    //         duration: 500, 
-    //         useInteractiveGuideLine: true,   
-    //         yDomain1: [0,10],             
-    //         xAxis:
-    //         {
-    //             axisLable: 'זמן',    
-    //             displayMinMax: false,        
-    //             tickFormat: function(d){
-    //                 return d3.time.format('%x %H:%M')(new Date(d));
-    //             }
-    //         },
-    //         yAxis:
-    //         { 
-    //             axisLable: 'כמות נפגעים',                
-    //             axisLabelDistance: 0,
-    //         }
-    //     }        
-    // };
-
     $scope.injuryMechanismData = [];
     $http.get("/crud/injuryMechanism").success(function(data){
         $scope.injuryMechanismData = data; 
@@ -143,7 +98,7 @@ myApp.controller('statisticController', function($scope, $http) {
         for (i = 0; i<data.length; i++)
         {
             nowMilli = new Date().getTime();
-            dayAgoMilli = nowMilli - 86400000;
+            dayAgoMilli = nowMilli - milli;
 
             if ((data[i]._id.x[0] > dayAgoMilli) && (data[i]._id.x[0] <= nowMilli))
             {
