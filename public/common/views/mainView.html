@@ -22,32 +22,17 @@
     </head>
 
     <body ng-app ="mainCommon">
-        <div ng-controller = "mainController"> 
-<!--            
-           <md-content class = "md-padding" layout = "row">
-               <div flex-gt-xs = "100" layout="row" layout-align = "center stretch">
+        <div ng-controller = "mainController" layout = "column" layout-align = "center center"> 
+            
+           <md-content class = "md-padding" layout = "row" layout-align = "center center">
+               <div flex-gt-xs = "80" layout="row" layout-align = "center center">
 
 
-                   <md-card flex>
-                       <img src = "\common\img\agam.JPG">
+                   <md-card flex ng-hide = "isMed">
+                       <img src = "/common/img/agam.JPG">
                        <md-card-title>
                            <md-card-title-text>
                                <span class = "md-headline">AGAM</span>
-                               <md-card-content>
-                                   
-                               </md-card-content>
-                               <md-card-actions layout = "row" layout-align = "end center">
-                                   <md-button href = "/med">Jump TO</md-button>
-                               </md-card-actions>
-                           </md-card-title-text>
-                       </md-card-title>
-                   </md-card>
-
-                   <md-card flex ng-hide = "isMed">
-                       <img src = "\common\img\med.JPG">
-                       <md-card-title>
-                           <md-card-title-text>
-                               <span class = "md-headline">Med</span>
                                <md-card-content>
                                    
                                </md-card-content>
@@ -58,19 +43,38 @@
                        </md-card-title>
                    </md-card>
 
+                   <md-card flex >
+                       <img src = "/common/img/med.JPG">
+                       <md-card-title>
+                           <md-card-title-text>
+                               <span class = "md-headline">Med</span>
+                               <md-card-content>
+                                   
+                               </md-card-content>
+                               <md-card-actions layout = "row" layout-align = "end center">
+                                   <md-button href = "/med">Jump TO</md-button>
+                               </md-card-actions>
+                           </md-card-title-text>
+                       </md-card-title>
+                   </md-card>
+
 
                </div>
-           </md-content>-->
 
-            <a href = "/med">
+               
+           </md-content>
+
+           <md-button ng-click = "logout()">LOGOUT</md-button>
+
+            <!--<a href = "/med">
                 Med
             </a>
             <br/>
             <a href = "/agam" ng-hide = "isMed">
                 AGAM
-            </a>
+            </a>-->
 
-            <button ng-click = "logout()">LOGOUT</button>
+            
         </div>
     </body>
 </html>
