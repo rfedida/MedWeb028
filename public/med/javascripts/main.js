@@ -21,15 +21,8 @@ function($routeProvider, $sceDelegateProvider){
 
 angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
     var factory = {};
-
-    factory.roleList = {command: "", 
-                        ogda: "", 
-                        hativa: "", 
-                        tagad: ""};
-                        debugger;
-
+   
     factory.currentStation = currentUser.getDetails().permission;
-    // currentUser.details.permission;
     
     factory.newInjured = {
         "Bracelet_id": "",
@@ -312,47 +305,32 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
         });
     }
 
-    // lior - login
-    factory.getRole = function()
-    {
-        return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.indexOf('_')))
-        .then(function(res)
-        {
-            factory.currentStation = "1_1_1_1";
-        });
-    }
-
+factory.navagationBar = [{name: "", location:""}];
     return factory;
 });
 
 app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, currentUser) 
 {
-    $scope.currentStaionNameLocation = [{name: "", location: "/injInfo"},
-                                        {name: "", location: "/injInfo"},
-                                        {name: "", location: "/injInfo"},
-                                        {name: "", location: "/tmz"}];
-
-                                        
-        $scope.logout = function(){
-            currentUser.logout();            
-        };
-
+    $scope.currentStaionNameLocation = medAppFactory.navagationBar;
+                        
+    $scope.logout = function(){
+        currentUser.logout();            
+    };
 
     medAppFactory.getCommand().then(function (response)
     {
         $scope.currentCommand = medAppFactory.currentCommand;
     });
 
-    medAppFactory.getRole().then(function(res)
-    {
-        var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
-        $location.path($scope.currentStaionNameLocation[amountLine].location);
-    });
+    var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
+    $location.path("/tmz");
 
     medAppFactory.getStationName().then(function(res)
     {
+        debugger;
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
-        $scope.currentStaionNameLocation[amountLine].name = medAppFactory.currentStationName;
+        $scope.currentStaionNameLocation[0].name = medAppFactory.currentStationName;   
+        $scope.currentStaionNameLocation[0].location =  "/tmz";
     });
 
     $scope.changeLocation = function(num)

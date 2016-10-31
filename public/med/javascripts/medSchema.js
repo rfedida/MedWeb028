@@ -5,6 +5,13 @@ function($scope, medAppFactory, $location, $interval)
     {
         $location.path("/");
     };
+	
+	function a()
+    {
+        medAppFactory.navagationBar.push({name: "?????", location: "/medSchema"});
+    };
+    
+    a();
 
     refresh();
 
