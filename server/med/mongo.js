@@ -2,6 +2,17 @@ var mongoose = require('mongoose');
 var Unit = require('../common/models/unitSchema');
 var Patient = require('../common/models/patientSchema');
 
+function updatePatient(patient, callback) {
+    patient.LastUpdate = new Date().getTime();
+    Patient.update({"braceletId":patient.braceletId}, {$set: patient}, {new: false}, function (err, patient){
+        if (err) { 
+            callback(err);
+        } else {
+            callback(patient);
+        }
+    });
+}
+
 function getAllCurrentStationById(arrayToSort, currStationId) {
 
     var onlyCurrentStationArray = [];
@@ -28,6 +39,15 @@ module.exports = {
                 callback(err);
             } else {
                 callback(patients);
+            }
+        });
+    },
+    getAllUnits: (callback) => {
+        Unit.find(function (err, units) {
+            if (err) {
+                callback(err);
+            } else {
+                callback(units);
             }
         });
     },
@@ -111,18 +131,9 @@ module.exports = {
             }
         });
     },
-    updatePatient: (patient, callback) => {
-        patient.LastUpdate = new Date().getTime();
-        Patient.findByIdAndUpdate(patient.braceletId, {$set: patient}, {new: false}, function (err, patient){
-            if (err) { 
-                callback(err);
-            } else {
-                callback(patient);
-            }
-        });
-    },
+    updatePatient: updatePatient,
     updateUnit: (unit, callback) => {
-        Unit.findByIdAndUpdate(unit.id, {$set: unit}, {new: false}, function (err, unit){
+        Unit.update({"id":unit.id}, {$set: unit}, {new: false}, function (err, unit){
             if (err) { 
                 callback(err);
             } else {
@@ -142,8 +153,8 @@ module.exports = {
     updatePatientsAfterConnection: (tempPatients) => {
         for (var i=0; i<tempPatients.length; i++) {
             Patient.findOne({"braceletId" : tempPatients[i].braceletId}, function(err, patient) {
-                if (err) {
-                    Patient.create(patient, function(err, patient){
+                if (err || patient == null) {
+                    Patient.create(tempPatients[i], function(err, patient){
                         if (!err) { 
                             console.log("Insert db")
                         } 
@@ -151,7 +162,7 @@ module.exports = {
                 } else {
                     // check if data need to update according timestamps
                     if (tempPatients[i].LastUpdate > patient.LastUpdate) {
-                        Patient.findByIdAndUpdate(patient.braceletId, {$set: patient}, {new: false}, function (err, patient){
+                        Patient.update({"braceletId":patient.braceletId}, {$set: tempPatients[i]}, {new: false}, function (err, patient){
                             if (!err) { 
                                 console.log("Update db");
                             }
@@ -161,17 +172,46 @@ module.exports = {
             })
         }
     },
-    updateUnitsAfterConnection: (tempUnits, callback) => {
+    updateUnitsAfterConnection: (tempUnits) => {
         for (var i=0; i<tempUnits.length; i++) {
             Unit.findOne({'id' : tempUnits[i].id}, function(err, unit) {
                 if (err) { 
-                    callback(err);
+                    // insert
+                    Unit.create(tempUnits[i], function(err, unit) {
+                        if (!err) {
+                            console.log("Insert db");
+                        }
+                    });
                 } else {
-                    callback(unit);
+                    Unit.update({"id":tempUnits[i].id}, {$set: unit}, {new: false}, function (err, unit){
+                        if (!err) { 
+                            console.log("Update db")
+                        }
+                    });
                 }
             })
         }
     },
     getAllCurrentStationById: getAllCurrentStationById,
-    sortDesc: sortDesc
+    sortDesc: sortDesc,
+    writePatientOrUpdateFromUsb: function(p) {
+        Patient.findOne({"braceletId" : p.braceletId}, function(err, patient) {
+            if (err || patient == null) {
+                Patient.create(p, function(err, patient){
+                    if (!err) { 
+                        console.log("Insert db")
+                    } 
+                });
+            } else {
+                // check if data need to update according timestamps
+                if (p.LastUpdate > patient.LastUpdate) {
+                    Patient.update({"braceletId": patient.braceletId}, {$set: p}, {new: false}, function (err, patient){
+                        if (!err) { 
+                            console.log("Update db");
+                        }
+                    });
+                }
+            }
+        })
+    }
 };

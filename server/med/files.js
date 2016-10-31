@@ -1,11 +1,40 @@
 var diskdb = require('./dbdiskconnection');
 
-function sortArrayByLastTimestamp(arrayToSort) {
+function sortArrayByLasttimestamp(arrayToSort) {
     var newArray = arrayToSort.sort(function(a,b) {
         return parseFloat(b.timestamp) - parseFloat(a.timestamp); 
     });
 
     return newArray;
+}
+
+function updatePatient(patient, callback) {
+        var options = {
+            multi: false,
+            upsert: true
+        };
+        
+        var query = {
+            braceletId: patient.braceletId
+        };
+
+        var dataToBeUpdate = {
+            braceletId: patient.braceletId,
+            LastUpdate: new Date().getTime(),
+            CurrentStation: patient.CurrentStation,
+            generalData: patient.generalData,
+            treatments: patient.treatments,
+            medications: patient.medications,
+            liquids: patient.liquids,
+            measurements: patient.measurements,
+            Stations: patient.Stations
+        };
+
+        if(diskdb.Patients.update(query, dataToBeUpdate, options) == 1) {
+            callback(true);
+        } 
+
+        callback(false);
 }
 
 module.exports = {
@@ -16,56 +45,55 @@ module.exports = {
         callback(diskdb.Units.findOne({id: unitId}));
     },
     getPatientByBraceletId: (braceletId, callback) => {
-        callback(diskdb.Patients.findOne({Bracelet_id: braceletId}));
+        callback(diskdb.Patients.findOne({braceletId: braceletId}));
     },
     getPatientsByUnitId: (unitId, callback) => {
         var list = [];
-        var patients = db.Patients.find()
+        var patients = diskdb.Patients.find()
         for (var i=0; i<patients.length; i++) {
             if (patients[i].CurrentStation===unitId) {
                 var p = {
-                    Bracelet_id: patients[i].Bracelet_id,
-                    IsDead: patients[i].IsDead,
+                    braceletId: patients[i].braceletId,
                     CurrentStation: patients[i].CurrentStation,
-                    General_Data: patients[i].General_Data,
-                    Treatments: patients[i].Treatments,
-                    Medications: patients[i].Medications,
-                    Liquids: patients[i].Liquids,
+                    generalData: patients[i].generalData,
+                    treatments: patients[i].treatments,
+                    medications: patients[i].medications,
+                    liquids: patients[i].liquids,
                     Stations: patients[i].Stations,
-                    Measurements: {}
+                    measurements: {}
                 };
 
-                var last = patients[i].Measurements.Temperatures[0];
-                for(var a=1; a < patients[i].Measurements.Temperatures.length; a++) {
-                    if (patients[i].Measurements.Temperatures[a].Timestamp > last.Timestamp) {
-                        last = patients[i].Measurements.Temperatures[a];
+                var last = patients[i].measurements.temperatures[0];
+                for(var a=1; a < patients[i].measurements.temperatures.length; a++) {
+                    if (patients[i].measurements.temperatures[a].timestamp > last.timestamp) {
+                        last = patients[i].measurements.temperatures[a];
                     }
                 }
-                p.Measurements.Temperatures = last;
+                p.measurements.temperatures = last;
 
-                last = patients[i].Measurements.Storations[0];
-                for(var a=1; a < patients[i].Measurements.Storations.length; a++) {
-                    if (patients[i].Measurements.Storations[a].Timestamp > last.Timestamp) {
-                        last = patients[i].Measurements.Storations[a];
+                last = patients[i].measurements.storations[0];
+                for(var a=1; a < patients[i].measurements.storations.length; a++) {
+                    if (patients[i].measurements.storations[a].timestamp > last.timestamp) {
+                        last = patients[i].measurements.storations[a];
                     }
                 }
-                p.Measurements.Storations = last;
+                p.measurements.storations = last;
 
-                last = patients[i].Measurements.Bloodpressures[0];
-                for(var a=1; a < patients[i].Measurements.Bloodpressures.length; a++) {
-                    if (patients[i].Measurements.Bloodpressures[a].Timestamp > last.Timestamp) {
-                        last = patients[i].Measurements.Bloodpressures[a];
+                last = patients[i].measurements.bloodPressures[0];
+                for(var a=1; a < patients[i].measurements.bloodPressures.length; a++) {
+                    if (patients[i].measurements.bloodPressures[a].timestamp > last.timestamp) {
+                        last = patients[i].measurements.bloodPressures[a];
                     }
                 }
-                p.Measurements.Bloodpressures = last;
+                p.measurements.bloodPressures = last;
 
-                last = patients[i].Measurements.Heartbeat[0];
-                for(var a=1; a < patients[i].Measurements.Heartbeat.length; a++) {
-                    if (patients[i].Measurements.Heartbeat[a].Timestamp > last.Timestamp) {
-                        last = patients[i].Measurements.Heartbeat[a];
+                last = patients[i].measurements.heartbeat[0];
+                for(var a=1; a < patients[i].measurements.heartbeat.length; a++) {
+                    if (patients[i].measurements.heartbeat[a].timestamp > last.timestamp) {
+                        last = patients[i].measurements.heartbeat[a];
                     }
                 }
-                p.Measurements.Heartbeat = last;
+                p.measurements.heartbeat = last;
 
                 list.push(p);
             }
@@ -75,7 +103,7 @@ module.exports = {
     },
     getUnitsOfUnderUnit: (unitId, callback) => {
         var list = [];
-        var units = db.Units.find();
+        var units = diskdb.Units.find();
         var pattern = "^" + unitId + "(_[0-9]+)+$";
         var regex = new RegExp(pattern);
         var bIsIdExist = false;
@@ -94,35 +122,7 @@ module.exports = {
 
         callback(list);
     },
-    updatePatient: (patient, callback) => {
-        var options = {
-            multi: false,
-            upsert: true
-        };
-        
-        var query = {
-            Bracelet_id: patient.Bracelet_id
-        };
-
-        var dataToBeUpdate = {
-            Bracelet_id: patient.Bracelet_id,
-            LastUpdate: new Date().getTime(),
-            IsDead: patient.IsDead,
-            CurrentStation: patient.CurrentStation,
-            General_Data: patient.General_Data,
-            Treatments: patient.Treatments,
-            Medications: patient.Medications,
-            Liquids: patient.Liquids,
-            Measurements: patient.Measurements,
-            Stations: patient.Stations
-        };
-
-        if(db.Patients.update(query, dataToBeUpdate, options) == 1) {
-            callback(true);
-        } 
-
-        callback(false);
-    },
+    updatePatient: updatePatient,
     updateUnit: (unit, callback) => {
         var options = {
             multi: false,
@@ -142,7 +142,7 @@ module.exports = {
             location: unit.location
         };
 
-        if(db.Units.update(query, dataToBeUpdate, options) == 1) {
+        if(diskdb.Units.update(query, dataToBeUpdate, options) == 1) {
             callback(true);
         }
 
@@ -150,5 +150,11 @@ module.exports = {
     },
     insertPatient: (patient) => {
         diskdb.Patients.save(patient);
+    },
+    writePatientOrUpdateFromUsb: (p) => {
+        updatePatient(p, function(data) {
+            if (data)
+                console.log("File changed");
+        })
     }
 };
