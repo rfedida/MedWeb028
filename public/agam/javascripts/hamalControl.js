@@ -1,4 +1,4 @@
-myApp.controller('modalController', ['$scope', 'ModalService', '$http',
+myApp.controller('modalController', ['$scope', 'ModalService', '$http', 
 function($scope, ModalService, $http) {
     $scope.showComplex = function() {
 
@@ -22,6 +22,65 @@ function($scope, ModalService, $http) {
     };
 }]);
 
-myApp.controller('hamalController', ['$scope', function($scope){
+myApp.controller('hamalController', ['$scope', '$http',  function($scope, $http){
+    
+    var tableData = [];
+    
+    $http.get('/agam/allPatientsAmount/1_1_1').success(function(resultPatients){        
+        $http.get('/agam/units/1_1_1').success(function(resultUnits){
+            // Set the units info for the right way
+            var units = {};   
+            resultUnits.forEach(function(unit) {
+                units[unit.id]= {name: unit.name ,capacity: unit.Max_Capacity };
+            }, this);             
+
+            var injuryNames = ["unknown", "not urgent", "urgent", "dead"];
+
+            // Go over all the patients 
+            for (var currUnit in units)           
+            {
+                var newUnit = {};
+                var sum = 0;
+
+                // Go on all the injury types
+                for (var i = 0; i < 4; i++)
+                {
+                    var index = doesExist(resultPatients[i].values, currUnit);
+
+                    if (index > -1)
+                    {
+                        newUnit[injuryNames[i]] = resultPatients[i].values[index].y;
+                        sum += resultPatients[i].values[index].y;
+                    }
+                }
+
+                newUnit["totalPatients"] = sum;
+                newUnit["maxCapacity"] = units[currUnit].capacity;
+                newUnit["Precent"] = Math.floor((sum / units[currUnit].capacity) * 100).toString() + '%';
+                newUnit["prediction"] = "?";
+                newUnit["name"] = units[currUnit].name;
+                tableData.push(newUnit);
+            };  
+
+            $scope.dataset = tableData;
+        });        
+    });
 
 }]);
+
+
+function doesExist(data, unitId)
+{
+    var found = -1;
+
+    for (var i=0; i <data.length; i++)
+    {
+        if (data[i].x == unitId)
+        {
+            found = i;
+            break;
+        }
+    }
+
+    return (found);
+}
