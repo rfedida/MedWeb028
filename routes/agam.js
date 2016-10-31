@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var graphOccupation = require('../server/agam/OccupationControl');
+//var graphOccupation = require('../server/agam/OccupationControl.js');
+//var Units = require('../models/unitSchema.js');
+//var Patient = require('../models/patientSchema.js');
 var Units = require('../server/common/models/unitSchema');
 var Patient = require('../server/common/models/patientSchema');
-
+var graphOccupation = require('../server/agam/OccupationControl');
+var MapUnits = require('../server/agam/MapUnitsControl.js');
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname,'../public/agam/views/agamView.html'));
@@ -31,7 +34,15 @@ router.get('/units/:userHirarchy', function(req, res, next){
     });
 });
 
-router.get('/getPatients/:unitid', function(req, res, next){
+
+router.get('/MapUnits/:userHirarchy',function(req,res,next){
+    var x=res.req.params;
+    var userHirarchy = res.req.params.userHirarchy;
+    MapUnits.GetUnitsOnMap(userHirarchy,function(UnitsArr) {
+        res.json(UnitsArr)})
+});
+
+router.get('/getPatientsAmount/:unitid', function(req, res, next){
     var x= res.req.params;
     var unitid = res.req.params.unitid;
     Patient.aggregate(
@@ -59,6 +70,7 @@ router.get('/getPatients/:unitid', function(req, res, next){
         }else{
              res.send(result);
         }
+
     });
 });
 

@@ -1,34 +1,36 @@
 var diskdb = require('./dbdiskconnection');
 
+function updatePatient(patient, callback) {
+    var options = {
+        multi: false,
+        upsert: true
+    };
+    
+    var query = {
+        braceletId: patient.braceletId
+    };
+
+    var dataToBeUpdate = {
+        braceletId: patient.braceletId,
+        LastUpdate: new Date().getTime(),
+        CurrentStation: patient.CurrentStation,
+        generalData: patient.generalData,
+        treatments: patient.treatments,
+        medications: patient.medications,
+        liquids: patient.liquids,
+        measurements: patient.measurements,
+        Stations: patient.Stations
+    };
+
+    if(diskdb.TempPatients.update(query, dataToBeUpdate, options) == 1) {
+        callback(true);
+    } 
+
+    callback(false);
+}
+
 module.exports = {
-    updatePatient: (patient, callback) => {
-        var options = {
-            multi: false,
-            upsert: true
-        };
-        
-        var query = {
-            Bracelet_id: patient.Bracelet_id
-        };
-
-        var dataToBeUpdate = {
-            Bracelet_id: patient.Bracelet_id,
-            IsDead: patient.IsDead,
-            CurrentStation: patient.CurrentStation,
-            General_Data: patient.General_Data,
-            Treatments: patient.Treatments,
-            Medications: patient.Medications,
-            Liquids: patient.Liquids,
-            Measurements: patient.Measurements,
-            Stations: patient.Stations
-        };
-
-        if(db.TempPatients.update(query, dataToBeUpdate, options) == 1) {
-            callback(true);
-        } 
-
-        callback(false);
-    },
+    updatePatient: updatePatient,
     updateUnit: (unit, callback) => {
         var options = {
             multi: false,
@@ -44,11 +46,10 @@ module.exports = {
             Medications: unit.Medications,
             Treatments: unit.Treatments,
             Max_Capacity: unit.Max_Capacity,
-            Doctors_num: unit.Doctors_num,
-            location: unit.location
+            Doctors_num: unit.Doctors_num
         };
 
-        if(db.TempUnits.update(query, dataToBeUpdate, options) == 1) {
+        if(diskdb.TempUnits.update(query, dataToBeUpdate, options) == 1) {
             callback(true);
         }
 
@@ -58,9 +59,24 @@ module.exports = {
         diskdb.TempPatients.save(patient);
     },
     getTempPatients: (callback) => {
-        callback(diskdb.TempPatients.find());
+        var TempPatients = diskdb.TempPatients.find();
+        for (var i=0; i< TempPatients.length; i++) {
+            diskdb.TempPatients.remove({"braceletId":TempPatients[i].braceletId});
+        }
+
+        callback(TempPatients);
     },
     getTempUnits: (callback) => {
-        callback(diskdb.TempUnits.find());
+        var TempUnits = diskdb.TempUnits.find();
+        for (var i=0; i< TempUnits.length; i++) {
+            diskdb.TempUnits.remove({"id":TempUnits[i].id});
+        }
+        callback(TempUnits);
+    },
+    writePatientOrUpdateFromUsb: (p) => {
+        updatePatient(p, function(data) {
+            if (data)
+                console.log("File changed");
+        })
     }
 };

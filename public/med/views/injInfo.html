@@ -184,16 +184,16 @@
         <!-- Med info tab -->
         <div class="row component basicInfo" ng-if="selectedTab == 3">תרופות שניתנו
             <present-table data = injured.medications 
-                           tableTitle = "{{injured.medications}}" 
-                           fieldName="{{injured.medications}}">
+                           tableTitle = "תרופה" 
+                           fieldName="medicationId">
             </present-table>
         </div>
 
         <!-- Liquid info tab -->
         <div class="row component basicInfo" ng-if="selectedTab == 4">נוזלים שניתנו
              <present-table data = injured.liquids 
-                           tableTitle = "תרופה"
-                           fieldName="{{liquidId}}">
+                           tabletitle = "נוזל"
+                           fieldname="liquidId">
             </present-table>
         </div>
 

@@ -1,5 +1,5 @@
-myApp.controller('modalController', ['$scope', 'ModalService', '$http',
-function($scope, ModalService, $http) {
+myApp.controller('modalController', ['$scope', 'ModalService', '$http', 'currentUser',
+function($scope, ModalService, $http, currentUser) {
     $scope.showComplex = function() {
 
         var url = "/agam/views/hamalView.html";
@@ -20,6 +20,10 @@ function($scope, ModalService, $http) {
         });
         });
     };
+
+    $scope.logout = function(){
+        currentUser.logout();
+    }
 }]);
 
 myApp.controller('hamalController', ['$scope', function($scope){

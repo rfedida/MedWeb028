@@ -1,10 +1,10 @@
 myApp.controller('numOfTreatsCtrl', function($scope, $http) {
-    $scope.unit = '1_1_1_1';
+    $scope.unit = '1_1_1_1';   
 
     $http.get("/crud/units/" + $scope.unit).then(function(response){
 
         var treatments = response.data.Treatments;
-        debugger;
+
         var emptyChart = [
             {
                 key: 'אין נתונים להציג',
@@ -16,6 +16,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         $scope.dataCAT = emptyChart;
         $scope.dataNekezHaze = emptyChart;
         $scope.dataCombatGauze = emptyChart;
+        $treatsStockTimeData = emptyChart;
 
         $scope.mlay;
 
@@ -76,35 +77,86 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             }
         }
 
-//  debugger;
-//         // for timeline
-//         for (i=0; i<treatments.length; i++)
-//         {
-//             var dates = [];
+        debugger;
 
-//             for (j=0; j<treatments[i].Stock.Usage.length; j++)
-//             {
-//                dates.push(d3.time.format('%x %H:%M')(new Date(treatments[i].Stock.Usage[j])));
-//             }
+        // for timeline
+        var lines = [];
+        for (i=0; i<treatments.length; i++)
+        {
+            treatments[i].Stock.Usage.sort(function (a,b) {
+                return new Date(parseInt(a)) - new Date(parseInt(b));
+            });
 
-//             dates.sort(function(a,b) {
-//                 return new Date(b) - new Date(a);
-//             });
+            var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
+            var params = [];
+            var currParam;
 
-//             var map = {};
-//             var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
+            for (j=0; j < treatments[i].Stock.Usage.length; j++)
+            {
+                countStock--;
+                currParam = {
+                    "x" : treatments[i].Stock.Usage[j],
+                    "y" : countStock
+                }
 
-//             dates.forEach(function(d)
-//             {
-//                 countStock--;
-//                 map[d] = countStock;
-//             });
-//         }
+                params.push(currParam);
+            }
+
+            var keyName;
+            if (treatments[i].id == 10)
+                keyName = "Vygon";
+            else if (treatments[i].id == 5)
+                keyName = "C.A.T";
+            else if (treatments[i].id == 4)
+                keyName = "נקז חזה";
+            else if (treatments[i].id == 7)
+                keyName = "תחבושת אישית";
+
+            lines.push({key : keyName,
+                        values: params,
+                        type: 'line',
+                        yAxis: 1,});
+        }
+
+        $scope.treatsStockTimeData = lines;
     });
 
+     $scope.lineChartOptions = {
+        chart:
+        {
+            type: 'multiChart',
+            height: 400,
+            width: 700,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 45,
+                left: 45
+            },
+            x: function(d){return d.x},
+            y: function(d){return d.y},            
+            color: function(d, i) {
+                var colorArray = ['#132639', '#25517e', '#00d4ff', '#004aff', '#06a5c6', '#5d6ea9'];                
+                return colorArray[i];        
+            },
+            duration: 500, 
+            useInteractiveGuideLine: true,                   
+            xAxis:
+            {
+                axisLable: 'זמן',            
+                tickFormat: function(d){
+                    return d3.time.format('%x %H:%M')(new Date(d));
+                }
+            },
+            yAxis:
+            { 
+                axisLable: 'כמות טיפולים במלאי',                
+                axisLabelDistance: 0
+            }
+        }        
+    };
 
-
-    $scope.colorArray = ['gray','#660000'];
+    $scope.colorArray = ['#494d1b','#a63807'];
     
     $scope.colorFunction = function() {
         return function(d,i){
@@ -116,8 +168,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'pieChart',
-            height: 300,
-            width: 300,
+            height: 200,
+            width: 230,
             donut: true,
             x: function(d){return d.key},
             y: function(d){return d.y},

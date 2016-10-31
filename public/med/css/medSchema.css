@@ -16,6 +16,19 @@ th {
     color:red
 }
 
+.button2
+{
+    border-radius: 5px;
+    background-color: #008CBA;
+    border: none;
+    color:white;
+    padding:4px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
 .firstSection
 {
  border-radius: 5px;
@@ -29,7 +42,7 @@ th {
  text-align: center;
  font-size: 20px;
  padding:7px;
- background:beige;
+ background:#e8e8dc;
 }
 
 .title
@@ -44,6 +57,8 @@ th {
     height:175px;
     overflow-y: auto;
     border-radius: 7px;
+    margin-bottom: 15px;
+    margin-top: 10px;
 }
 
 .medBackground
@@ -56,6 +71,7 @@ th {
     height:200px;
     overflow-y: auto;
     border-radius: 7px;
+    margin-bottom: 12px;
   
 }
 .aBackground
@@ -69,7 +85,7 @@ th {
     height: 200px;
     overflow-y: auto;
     border-radius: 7px;
-    
+    margin-bottom: 12px;
 }
 .bBackground
 {
@@ -81,6 +97,7 @@ th {
     height: 200px;
     overflow-y: auto;
     border-radius: 7px;
+    margin-bottom: 12px;
 }
 .cBackground
 {
@@ -92,6 +109,7 @@ th {
     height: 200px;
     overflow-y: auto;
     border-radius: 7px;
+    margin-bottom: 12px; 
 }
 
 .dBackground
