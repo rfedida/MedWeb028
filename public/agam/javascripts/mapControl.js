@@ -126,8 +126,8 @@ myApp.controller('mapControl', ['$scope','$http', 'leafletData', function($scope
                         lng:element.lng
                     },
                     {
-                        urgent:2,
-                        notUrgent:4
+                        urgent:element.urgent,
+                        notUrgent:element.NotUrgent
                     },
                     element.name);
                 

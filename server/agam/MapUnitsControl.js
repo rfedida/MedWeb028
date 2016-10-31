@@ -5,14 +5,8 @@ var Patient = require('../../server/common/models/patientSchema');
 
 var GetUnitsOnMap = function(hirarchCode, callback) 
 {
-    // A variable for the units that are needed acording to the hirarchy
-    var jsonPartOne = {};
-    var jsonPartTow = {};
-    var jsonUnits = {};
-   
-    //A query for all the stations under the users permission.
     Units.aggregate([
-
+        //A query for all the stations under the users permission.
         {"$match": {"$and":[{"id" : {"$regex": "^" + hirarchCode}},
                            {"$or":[{"name":{$regex: "Taagad"}},
                            {"name":{$regex: "Palhak"}}]}]}},
@@ -20,19 +14,26 @@ var GetUnitsOnMap = function(hirarchCode, callback)
      
         function(err,res)
         {
+            var jsonUnits = res;
+          // Go over all the stations
+          res.forEach(function(element) 
+            {
+                console.log(element.name);
+
+            //Get the amount of non ergent patients in the station    
+            GetEmergency(element.id,1, function(data){
+                element.NotUrgent =data[0].count;
+            });
+ 
+            //Get the amount of ergent patients in the station
+             GetEmergency(element.id,2, function(data){
+                element.Urgent =data[0].count;
+            });
+                      
+            },this);
             // return all the units that should be displayed on the map
             callback(res);
         });
-
-        /*  Patient.aggregate([
-         {"$match": [{"CurrentStation":{"$regex": "^" + hirarchCode}},{"generalData.emergency":0}]},
-         {"$group":{
-            "_id":null,
-            "count": {"$sum":1 } }}
-    ]);*/
-console.log("Passed step one");
- 
-
 }
 
 console.log("Test");
@@ -41,6 +42,21 @@ module.exports =
 {
     GetUnitsOnMap : GetUnitsOnMap
 };
+
+var GetEmergency = function(StationID,emergencyNum, callback)
+{
+    Patient.aggregate([
+                {"$match":{"CurrentStation":StationID}},
+                //{"$match":{"generalData.emergency":emergencyNum}},
+                {"$group":{"_id":1, "count": {"$sum":1} }}
+                ],
+                function(err,res)
+                {
+                    console.log(JSON.stringify(res));
+                    callback(res);    
+                }
+   );
+}
 
 /*
 עבור כל תחנה נדרשים הנתונים הבאים:
