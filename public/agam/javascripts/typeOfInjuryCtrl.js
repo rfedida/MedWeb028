@@ -53,12 +53,13 @@ myApp.controller('statisticController', function($scope, $http) {
                 left: 45
             },
             x: function(d){return d.x},
-            y: function(d){return d.y},
+            y: function(d){return d.y},            
             color: function(d, i) {
                 var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
                 return colorArray[i];        
             },
-            duration: 500,                    
+            duration: 500, 
+            useInteractiveGuideLine: true,                   
             xAxis:
             {
                 axisLable: 'זמן',            
@@ -68,8 +69,8 @@ myApp.controller('statisticController', function($scope, $http) {
             },
             yAxis:
             { 
-                axisLable: 'כמות נפגעים',
-                axisLabelDistance: 0,
+                axisLable: 'כמות נפגעים',                
+                axisLabelDistance: 0
             }
         }        
     };
@@ -96,83 +97,38 @@ myApp.controller('statisticController', function($scope, $http) {
         console.log(data);
     }); 
 
-    $scope.buildData = function(data){
+    $scope.buildData = function(data){        
+        var locations = [];
+
+        for (var index in data) {
+            if (!(data[index]._id.key in locations)) {
+                locations[data[index]._id.key] = data[index]._id.key;
+            }
+        }
+
         var newData = [];
 
-        for (var index in data)
-        {
-            var currentInjuryLocation = data[index]._id.key;
+        for (var index in locations) {
             var injuryValues = [];
 
-            for (var innerIndex in data)
-            {
-                if (data[innerIndex]._id.key == currentInjuryLocation)
-                {
+            for (var innerIndex in data) {
+                if (data[innerIndex]._id.key == locations[index]) {
                     injuryValues.push({
-                        x: $scope.roundMinutes(new Date(parseInt(data[index]._id.x))),
+                        x: $scope.roundMinutes(new Date(parseInt(data[innerIndex]._id.x))),
                         y: data[innerIndex].y
                     });
                 }
             }
 
             newData.push({
-                key: data[index]._id.key,
+                key: locations[index],
                 type: 'line',
                 yAxis: 1,
                 values: injuryValues
             });
-            
-            console.log(newData);
         }        
 
         return newData;
-
-        // var newData = [
-        // {
-        //     key:'ראש',
-        //     type: 'line',
-        //     yAxis: 1,
-        //     values:[
-        //         {
-        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
-        //             y:1
-        //         },
-        //         {
-        //             x:$scope.roundMinutes(new Date(parseInt('1477853946000'))),
-        //             y:2
-        //         },
-        //         {
-        //             x:$scope.roundMinutes(new Date(parseInt('1477853944000'))),
-        //             y:2
-        //         },
-        //         {
-        //             x:$scope.roundMinutes(new Date(parseInt('1477853995790'))),
-        //             y:1
-        //         },
-        //         {
-        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
-        //             y:2
-        //         }
-        //     ]           
-        // },
-        // {
-        //     key:'רגל',
-        //     type: 'line',
-        //     yAxis: 1,
-        //     values:[
-        //         {
-        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
-        //             y:1  
-        //         },
-        //         {
-        //             x:$scope.roundMinutes(new Date(parseInt('1477853945790'))),
-        //             y:3
-        //         }
-        //     ]              
-        // }
-        // ];
-
-        // return newData;
     };
 
 });
