@@ -20,7 +20,7 @@ function($routeProvider, $sceDelegateProvider){
 		templateUrl: app.remote + "/med/views/commandTmz.html"
     	});
 }]);
-angular.module("medApp").factory('medAppFactory', function ($http, currentUser, $location) {
+angular.module("medApp").factory('medAppFactory', function ($http, currentUser, $location, $rootScope) {
     var factory = {};
 
     factory.currentStation = currentUser.getDetails().permission;
@@ -183,12 +183,21 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
                 }
                  if(!unit.id)
                    unitIdToStepInto = jsnToPush.currentStation = factory.currentStation = unit.currentStation;
-                    else
+                else
                     unitIdToStepInto = jsnToPush.currentStation = factory.currentStation = unit.id;
                       
                     jsnToPush.name = factory.currentStationName = unit.name;
-                    jsnToPush.parentCurrentStation = factory.currentNavagationBar[length-1].name;             
-                    factory.currentNavagationBar.push(jsnToPush);
+                    jsnToPush.parentCurrentStation = factory.currentNavagationBar[length-1].name; 
+
+                    var isAlreadyExist = false;
+                    factory.currentNavagationBar.forEach(function (x){
+                        if (x.currentStation==unitIdToStepInto)
+                            isAlreadyExist = true
+                    });
+
+                    if (!isAlreadyExist) {    
+                        factory.currentNavagationBar.push(jsnToPush);
+                    }
                     $location.path(jsnToPush.location);
             }
             else {
@@ -196,9 +205,10 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
             }
 
             // Get all unit under current units
-            return $http.get("/crud/units/" + unitIdToStepInto + "/units").then(function(res)
+            $http.get("/crud/units/" + unitIdToStepInto + "/units").then(function(res)
             {
                 factory.unitsUnderCommand = res.data;
+                $rootScope.$broadcast('changePage');
             });
         }
 
