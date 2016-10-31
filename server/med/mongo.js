@@ -114,7 +114,7 @@ module.exports = {
                 // Find if the unit id is existed
                 for (var i=0; i<units.length; i++) {
                     if(units[i].id === unitId)
-                    bIsIdExist = true;
+                        bIsIdExist = true;
                 }
                 
                 // If the id exist

@@ -58,9 +58,7 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
 
           // insert the new patient to the db
           $http.post('/crud/patients' , { "patient": newInjured }).then(function(response)
-          {
-            alert("db insert work");
-          });
+          {});
 
           // move to injured info screen 
           $location.path("/injInfo");
