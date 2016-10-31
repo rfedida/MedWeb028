@@ -30,6 +30,9 @@ function($scope, medAppFactory, $location, $interval)
                    var group =$scope.treat_Med[$scope.currentInj.treatments[i].treatmentType].group;
                    $scope.treatments[group].push($scope.currentInj.treatments[i]);
                }
+
+               //$scope.treatments.A.sort
+               //
            }
 
           function medFunc ()
@@ -40,6 +43,8 @@ function($scope, medAppFactory, $location, $interval)
                                            $scope.treat_Med[$scope.currentInj.medications[i].medicationId].name;
                     $scope.medications.push($scope.currentInj.medications[i]);                      
                }
+
+               // med.sort
            };
 
            function liqFunc ()
