@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var Unit = require('../../models/unitSchema');
-var Patient = require('../../models/patientSchema');
+var Unit = require('../common/models/unitSchema');
+var Patient = require('../common/models/patientSchema');
 
 function getAllCurrentStationById(arrayToSort, currStationId) {
 

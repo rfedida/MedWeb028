@@ -20,16 +20,16 @@ var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var auth = require("./server/infrastructure/BL/authentication")
 
-var app = express();
+var server = express();
 
-app.use(session({secret : "keyboard cat",
+server.use(session({secret : "keyboard cat",
                  resave : true,
                  saveUninitialized : true,
                  cookie : {}}));
 
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+server.use(cookieParser());
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended:true}));
 
 server.use(function(req, res, next)
 {
@@ -88,14 +88,7 @@ server.use(function(req, res, next)
         }
     }
 });
-app.use(express.static(__dirname + '/public'));
-app.use('/', routes);
-app.use('/agam', agamRoutes);
-app.use('/med', medRoutes);
-app.use('/infrastructure', infrastructureRoutes);
-app.use('/crud', crud);
 
-server.use(bodyParser.json());
 server.use(express.static(__dirname + '/public'));
 server.use('/', routes);
 server.use('/med', medRoutes);
