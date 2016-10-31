@@ -1,6 +1,6 @@
 angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFactory', '$http', 
-                                                '$interval', 'ModalService', '$sce','currentUser',
-    function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce, currentUser) {
+                                                '$interval', 'ModalService', '$sce','currentUser', '$location',
+    function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce, currentUser, $location) {
 
         $scope.injured = medAppFactory.currentInjured;
         $scope.InjuryMechanismType = medAppFactory.InjuryMechanismType;
@@ -16,7 +16,27 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
             $scope.selectedTab = tabNum;
         };
 
+        $scope.patientPassed = function() 
+        {
+            $scope.injured.generalData.emergency = 3;
+            $scope.SaveInj();
+            $location.path("/tmz");
+        };
 
+        $scope.finishTreatment = function() 
+        {
+            // TODO : change to 5
+            $scope.injured.generalData.emergency = 4;
+            $scope.SaveInj();
+            $location.path("/tmz");
+        };
+
+         $scope.transferPatient = function() 
+        {
+            $scope.injured.generalData.emergency = 4;
+            $scope.SaveInj();
+            $location.path("/tmz");
+        };
 
 
         /*************  Gil  ****************************************************************/
