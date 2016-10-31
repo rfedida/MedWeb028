@@ -1,2 +1,2 @@
 
-var myApp = angular.module('myApp', ['nvd3', 'leaflet-directive', 'ngRoute', 'treeControl', 'angularModalService']);
+var myApp = angular.module('myApp', ['nvd3', 'leaflet-directive', 'ngRoute', 'treeControl', 'angularModalService', "infra"]);

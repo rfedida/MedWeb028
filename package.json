@@ -6,7 +6,7 @@
     "start": "node app.js",
     "electron": "electron ."
   },
-  "isWeb": false,
+  "isWeb": true,
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.15.2",
