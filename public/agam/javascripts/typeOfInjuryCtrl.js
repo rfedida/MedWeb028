@@ -92,12 +92,12 @@ myApp.controller('statisticController', function($scope, $http) {
 
     $scope.injuryLocationTimeData = [];
     $http.get("/crud/patientsInjuryLocationByTime").success(function(data){
-        $scope.injuryLocationTimeData = $scope.buildData(data);
+        $scope.injuryLocationTimeData = $scope.buildLocationData(data);
     }).error(function(data){
         console.log(data);
     }); 
 
-    $scope.buildData = function(data){        
+    $scope.buildLocationData = function(data){        
         var locations = [];
 
         for (var index in data) {
@@ -122,6 +122,47 @@ myApp.controller('statisticController', function($scope, $http) {
 
             newData.push({
                 key: locations[index],
+                type: 'line',
+                yAxis: 1,
+                values: injuryValues
+            });
+        }        
+
+        return newData;
+    };
+
+    $scope.injuryMechanismTimeData = [];
+    $http.get("/crud/patientsInjuryMechanismByTime").success(function(data){
+        $scope.injuryMechanismTimeData = $scope.buildMechanismData(data);
+    }).error(function(data){
+        console.log(data);
+    }); 
+
+    $scope.buildMechanismData = function(data){        
+        var mechanisms = [];
+
+        for (var index in data) {
+            if (!(data[index]._id.key in mechanisms)) {
+                mechanisms[data[index]._id.key] = data[index]._id.key;
+            }
+        }
+
+        var newData = [];
+
+        for (var index in mechanisms) {
+            var injuryValues = [];
+
+            for (var innerIndex in data) {
+                if (data[innerIndex]._id.key == mechanisms[index]) {
+                    injuryValues.push({
+                        x: $scope.roundMinutes(new Date(parseInt(data[innerIndex]._id.x))),
+                        y: data[innerIndex].y
+                    });
+                }
+            }
+
+            newData.push({
+                key: mechanisms[index],
                 type: 'line',
                 yAxis: 1,
                 values: injuryValues
