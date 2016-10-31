@@ -79,6 +79,7 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
         $http.get('/agam/units/'+ $scope.user_id).success(function(data){
              $scope.dataForTheTree = data;
              $scope.orgenizeHierarchy($scope.user_id);
+             $scope.loadPatients($scope.dataForTheTree.children[0])
         });
     };
 
@@ -113,5 +114,4 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
                                         $scope.patientsNum.deads;
          });
     };
-
 });

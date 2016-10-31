@@ -142,23 +142,25 @@ module.exports = {
         });
     },
     insertPatient: (patient, callback) => {
-        Patient.create(patient, function(err, patient){
-            if (err) { 
+        var newP = new Patient(patient);
+        newP.save(function(err) {
+            if (err) {
                 callback(err);
             } else {
-                callback(patient);
+                callback(newP);
             }
-        });
+        })
     },
     updatePatientsAfterConnection: (tempPatients) => {
         for (var i=0; i<tempPatients.length; i++) {
             Patient.findOne({"braceletId" : tempPatients[i].braceletId}, function(err, patient) {
                 if (err || patient == null) {
-                    Patient.create(tempPatients[i], function(err, patient){
+                    var newP = new Patient(tempPatients[i]);
+                    newP.save(function(err) {
                         if (!err) { 
                             console.log("Insert db")
                         } 
-                    });
+                    })
                 } else {
                     // check if data need to update according timestamps
                     if (tempPatients[i].LastUpdate > patient.LastUpdate) {
@@ -177,11 +179,12 @@ module.exports = {
             Unit.findOne({'id' : tempUnits[i].id}, function(err, unit) {
                 if (err) { 
                     // insert
-                    Unit.create(tempUnits[i], function(err, unit) {
+                    var newU = new Unit(tempUnits[i]);
+                    newU.save(function(err) {
                         if (!err) {
                             console.log("Insert db");
                         }
-                    });
+                    })
                 } else {
                     Unit.update({"id":tempUnits[i].id}, {$set: unit}, {new: false}, function (err, unit){
                         if (!err) { 
@@ -197,7 +200,8 @@ module.exports = {
     writePatientOrUpdateFromUsb: function(p) {
         Patient.findOne({"braceletId" : p.braceletId}, function(err, patient) {
             if (err || patient == null) {
-                Patient.create(p, function(err, patient){
+                pNew = new Patient(p);
+                pNew.save(function(err) {
                     if (!err) { 
                         console.log("Insert db")
                     } 
