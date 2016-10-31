@@ -117,7 +117,7 @@ module.exports = {
                 callback(err); 
             } else {
 
-                var pattern = "^" + unitId + "(_[0-9]+)+$";
+                var pattern = "^" + unitId + "[_\d]{1}[0-9]+$";
                 var list = [];
                 var regex = new RegExp(pattern);
                 var bIsIdExist = false;
