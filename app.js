@@ -10,6 +10,7 @@ var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
 var udpServer = dgram.createSocket('udp4');
 var pjson = require('./package.json');
+var bodyParser = require("body-parser");
 
 var server = express();
 server.use(function(req, res, next)
@@ -28,6 +29,7 @@ server.use(function(req, res, next)
     }
 });
 
+server.use(bodyParser.json());
 server.use(express.static(__dirname + '/public'));
 server.use('/', routes);
 server.use('/med', medRoutes);
