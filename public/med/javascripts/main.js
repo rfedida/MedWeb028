@@ -1,4 +1,6 @@
-var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial"]);
+
+var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial", "nvd3"  ]);
+
 app.remote="";
 app.config(['$routeProvider', '$sceDelegateProvider',
 function($routeProvider, $sceDelegateProvider){
@@ -14,17 +16,54 @@ function($routeProvider, $sceDelegateProvider){
 		templateUrl: app.remote + "/med/views/medSchema.html"
 		}).when('/tmz', {
 		templateUrl: app.remote + "/med/views/tmz.html"
-		});
+		}).when('/commandTmz', {
+		templateUrl: app.remote + "/med/views/commandTmz.html"
+    	});
 }]);
 angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
     var factory = {};
+
+    // 0 - unknwon, not-urgent, urgent, dead
+    factory.EMERGENCY_CONSTANTS = {
+        // לא נקבע
+        "unknwon" : {
+            "value" : "0",
+            "hebrew" : "לא סווג"
+        }, 
+        // לא דחוף
+        "notUrgent" :
+        {
+            "value" : "1",
+            "hebrew" : "לא דחוף"
+        },
+        //דחוף 
+        "urgent" :{
+            "value" : "2",
+            "hebrew" : "דחוף"
+        },
+        //חלל
+        "dead" :{
+            "value" : "3",
+            "hebrew" : "חלל"
+        }, 
+        // במעבר
+        "passage": {
+            "value" : "4",
+            "hebrew" : "במעבר"
+        }                          
+    };
+
+    factory.currentStation = "1";
+
     factory.roleList = {command: "", 
                         ogda: "", 
                         hativa: "", 
                         tagad: ""};
                         debugger;
     // currentUser.details.permission;
-    factory.currentStation = currentUser.getDetails().permission;
+    //factory.currentStation = currentUser.getDetails().permission;
+    factory.currentStation = "1";    
+
     factory.newInjured = {
     "braceletId" : "",
     "CurrentStation" : factory.currentStation,
@@ -343,7 +382,9 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
     medAppFactory.getStationName().then(function(res)
     {
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
+
         $scope.currentStaionNameLocation[amountLine].name = medAppFactory.currentStationName;
+
     });
     $scope.changeLocation = function(num)
     {
