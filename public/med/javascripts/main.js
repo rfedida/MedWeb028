@@ -330,13 +330,11 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
         $location.path($scope.currentStaionNameLocation[num].location);
     }
 
-        $scope.check = 0;
-    
 
     function checkInput(){
         $interval(function(){
             $http.get('/crud/newPatient').then(function(response){
-                if(response.data != undefined)
+                if(response.data != "")
                 {
                     medAppFactory.currentInjured = response.data;
                     $location.path("/medSchema");
