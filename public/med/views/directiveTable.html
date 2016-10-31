@@ -2,7 +2,7 @@
     <table class="table table-bordered" border="5">
                 <tr>
                     <th style="text-align: center;"> לפני.. (HH:MM)</th>
-                    <th style="text-align: center;"> {{tableTitle}}</th>
+                    <th style="text-align: center;"> {{tabletitle}}</th>
                     <th style="text-align: center;"> מינון </th>
                     <th style="text-align: center;"> ל"ד</th>
                     <th style="text-align: center;"> דופק</th>
@@ -11,7 +11,7 @@
                 </tr>
                 <tr ng-repeat="obj in data" style="text-align: center;">
                     <td> {{calcDateDiff(obj.date)}}</td>
-                    <td> {{getNameById(obj[fieldName])}}</td>
+                    <td> {{getNameById(obj[fieldname])}}</td>
                     <td> {{obj.dosage}}{{obj.dosageUnit}} </td>
                     <td> {{obj.bloodPressure}} </td>
                     <td> {{obj.heartbeat}} </td>
