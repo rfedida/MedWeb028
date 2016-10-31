@@ -34,7 +34,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
     $scope.calcDateDiff = function(dateTime){
     
-        var dateBefore = new Date(dateTime.replace('T',':').split('.')[0]);
+        var dateBefore = new Date(parseInt(dateTime));
         var timeDiffByMinutes = Math.ceil(Math.abs((new Date().getTime() - 
                                             dateBefore.getTime()) * 
                                             (1.667 * Math.pow(10,-5))));
