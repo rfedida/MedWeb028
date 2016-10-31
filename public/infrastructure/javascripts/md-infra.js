@@ -1,2 +1,2 @@
-angular.module("infra", ["ngMaterial"]);
+angular.module("infra", ["ngMaterial", "ngCookies"]);
 // "ngMaterial"

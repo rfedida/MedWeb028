@@ -1,6 +1,6 @@
 angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFactory', '$http', 
-                                                '$interval', 'ModalService', '$sce',
-    function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce) {
+                                                '$interval', 'ModalService', '$sce','currentUser',
+    function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce, currentUser) {
         $scope.injured = medAppFactory.currentInjured;
         $scope.InjuryMechanismType = medAppFactory.InjuryMechanismType;
         $scope.selectedTab = 1;

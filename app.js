@@ -41,9 +41,10 @@ server.use(function(req, res, next)
         // url.startsWith("/agam/javascripts")||
         url.startsWith("/common/views") ||
         url.startsWith("/common/javascripts")||
-        url.startsWith("/components") ||
+        url.startsWith("/common/img")||
+        url.startsWith("/components") ||        
         url.startsWith("/infrastructure/views") ||
-        url.startsWith("/infrastructure/javascripts")||
+        url.startsWith("/infrastructure/javascripts")||        
         // url.startsWith("/med/views") ||
         // url.startsWith("/med/css") ||
         // url.startsWith("/med/javascripts")||

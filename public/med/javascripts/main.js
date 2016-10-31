@@ -322,12 +322,18 @@ angular.module("medApp").factory('medAppFactory', function ($http) {
     return factory;
 });
 
-app.controller('medViewCtrl',  function ($scope, $location, medAppFactory) 
+app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, currentUser) 
 {
     $scope.currentStaionNameLocation = [{name: "", location: "/injInfo"},
                                         {name: "", location: "/injInfo"},
                                         {name: "", location: "/injInfo"},
                                         {name: "", location: "/tmz"}];
+
+                                        
+        $scope.logout = function(){
+            currentUser.logout();            
+        };
+
 
     medAppFactory.getCommand().then(function (response)
     {
