@@ -9,9 +9,18 @@
         </script>    
     <script src="\components\angular\angular.min.js" type="text/javascript"></script>
     <script src="\components\angular\angular-route.min.js" type="text/javascript"></script>
+    <script src="/components/angular/angular-animate.js"></script>
+    <script src="/components/angular/angular-aria.min.js"></script>
+    <script src="/components/angular/angular-messages.min.js"></script>
+    <script src="/components/angular/angular-cookies.min.js"></script>
+    <script src="/components/angular-material/angular-material/angular-material.js" type="text/javascript"></script>
+    <script src="\infrastructure\javascripts\md-infra.js" type="text/javascript"></script>
+    <script src="\infrastructure\javascripts\loginCardService.js" type="text/javascript"></script>
+    <script src="\infrastructure\javascripts\currentUser.js" type="text/javascript"></script>
     <script src="\components\ng-table\bundles\ng-table.js" type="text/javascript"></script>
     <script src="\agam\javascripts\app.js" type="text/javascript"></script>
     <script src="\agam\javascripts\route.js" type="text/javascript"></script>
+    <script src="\agam\javascripts\unitService.js" type="text/javascript"></script>
     <script src="\agam\javascripts\typeOfInjuryCtrl.js" type="text/javascript"></script>
     <script src="\agam\javascripts\useOfDrugsCtrl.js" type="text/javascript"></script>
     <script src="\agam\javascripts\occupationCtrl.js" type="text/javascript"></script> 
@@ -19,6 +28,7 @@
     <script src="\agam\javascripts\numOfTreatsCtrl.js" type="text/javascript"></script>
     <script src="\agam\javascripts\mapControl.js" type="text/javascript"></script>
     <script src="\agam\javascripts\hamalControl.js" type="text/javascript"></script>
+    
     <script src="\components\d3\d3.js" type="text/javascript"></script>
     <script src="\components\nvd3\build\nv.d3.js" type="text/javascript"></script>
     <script src="\components\angular-nvd3\src\angular-nvd3.js" type="text/javascript"></script>    
@@ -35,7 +45,6 @@
     <link rel="stylesheet" href="\components\angular-tree-control\css\tree-control-attribute.css">
 </head>
 <body ng-app="myApp"  style="overflow-x : hidden">
-
     <div class="mainBaner row">
         <div class="col-md-2 mainBannerText"> רפואה שלמה
         </div>    
@@ -47,35 +56,35 @@
     </div>    
     <div class="row" width="100%">
         <div class="col-md-4" ng-controller="mapControl">
-            <leaflet markers="markers" width="104%" height="843"></leaflet>
+            <leaflet markers="markers" width="104%" height="877"></leaflet>
         </div>
         <span  ng-controller="unitsTreeController">
         <div class="{{sizestatic}}">
-            <div class="row" style="background: gray">
+            <div class="row" style="background: #B3E5FC">
                 <span class="col-md-4">  
-            <button type="button" class="btn btn-warning">
+            <button type="button" style=" background-color: white; font-size: 13px;" class="btn">
                <a href="/med"> צפה בפרטים </a>
                 </button>
               </span>
-                <span class="col-md-4 text-center" style="color:white">{{patientsNum.total}}   :סה"כ פצועים</span>
-                <span class="col-md-4 text-right" style="color:white" ng-model="currUnitName"> {{currUnitName}} </span>
+                <span class="col-md-4 text-center" style="color:black">{{patientsNum.total}}   :סה"כ פצועים</span>
+                <span class="col-md-4 text-right" style="color:black" ng-model="currUnitName"> {{currUnitName}} </span>
                 <div class="progress">
               
                 </div>
             </div>
-            <div class="row" style="background: gray">
+            <div class="row" style="background: #B3E5FC">
                 <div class="progress">
-                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                        18{{ptzuim}}
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{(patientsNum.notEmergencyInjured/patientsNum.total)*100}}%">
+                        {{patientsNum.notEmergencyInjured}}
                     </div>
-                    <div class="progress-bar progress-bar-warning" role="progressbar" style="width:35%">
-                       12 {{ptzuimDacuf}}
+                    <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{(patientsNum.emergencyInjured/patientsNum.total)*100}}%">
+                        {{patientsNum.emergencyInjured}}
                     </div>
-                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width:15%">
-                        2{{chalalim}}
+                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{(patientsNum.deads/patientsNum.total)*100}}%">
+                        {{patientsNum.deads}}
                     </div>
-                    <div class="progress-bar progress-bar-danger" role="progressbar" style="width:15%">
-                      3  {{unknown}}
+                    <div class="progress-bar progress-bar-default" role="progressbar" style="width:{{(patientsNum.unknownInjured/patientsNum.total)*100}}%">
+                        {{patientsNum.unknownInjured}}
                     </div>
                 </div>
             </div>
