@@ -1,7 +1,7 @@
 
 
-angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce', '$http',
-function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
+angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce', '$http', 'filterFilter',
+function($scope, ModalService, medAppFactory, $location, $sce, $http, filterFilter)  {
 
   // HEADER
   medAppFactory.getStationName().then(function(res)
@@ -12,9 +12,12 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
   // TABLE
 
   // get woundeds
-  $scope.woundeds = null;    
+  $scope.woundeds = null; 
+  var deadArr;
+
   $http.get("/crud/patients/units/" + medAppFactory.currentStation).then(function(response){
     $scope.woundeds = response.data;
+    deadArr = filterFilter($scope.woundeds, {status:'3'});
   });
   
   // order by func to table
@@ -30,6 +33,25 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
          $location.path("/medSchema");
       });
   };
+
+  // dead interval
+
+  /*$scope.SaveInj = function () {
+      $http.put('/crud/patients', { "patient": $scope.injured }).then(function (response) {
+
+      });
+  };
+  
+  function checkDead(){
+        $interval(function(){
+
+          $scope.SaveInj();
+           
+        }, 120000);
+    }
+
+    checkDead();*/
+
 
   // MODAL
   $scope.showComplex = function() {

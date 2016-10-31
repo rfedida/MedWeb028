@@ -36,7 +36,7 @@
 
                         <div class="col-md-5 col-xs-5 col-xs-offset-1 portfolio-item fade bodyText" 
                                     ng-repeat="wounded in woundeds | filter: {status:'0'} | filter:filterText
-                                    | orderBy: ['-Stations.receptionTime']"
+                                    | orderBy: ['Stations.receptionTime']"
                                 ng-style="{'background-color':'#FFF59D' }"
                                   ng-click="moveToSchema(wounded.braceletId)">
                             <br>

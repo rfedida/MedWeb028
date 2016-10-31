@@ -1,5 +1,5 @@
-angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', '$location','$interval', 
-function($scope, medAppFactory, $location, $interval) 
+angular.module("medApp").controller("myController", ['$scope', 'medAppFactory', '$location','$interval', '$sce','ModalService',
+function($scope, medAppFactory, $location, $interval,$sce,ModalService) 
 {
     if(Object.keys(medAppFactory.currentInjured).length === 0)
     {
@@ -73,6 +73,7 @@ function($scope, medAppFactory, $location, $interval)
          
            };
 
+
            function liqFunc ()
            {
               var currentAmount=0;
@@ -107,7 +108,7 @@ function($scope, medAppFactory, $location, $interval)
                   } 
            }
 
-
+        //calculates the time gap from the moment a treatment has been given
         $scope.timeGap = function(date)
            {
                var actionDate = new Date(parseInt(date));            
@@ -124,31 +125,38 @@ function($scope, medAppFactory, $location, $interval)
               pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
 
            }
-
-       //    $scope.sortCol = function(col)
-         //  {
-           //    col.sort(function(a,b){return a-b});
-
-           //}
-
-      /*     $scope.timeGap = function(date)
-           {
-               var actionDate = new Date(date);            
-
-               var timeDiff = Math.ceil(Math.abs((new Date().getTime() - 
-                                                actionDate.getTime()) * 
-                                                (1.667 * Math.pow(10,-5))));
-               var hoursDiff = "" + Math.floor(timeDiff / 60);
-               var minutesDiff = "" +  Math.abs(timeDiff % 60);
-
-               var pad = "00";
     
-              return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
-               ':' + 
-              pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
-           }*/
+            //popup
+            $scope.showComplex = function(index) 
+            {
+                var url = $sce.getTrustedResourceUrl(app.remote + "/med/views/modalSchem.html");
+                var data = $scope.treatments[index];
+                ModalService.showModal
+                ({
+                    templateUrl: url,
+                    controller: "ComplexControllerSchema",
+                    inputs: 
+                    {
+                        title: "פצוע חדש",
+                        data: data,
+                        letter: index
+                    }
+                 }).then(function(modal) 
+                    {
+                        modal.element.modal();
+                        modal.close.then(function(result)
+                        {
+                            /*var newInjured = angular.copy(medAppFactory.newInjured);
+                            newInjured.Bracelet_id = result.braceId;
+                            newInjured.Stations.ReceptionDate = result.date;
+                            newInjured.Stations.ReceptionTime = result.time;
+                            medAppFactory.currentInjured = newInjured;*/
 
-      
+                            $location.path("/medSchema");
+                        });
+                    });
+                };
+
 
     $scope.inj = {
                    "id":  $scope.currentInj.braceletId,
@@ -173,3 +181,41 @@ liqFunc();
                     
 
 }]);
+
+
+angular.module("medApp").controller('ComplexControllerSchema', [
+  '$scope', '$element', '$filter', 'title', 'data','letter', 'close', 
+  function($scope, $element, $filter, title, data,letter, close) {
+
+debugger;
+  $scope.title = title;
+  $scope.treatments = data;
+   $scope.letter = letter;
+
+  //  This close function doesn't need to use jQuery or bootstrap, because
+  //  the button has the 'data-dismiss' attribute.
+  $scope.close = function() {
+ 	  close({}, 500); // close, but give 500ms for bootstrap to animate
+  };
+
+   //calculates the time gap from the moment a treatment has been given
+        $scope.timeGap = function(date)
+           {
+               var actionDate = new Date(parseInt(date));            
+               var now = new Date();
+               var timeDiff = Math.ceil(Math.abs((now - actionDate.getTime()) * 
+                                                 (1.667 * Math.pow(10,-5))));
+               var hoursDiff = "" + Math.floor(timeDiff / 60);
+               var minutesDiff = "" +  Math.abs(timeDiff % 60);
+
+               var pad = "00";
+    
+              return (pad.substring(0, pad.length - hoursDiff.length) + hoursDiff +
+               ':' + 
+              pad.substring(0, pad.length - minutesDiff.length) + minutesDiff);
+
+           }
+    
+
+}]);
+ 
