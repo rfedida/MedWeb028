@@ -23,7 +23,7 @@ crudRouter.get('/units', function (req, res, next) {
 });
 crudRouter.get('/units/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        mongo.getUnitByUnitId(req.params.id, function(data) {
+        mongo.getUnitByUnitId(req.params.id, function(data) {  
             res.send(data);
         });
     } else {
@@ -65,6 +65,7 @@ crudRouter.get('/patients/:id', function (req, res, next) {
         });
     }
 });
+
 // Get the last patient who arrived to current station
 crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
     if (pjson.isWeb) {
@@ -110,7 +111,9 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 // Insert patient details
 crudRouter.post('/patients', function (req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.insertPatient(req.body.patient));
+        mongo.insertPatient(req.body.patient, function(data) {
+            res.send(data);
+        });
     } else {
         files.insertPatient(req.body.patient);
         
@@ -124,6 +127,32 @@ crudRouter.post('/patients', function (req, res, next) {
         }
     }
 });
+
+// Get patients by unit id
+crudRouter.get('/patients/underUnit/:unitId', function(req, res,next) {   
+     if (pjson.isWeb) {
+        Patient.find({"CurrentStation" : new RegExp("^" + req.params.unitId + "(_[0-9]+)+$")},  function(err, patients) {
+        if (err) {
+            res.send(err);
+        } else {
+            // Parse to json
+            patients = JSON.parse(JSON.stringify(patients));
+            var result = []; 
+            
+            // Run all patients and save specific fields
+            patients.forEach(function(patient){
+
+                var newPatient = {
+                                    "braceletId" : patient.braceletId,    
+                                    "status" : patient.generalData.emergency};
+                result.push(newPatient);                
+            });
+
+            res.send(result);
+        }    
+    })}
+});
+
 // Update patient details
  crudRouter.put('/patients', function (req, res, next) {
      if (pjson.isWeb) {
@@ -172,8 +201,10 @@ crudRouter.post('/patients', function (req, res, next) {
 // Get all units under specific unit
 crudRouter.get('/units/:unitId/units', function(req, res, next) {
     if (pjson.isWeb) {
+
         mongo.getUnitsOfUnderUnit(req.params.unitId, function(data) {
             res.send(data);
+
         });
     } else {
         files.getUnitsOfUnderUnit(req.params.unitId, function(data) {

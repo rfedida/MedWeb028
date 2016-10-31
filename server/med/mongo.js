@@ -71,18 +71,30 @@ module.exports = {
                 
                 // Run all patients and save specific fields
                 patients.forEach(function(patient){
-
                     // Create new json which inculdes the following fields:
                     // braceletId, temperature, storation, bloodPressure, heartbeat
                     // Sort each array in measurements according to last timestamps and set the last into json
-                    var newPatient = {
-                                        "braceletId" : patient.braceletId,
-                                        "temperature" :  sortDesc(patient.measurements.temperatures, "timestamp")[0].tempreature,
-                                        "storation" : sortDesc(patient.measurements.storations, "timestamp")[0].storation,
-                                        "bloodPressure" : sortDesc(patient.measurements.bloodPressures, "timestamp")[0].bloodPressure,
-                                        "heartbeat" : sortDesc(patient.measurements.heartbeat, "timestamp")[0].heartbeat,
-                                        "status" : patient.generalData.emergency,
-                                        "receptionTime" : sortDesc(patient.Stations, "receptionTime")[0].receptionTime };
+                    var newPatient = {};
+                    newPatient.braceletId = patient.braceletId;
+                    newPatient.status = patient.generalData.emergency;
+                    newPatient.measurements = {};
+                    newPatient.Stations = {};
+                    if (patient.measurements.temperatures !== undefined && patient.measurements.temperatures.length > 0) {
+                        newPatient.measurements.temperatures = sortDesc(patient.measurements.temperatures, "timestamp")[0];
+                    }
+                    if (patient.measurements.storations !== undefined && patient.measurements.storations.length > 0) {
+                        newPatient.measurements.storations = sortDesc(patient.measurements.storations, "timestamp")[0];
+                    }
+                    if (patient.measurements.bloodPressures !== undefined && patient.measurements.bloodPressures.length > 0) {
+                        newPatient.measurements.bloodPressures = sortDesc(patient.measurements.bloodPressures, "timestamp")[0];
+                    }
+                    if (patient.measurements.heartbeat !== undefined && patient.measurements.heartbeat.length > 0) {
+                        newPatient.measurements.heartbeat = sortDesc(patient.measurements.heartbeat, "timestamp")[0];
+                    }
+                    if (patient.Stations !== undefined && patient.Stations.length > 0) {
+                        newPatient.Stations.receptionTime = sortDesc(patient.Stations, "receptionTime")[0].receptionTime ;
+                    }
+                    
                     result.push(newPatient);                
                 });
 
@@ -105,7 +117,7 @@ module.exports = {
                 callback(err); 
             } else {
 
-                var pattern = "^" + unitId + "(_[0-9]+)+$";
+                var pattern = "^" + unitId + "[_\d]{1}[0-9]+$";
                 var list = [];
                 var regex = new RegExp(pattern);
                 var bIsIdExist = false;
@@ -114,7 +126,7 @@ module.exports = {
                 // Find if the unit id is existed
                 for (var i=0; i<units.length; i++) {
                     if(units[i].id === unitId)
-                    bIsIdExist = true;
+                        bIsIdExist = true;
                 }
                 
                 // If the id exist
@@ -142,23 +154,25 @@ module.exports = {
         });
     },
     insertPatient: (patient, callback) => {
-        Patient.create(patient, function(err, patient){
-            if (err) { 
+        var newP = new Patient(patient);
+        newP.save(function(err) {
+            if (err) {
                 callback(err);
             } else {
-                callback(patient);
+                callback(newP);
             }
-        });
+        })
     },
     updatePatientsAfterConnection: (tempPatients) => {
         for (var i=0; i<tempPatients.length; i++) {
             Patient.findOne({"braceletId" : tempPatients[i].braceletId}, function(err, patient) {
                 if (err || patient == null) {
-                    Patient.create(tempPatients[i], function(err, patient){
+                    var newP = new Patient(tempPatients[i]);
+                    newP.save(function(err) {
                         if (!err) { 
                             console.log("Insert db")
                         } 
-                    });
+                    })
                 } else {
                     // check if data need to update according timestamps
                     if (tempPatients[i].LastUpdate > patient.LastUpdate) {
@@ -177,11 +191,12 @@ module.exports = {
             Unit.findOne({'id' : tempUnits[i].id}, function(err, unit) {
                 if (err) { 
                     // insert
-                    Unit.create(tempUnits[i], function(err, unit) {
+                    var newU = new Unit(tempUnits[i]);
+                    newU.save(function(err) {
                         if (!err) {
                             console.log("Insert db");
                         }
-                    });
+                    })
                 } else {
                     Unit.update({"id":tempUnits[i].id}, {$set: unit}, {new: false}, function (err, unit){
                         if (!err) { 
@@ -197,7 +212,8 @@ module.exports = {
     writePatientOrUpdateFromUsb: function(p) {
         Patient.findOne({"braceletId" : p.braceletId}, function(err, patient) {
             if (err || patient == null) {
-                Patient.create(p, function(err, patient){
+                pNew = new Patient(p);
+                pNew.save(function(err) {
                     if (!err) { 
                         console.log("Insert db")
                     } 

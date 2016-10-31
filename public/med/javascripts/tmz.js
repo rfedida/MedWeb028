@@ -1,7 +1,7 @@
 
 
-angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce', '$http',
-function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
+angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalService','medAppFactory', '$location', '$sce', '$http', 'filterFilter',
+function($scope, ModalService, medAppFactory, $location, $sce, $http, filterFilter)  {
 
   // HEADER
   medAppFactory.getStationName().then(function(res)
@@ -12,9 +12,12 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
   // TABLE
 
   // get woundeds
-  $scope.woundeds = null;    
+  $scope.woundeds = null; 
+  var deadArr;
+
   $http.get("/crud/patients/units/" + medAppFactory.currentStation).then(function(response){
     $scope.woundeds = response.data;
+    deadArr = filterFilter($scope.woundeds, {status:'3'});
   });
   
   // order by func to table
@@ -31,6 +34,25 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
       });
   };
 
+  // dead interval
+
+  /*$scope.SaveInj = function () {
+      $http.put('/crud/patients', { "patient": $scope.injured }).then(function (response) {
+
+      });
+  };
+  
+  function checkDead(){
+        $interval(function(){
+
+          $scope.SaveInj();
+           
+        }, 120000);
+    }
+
+    checkDead();*/
+
+
   // MODAL
   $scope.showComplex = function() {
     var url = $sce.getTrustedResourceUrl(app.remote + "/med/views/modalTmz.html");
@@ -43,13 +65,25 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
     }).then(function(modal) {
       modal.element.modal();
       modal.close.then(function(result){
+
+          // get date by mili
+          var fullDate = result.date + ":" + result.time;
+          var dateBefore = new Date(fullDate);
+          var dateMili = dateBefore.getTime();
+
+          // create new patient object by factory
           var newInjured = angular.copy(medAppFactory.newInjured);
-          newInjured.Bracelet_id = result.braceId;
-          newInjured.Stations.ReceptionDate = result.date;
-          newInjured.Stations.ReceptionTime = result.time;
+          newInjured.braceletId = result.braceId;
+          newInjured.LastUpdate = dateMili;
+          newInjured.Stations.receptionTime = dateMili;
           medAppFactory.currentInjured = newInjured;
 
-      $location.path("/injInfo");
+          // insert the new patient to the db
+          $http.post('/crud/patients' , { "patient": newInjured }).then(function(response)
+          {});
+
+          // move to injured info screen 
+          $location.path("/injInfo");
       });
     });
   };
@@ -79,12 +113,12 @@ angular.module("medApp").controller('ComplexController', [
 
   // Current date
 
-  var today = new Date();
+  /*var today = new Date();
   var dd = today.getDate();
   var mm = today.getMonth() + 1;
   var yyyy = today.getFullYear();
 
-  /*if (dd < 10){
+  if (dd < 10){
     dd='0'+ dd;
   }
   if (mm < 10){
@@ -93,6 +127,7 @@ angular.module("medApp").controller('ComplexController', [
 
   var today = dd+"/"+mm+"/"+yyyy;
   $scope.date = today;*/
+
   $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
 
   $scope.braceId = null;
