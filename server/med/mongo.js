@@ -78,6 +78,7 @@ module.exports = {
                     newPatient.braceletId = patient.braceletId;
                     newPatient.status = patient.generalData.emergency;
                     newPatient.measurements = {};
+                    newPatient.Stations = {};
                     if (patient.measurements.temperatures !== undefined && patient.measurements.temperatures.length > 0) {
                         newPatient.measurements.temperatures = sortDesc(patient.measurements.temperatures, "timestamp")[0];
                     }
@@ -90,8 +91,8 @@ module.exports = {
                     if (patient.measurements.heartbeat !== undefined && patient.measurements.heartbeat.length > 0) {
                         newPatient.measurements.heartbeat = sortDesc(patient.measurements.heartbeat, "timestamp")[0];
                     }
-                    if (patient.Stations.receptionTime !== undefined && patient.Stations.receptionTime.length > 0) {
-                        newPatient.Stations.receptionTime = sortDesc(patient.Stations.receptionTime, "timestamp")[0];
+                    if (patient.Stations !== undefined && patient.Stations.length > 0) {
+                        newPatient.Stations.receptionTime = sortDesc(patient.Stations, "receptionTime")[0].receptionTime ;
                     }
                     
                     result.push(newPatient);                
