@@ -94,7 +94,7 @@ myApp.controller('unitsTreeController', function ($scope, $http, currentUser, un
     $scope.patientsNum.deads = 0;
     $scope.patientsNum.total;
     $scope.loadPatients = function(unit){
-
+        unitIDService.setUnitID(unit.id);
         $scope.currUnitName = unit.name;
          $http.get('/agam/getPatientsAmount/'+unit.id).success(function(data){
              $scope.currentStationPatients = data;
