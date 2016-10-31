@@ -1,0 +1,23 @@
+<div ng-controller="CommandController">
+    <div ng-repeat="unit in unitsUnderCommand"  >
+        
+        <div class="col-md-6" ng-click="stepIntoUnit(unit)" class="statusGraph">
+        <center>
+            <h1 style="background:gray">{{unit.name}}</h1>
+        </center>
+        <div style="background:#F2F2F2">
+            <status-graph value="unit.id"></status-graph>
+        </div>
+        </div>
+    </div>
+    <!--<footer>
+            <div class="h-divider">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <img class="menuimg" src="\med\img\menu.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>-->
+</div>

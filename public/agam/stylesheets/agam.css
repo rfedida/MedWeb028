@@ -20,32 +20,30 @@ body
 
 .mainBaner
 {
-    height: 100px;
+    height: 40px;
     background-color: #90CAF9;
     direction: rtl;
 }
 
 .mainBannerText
 {
-    font-size: 33px;
-    margin-top: 25px;
-    float: right;
-    margin-right: 30px; 
+    font-size: 18px;
     width: 200px;
+    float: right;  
 }
 
 .hamalBtn
 {
-    width: 120px;
-    height: 50px;
-    float: left;
-    margin-top: 25px;
-    margin-left: 60px;
-    font-size: 18px;  
     background-color: white; 
+    float: left;
 }
 
 .belkinClass{
     padding: 0 30px 0 0;
+    direction: rtl;
+}
+
+.table
+{
     direction: rtl;
 }

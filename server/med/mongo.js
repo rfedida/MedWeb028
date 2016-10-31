@@ -71,18 +71,30 @@ module.exports = {
                 
                 // Run all patients and save specific fields
                 patients.forEach(function(patient){
-
                     // Create new json which inculdes the following fields:
                     // braceletId, temperature, storation, bloodPressure, heartbeat
                     // Sort each array in measurements according to last timestamps and set the last into json
-                    var newPatient = {
-                                        "braceletId" : patient.braceletId,
-                                        "temperature" :  sortDesc(patient.measurements.temperatures, "timestamp")[0].tempreature,
-                                        "storation" : sortDesc(patient.measurements.storations, "timestamp")[0].storation,
-                                        "bloodPressure" : sortDesc(patient.measurements.bloodPressures, "timestamp")[0].bloodPressure,
-                                        "heartbeat" : sortDesc(patient.measurements.heartbeat, "timestamp")[0].heartbeat,
-                                        "status" : patient.generalData.emergency,
-                                        "receptionTime" : sortDesc(patient.Stations, "receptionTime")[0].receptionTime };
+                    var newPatient = {};
+                    newPatient.braceletId = patient.braceletId;
+                    newPatient.status = patient.generalData.emergency;
+                    newPatient.measurements = {};
+                    newPatient.Stations = {};
+                    if (patient.measurements.temperatures !== undefined && patient.measurements.temperatures.length > 0) {
+                        newPatient.measurements.temperatures = sortDesc(patient.measurements.temperatures, "timestamp")[0];
+                    }
+                    if (patient.measurements.storations !== undefined && patient.measurements.storations.length > 0) {
+                        newPatient.measurements.storations = sortDesc(patient.measurements.storations, "timestamp")[0];
+                    }
+                    if (patient.measurements.bloodPressures !== undefined && patient.measurements.bloodPressures.length > 0) {
+                        newPatient.measurements.bloodPressures = sortDesc(patient.measurements.bloodPressures, "timestamp")[0];
+                    }
+                    if (patient.measurements.heartbeat !== undefined && patient.measurements.heartbeat.length > 0) {
+                        newPatient.measurements.heartbeat = sortDesc(patient.measurements.heartbeat, "timestamp")[0];
+                    }
+                    if (patient.Stations !== undefined && patient.Stations.length > 0) {
+                        newPatient.Stations.receptionTime = sortDesc(patient.Stations, "receptionTime")[0].receptionTime ;
+                    }
+                    
                     result.push(newPatient);                
                 });
 
@@ -105,7 +117,7 @@ module.exports = {
                 callback(err); 
             } else {
 
-                var pattern = "^" + unitId + "(_[0-9]+)+$";
+                var pattern = "^" + unitId + "[_\d]{1}[0-9]+$";
                 var list = [];
                 var regex = new RegExp(pattern);
                 var bIsIdExist = false;
@@ -114,7 +126,7 @@ module.exports = {
                 // Find if the unit id is existed
                 for (var i=0; i<units.length; i++) {
                     if(units[i].id === unitId)
-                    bIsIdExist = true;
+                        bIsIdExist = true;
                 }
                 
                 // If the id exist
