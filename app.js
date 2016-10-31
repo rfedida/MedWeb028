@@ -58,6 +58,7 @@ function connectToMongo () {
     db.once('open', function(){
         isOnline = true;
         console.log("connect to mongo");
+        // Update db according files
     });
     db.on('close', function(){
         console.log("connection to mongo closed");
