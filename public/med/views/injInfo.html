@@ -150,13 +150,53 @@
         </div>
 
         <!-- Actions preformed tab -->
-        <div class="row component basicInfo" ng-if="selectedTab == 2">פעולות שבוצעו</div>
+        <div class="row component basicInfo" ng-if="selectedTab == 2">פעולות שבוצעו
+
+        <div dir="rtl">
+            <table class="table table-bordered" border="5">
+                <tr>
+                    <th style="text-align: center;"> לפני.. (HH:MM)</th>
+                    <th style="text-align: center;"> הליך שבוצע</th>
+                    <th style="text-align: center;"> מיקום בגוף</th>
+                    <th style="text-align: center;"> ל"ד</th>
+                    <th style="text-align: center;"> דופק</th>
+                    <th style="text-align: center;"> חום</th>
+                    <th style="text-align: center;"> סטורציה</th>
+                </tr>
+                <tr ng-repeat="treatment in treatments" style="text-align: center;">
+                    <td> {{calcDateDiff(treatment.date)}}</td>
+                    <td> {{treatment.treatmentType}} </td>
+                    <td> {{treatment.location}} </td>
+                    <td> {{treatment.bloodPressure}} </td>
+                    <td> {{treatment.heartbeat}} </td>
+                    <td> {{treatment.temperature}} </td>
+                    <td> {{treatment.storation}} </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-20">
+            <button type="button" class="btn btn-primary" ng-click="addRow()">+</button>
+            <button type="button" class="btn btn-primary" ng-click="showComplex()">++++</button>
+        </div> 
+    </div>
+
+        </div>
 
         <!-- Med info tab -->
-        <div class="row component basicInfo" ng-if="selectedTab == 3">תרופות שניתנו</div>
+        <div class="row component basicInfo" ng-if="selectedTab == 3">תרופות שניתנו
+            <present-table data = injured.medications 
+                           tableTitle = "{{injured.medications}}" 
+                           fieldName="{{injured.medications}}">
+            </present-table>
+        </div>
 
         <!-- Liquid info tab -->
-        <div class="row component basicInfo" ng-if="selectedTab == 4">נוזלים שניתנו</div>
+        <div class="row component basicInfo" ng-if="selectedTab == 4">נוזלים שניתנו
+             <present-table data = injured.liquids 
+                           tableTitle = "תרופה"
+                           fieldName="{{liquidId}}">
+            </present-table>
+        </div>
 
         <!-- Megama tab -->
         <div class="row component basicInfo" ng-if="selectedTab == 5">מגמות מדדים</div>

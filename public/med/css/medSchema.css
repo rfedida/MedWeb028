@@ -16,11 +16,20 @@ th {
     color:red
 }
 
+.firstSection
+{
+ border-radius: 5px;
+ text-align: center;
+ background: beige;
+ border-spacing: 5px 10px;
+}
 .detailsBorder
 {
- border-radius:5px;
+ border-radius: 5px;
  text-align: center;
- font-size:20px;
+ font-size: 20px;
+ padding:7px;
+ background:beige;
 }
 
 .title
@@ -34,6 +43,7 @@ th {
 {  
     height:175px;
     overflow-y: auto;
+    border-radius: 7px;
 }
 
 .medBackground
@@ -45,6 +55,7 @@ th {
 {  
     height:200px;
     overflow-y: auto;
+    border-radius: 7px;
   
 }
 .aBackground
@@ -57,7 +68,7 @@ th {
 {  
     height: 200px;
     overflow-y: auto;
-    
+    border-radius: 7px;
     
 }
 .bBackground
@@ -69,7 +80,7 @@ th {
 {  
     height: 200px;
     overflow-y: auto;
-   
+    border-radius: 7px;
 }
 .cBackground
 {
@@ -80,6 +91,7 @@ th {
 {  
     height: 200px;
     overflow-y: auto;
+    border-radius: 7px;
 }
 
 .dBackground
@@ -91,6 +103,7 @@ th {
 {
  font-size:45px;
  text-align: center;
+ 
 }
 
 .MarginTB
