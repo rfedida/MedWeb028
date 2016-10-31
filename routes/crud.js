@@ -110,7 +110,9 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 // Insert patient details
 crudRouter.post('/patients', function (req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.insertPatient(req.body.patient));
+        mongo.insertPatient(req.body.patient, function(data) {
+            res.send(data);
+        });
     } else {
         files.insertPatient(req.body.patient);
         
