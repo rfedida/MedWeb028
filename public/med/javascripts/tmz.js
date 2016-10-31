@@ -43,13 +43,25 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
     }).then(function(modal) {
       modal.element.modal();
       modal.close.then(function(result){
+
+          // get date by mili
+          var fullDate = result.date + ":" + result.time;
+          var dateBefore = new Date(fullDate);
+          var dateMili = dateBefore.getTime();
+
+          // create new patient object by factory
           var newInjured = angular.copy(medAppFactory.newInjured);
-          newInjured.Bracelet_id = result.braceId;
-          newInjured.Stations.ReceptionDate = result.date;
-          newInjured.Stations.ReceptionTime = result.time;
+          newInjured.braceletId = result.braceId;
+          newInjured.LastUpdate = dateMili;
+          newInjured.Stations.receptionTime = dateMili;
           medAppFactory.currentInjured = newInjured;
 
-      $location.path("/injInfo");
+          // insert the new patient to the db
+          $http.post('/crud/patients' , { "patient": newInjured }).then(function(response)
+          {});
+
+          // move to injured info screen 
+          $location.path("/injInfo");
       });
     });
   };
@@ -79,12 +91,12 @@ angular.module("medApp").controller('ComplexController', [
 
   // Current date
 
-  var today = new Date();
+  /*var today = new Date();
   var dd = today.getDate();
   var mm = today.getMonth() + 1;
   var yyyy = today.getFullYear();
 
-  /*if (dd < 10){
+  if (dd < 10){
     dd='0'+ dd;
   }
   if (mm < 10){
@@ -93,6 +105,7 @@ angular.module("medApp").controller('ComplexController', [
 
   var today = dd+"/"+mm+"/"+yyyy;
   $scope.date = today;*/
+
   $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
 
   $scope.braceId = null;
