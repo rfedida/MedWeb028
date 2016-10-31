@@ -23,6 +23,8 @@ function($routeProvider, $sceDelegateProvider){
 angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
     var factory = {};
 
+    factory.currentStation = currentUser.getDetails().permission;
+
     // 0 - unknwon, not-urgent, urgent, dead
     factory.EMERGENCY_CONSTANTS = {
         // לא נקבע
@@ -53,55 +55,37 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
         }                          
     };
 
-    factory.currentStation = "1";
-
-    factory.roleList = {command: "", 
-                        ogda: "", 
-                        hativa: "", 
-                        tagad: ""};
-                        debugger;
-    // currentUser.details.permission;
-    //factory.currentStation = currentUser.getDetails().permission;
-    factory.currentStation = "1";    
-
-    factory.newInjured = {
-    "braceletId" : "",
-    "CurrentStation" : factory.currentStation,
-    "LastUpdate" : 0,
-    "generalData" : {
-        "emergency" : 0,
-        "breathingHit" : true,
-        "airwayHit" : true,
-        "shock" : true,
-        "injuryMechanism" : 2,
-        "consciousness" : "P",
-        "injuryLocation" : "",
-        "comments" : ""
-    },
-    "treatments" : [],
-    "medications" : [],
-    "liquids" : [],
-    "measurements" : {
-        "temperatures" : [],
-        "storations" : [],
-        "bloodPressures" : [],
-        "heartbeat" : []
-    },
-    "Stations" : [
-        {
-            "receptionTime" : 0,
-            "stationId" : factory.currentStation,
-            "leavingDate" : 0
-        }
-    ]
-};
-
-
-
-
-
-
-
+        factory.newInjured = {
+        "braceletId" : "",
+        "CurrentStation" : factory.currentStation,
+        "LastUpdate" : 0,
+        "generalData" : {
+            "emergency" : 0,
+            "breathingHit" : true,
+            "airwayHit" : true,
+            "shock" : true,
+            "injuryMechanism" : 2,
+            "consciousness" : "P",
+            "injuryLocation" : "",
+            "comments" : ""
+        },
+        "treatments" : [],
+        "medications" : [],
+        "liquids" : [],
+        "measurements" : {
+            "temperatures" : [],
+            "storations" : [],
+            "bloodPressures" : [],
+            "heartbeat" : []
+        },
+        "Stations" : [
+            {
+                "receptionTime" : 0,
+                "stationId" : factory.currentStation,
+                "leavingDate" : 0
+            }
+        ]
+    };
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
@@ -137,185 +121,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                 storation: ""
             };
 
-      /*  "Bracelet_id": "920140140",
-        "IsDead": false,
-        "General_Data": {
-            "Emergency": 1, // 0 - Undifiened, 1 - no emergency, 2 - emenrgency
-            "Breathing_hit": false,
-            "Airway_hit": true,
-            "Shock": false,
-            "Injury_mechanism": 2,
-            "Consciousness": "P",  // Enum - A O V P L
-            "Injury_place_in_body": "רגל ימין"
-        },
-        "Treatments": [{
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Treatment_type": "1", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    },
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Treatment_type": "2", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    },
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Treatment_type": "3", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    },
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Treatment_type": "0", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    },
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Treatment_type": "5", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    },
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Treatment_type": "7", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    },
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Treatment_type": "8", // From Treatments Enum
-                        "Place_in_body": "רגל ימין",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    }],
-        "Medications": [{
-            "Date": "23/4/2015",
-            "Time": "18:30:00",
-            "Medication_id": "10", // From Medications Enum
-            "Dosage": "10",
-            "Dosage_type": "mg",
-            "Blood_Preasure": "110/90",
-            "Heartbeat": "12",
-            "Temperature": "44",
-            "Storation": "85%"
-        },
-            {
-                "Date": "23/4/2015",
-                "Time": "18:30:00",
-                "Medication_id": "12", // From Medications Enum
-                "Dosage": "10",
-                "Dosage_type": "mg",
-                "Blood_Preasure": "110/90",
-                "Heartbeat": "12",
-                "Temperature": "44",
-                "Storation": "85%"
-            }],
-        "Liquids": [{
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Liquid_id": "18", // From Liquids Enum
-                        "Dosage": "10",
-                        "Dosage_type": "mg",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    },
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Liquid_id": "18", // From Liquids Enum
-                        "Dosage": "10",
-                        "Dosage_type": "mg",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    }, 
-                    {
-                        "Date": "23/4/2015", 
-                        "Time": "18:30:00",
-                        "Liquid_id": "19", // From Liquids Enum
-                        "Dosage": "15",
-                        "Dosage_type": "cc",
-                        "Blood_Preasure":"110/90",
-                        "Heartbeat": "12",
-                        "Temperature": "44",
-                        "Storation": "85%"
-                    }
-                    ],
-        "Measurements": {
-            "Temperatures": [{
-                "Timestamp": "06072016183000",
-                "Temperature": "40"
-            },
-                {
-                    "Timestamp": "06072016183100",
-                    "Temperature": "38"
-                }],
-            "Storations": [{
-                "Timestamp": "06072016183000",
-                "Storation": "40"
-            },
-                {
-                    "Timestamp": "06072016183100",
-                    "Storation": "89"
-                }],
-            "Bloodpressures": [{
-                "Timestamp": "06072016183000",
-                "Bloodpressure": "40"
-            },
-                {
-                    "Timestamp": "06072016183100",
-                    "Bloodpressure": "41"
-                }],
-            "Heartbeat": [{
-                "Timestamp": "06072016183000",
-                "Heartbeat": "40"
-            },
-                {
-                    "Timestamp": "06072016183100",
-                    "Heartbeat": "66"
-                }]
-        },
-        "Stations": [{
-            "ReceptionDate": "20/3/2016",
-            "ReceptionTime": "18:20:00",
-            "StationId": "1_1_1",
-            "LeavingDate": "31/3/2016",
-            "LeavingTime": "8:00:00" //Evacucation time
-        }]
-    };*/
     factory.InjuryMechanismType = [
         { id: 0, name: "תלול מסלול" },
         { id: 1, name: "ירי" },
@@ -339,58 +144,61 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
     // Check after insert to DB;
     factory.getCommand = function()
     {
-        return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.indexOf('_')))
+        debugger;
+        return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.lastIndexOf('_')))
         .then(function(res)
         {
             factory.currentCommand = res.data.name;
-            //factory.currentCommand = "פיקוד צפון";
         });
     }
-    // lior - login
-    factory.getRole = function()
-    {
-        return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.indexOf('_')))
-        .then(function(res)
-        {
-            factory.currentStation = "1_1_1_1";
-        });
-    }
+
+    factory.navagationBarFull =  [{id: "0", location: "/commandTmz"}, // pikud
+                                  {id: "1", location: "/commandTmz"}, // ogda
+                                  {id: "2", location: "/commandTmz"}, // hativa
+                                  {id: "3", location: "/tmz"}] // plhak / tmz
+
+    factory.currentNavagationBar = [{name:'', location:'', currentStation: '', parentCurrentStation: ''}];
+
     return factory;
 });
 
 app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http, currentUser) 
 {
-    $scope.currentStaionNameLocation = [{name: "", location: "/injInfo"},
-                                        {name: "", location: "/injInfo"},
-                                        {name: "", location: "/injInfo"},
-                                        {name: "", location: "/tmz"}];
+    $scope.currentStaionNameNavagationBarFull = medAppFactory.navagationBarFull;
 
-                                        
-        $scope.logout = function(){
-            currentUser.logout();            
-        };
+    $scope.currentNavagationBar = medAppFactory.currentNavagationBar;
+                                          
+    $scope.logout = function(){
+        currentUser.logout();            
+    };
 
     medAppFactory.getCommand().then(function (response)
     {
         $scope.currentCommand = medAppFactory.currentCommand;
     });
-    medAppFactory.getRole().then(function(res)
-    { 
-        var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
-        $location.path($scope.currentStaionNameLocation[amountLine].location);
-    });
+
     medAppFactory.getStationName().then(function(res)
     {
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
+        $scope.currentNavagationBar[0].name = medAppFactory.currentStationName;  
+        $scope.currentNavagationBar[0].location =  medAppFactory.navagationBarFull[amountLine].location;
+        $scope.currentNavagationBar[0].currentStation =  medAppFactory.currentStation;
+        debugger;
+        if(!amountLine)
+            $scope.currentNavagationBar[0].parentCurrentStation =  medAppFactory.currentStationName;
+        else
+            $scope.currentNavagationBar[0].parentCurrentStation =  medAppFactory.currentCommand;
 
-        $scope.currentStaionNameLocation[amountLine].name = medAppFactory.currentStationName;
-
+        $location.path($scope.currentNavagationBar[0].location);
     });
-    $scope.changeLocation = function(num)
-    {
-        $location.path($scope.currentStaionNameLocation[num].location);
-    }
 
+    $scope.changePage  = function (index)
+    {
+        medAppFactory.currentNavagationBar.splice(index + 1);
+        $location.path($scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].location);
+        medAppFactory.currentStation = 
+                $scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].currentStation;
+    }
 
     function checkInput(){
         $interval(function(){
