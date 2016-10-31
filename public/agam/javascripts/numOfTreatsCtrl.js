@@ -4,7 +4,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
     $http.get("/crud/units/" + $scope.unit).then(function(response){
 
         var treatments = response.data.Treatments;
-        debugger;
+
         var emptyChart = [
             {
                 key: 'אין נתונים להציג',
@@ -76,33 +76,35 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             }
         }
 
-//  debugger;
-//         // for timeline
-//         for (i=0; i<treatments.length; i++)
-//         {
-//             var dates = [];
+        debugger;
 
-//             for (j=0; j<treatments[i].Stock.Usage.length; j++)
-//             {
-//                dates.push(d3.time.format('%x %H:%M')(new Date(treatments[i].Stock.Usage[j])));
-//             }
+        // for timeline
+        var lines = [];
+        for (i=0; i<treatments.length; i++)
+        {
+            treatments[i].Stock.Usage.sort(function (a,b) {
+                return new Date(parseInt(a)) - new Date(parseInt(b));
+            });
 
-//             dates.sort(function(a,b) {
-//                 return new Date(b) - new Date(a);
-//             });
+            
+            var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
+            var params = [];
+            var currParam;
 
-//             var map = {};
-//             var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
+            for (j=0; j < treatments[i].Stock.Usage.length; j++)
+            {
+                countStock--;
+                currParam = {
+                    "x" : treatments[i].Stock.Usage[j],
+                    "y" : countStock
+                }
 
-//             dates.forEach(function(d)
-//             {
-//                 countStock--;
-//                 map[d] = countStock;
-//             });
-//         }
+                params.push(currParam);
+            }
+
+            lines.push({"key" : treatments[i].id, "values": params});
+        }
     });
-
-
 
     $scope.colorArray = ['gray','#660000'];
     
