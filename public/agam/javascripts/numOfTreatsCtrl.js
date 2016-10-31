@@ -179,6 +179,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             duration: 500,
             labelThreshold: 0.01,
             labelSunbeamLayout: true,
+            valueFormat: d3.format('d'),
             legend: {
                 margin:
                 {
