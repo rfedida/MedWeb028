@@ -49,6 +49,11 @@ function($scope, ModalService, medAppFactory, $location, $sce, $http)  {
           newInjured.Stations.ReceptionTime = result.time;
           medAppFactory.currentInjured = newInjured;
 
+           $http.post('/crud/patients' , { "patient": $scope.injured }).then(function(response)
+            {
+                
+            });
+
       $location.path("/injInfo");
       });
     });
