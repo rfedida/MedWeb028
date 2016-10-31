@@ -1,6 +1,6 @@
 
 // module.controller(שם, מערך של כל מה שהקונטרולר תלוי בו כשהאובייקט האחרון הוא הפונקציה)
-myApp.controller('mapControl', ['$scope', 'leafletData', function($scope,leafletData){
+myApp.controller('mapControl', ['$scope','$http', 'leafletData', function($scope,$http,leafletData){
     $scope.markers = [];
     $scope.selectedMarker = null;
     var htmlAbove, htmlBelow, iconSize;
@@ -112,15 +112,38 @@ myApp.controller('mapControl', ['$scope', 'leafletData', function($scope,leaflet
         });
     });
 
-    $scope.addMarker(
-        {
-            id:1,
-            lat: 31,
-            lng:35
-        }
-    ,{
-        urgent:2,
-        notUrgent:4
-    },
-    "Taagad 2");
+    // Puting the stations on the map
+    $http.get('/agam/MapUnits/'+ '1_1').success(function(response){
+        console.log(JSON.stringify(response));
+        var Units = response;
+
+        
+            Units.forEach(function(element) {
+                $scope.addMarker(
+                    {
+                        id:0,
+                        lat:element.lat,
+                        lng:element.lng
+                    },
+                    {
+                        urgent:2,
+                        notUrgent:4
+                    },
+                    element.name);
+                
+            }, this);
+
+    });
+
+    // $scope.addMarker(
+    //     {
+    //         id:1,
+    //         lat: 31,
+    //         lng:35
+    //     }
+    // ,{
+    //     urgent:2,
+    //     notUrgent:4
+    // },
+    // "Taagad 2");
 }]);
