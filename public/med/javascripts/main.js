@@ -155,7 +155,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
     factory.navagationBarFull =  [{id: "0", location: "/commandTmz"}, // pikud
                                   {id: "1", location: "/commandTmz"}, // ogda
                                   {id: "2", location: "/commandTmz"}, // hativa
-                                  {id: "3", location: "/tmz"}] // plhak
+                                  {id: "3", location: "/tmz"}] // plhak / tmz
 
     factory.currentNavagationBar = [{name:'', location:'', currentStation: '', parentCurrentStation: ''}];
 
@@ -194,9 +194,10 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
 
     $scope.changePage  = function (index)
     {
-        $scope.currentNavagationBar = medAppFactory.currentNavagationBar[index];
-        $location.path($scope.currentNavagationBar.location);
-        medAppFactory.currentStation = $scope.currentNavagationBar.currentStation;
+        medAppFactory.currentNavagationBar.splice(index + 1);
+        $location.path($scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].location);
+        medAppFactory.currentStation = 
+                $scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].currentStation;
     }
 
     function checkInput(){
