@@ -23,14 +23,8 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                         hativa: "", 
                         tagad: ""};
                         debugger;
-<<<<<<< HEAD
-    factory.currentStation = "1_1_1_1"
-=======
-
-    factory.currentStation = currentUser.getDetails().permission;
->>>>>>> e26141518b049127b5e2c3bd8abe1856be5654b4
     // currentUser.details.permission;
-    
+    factory.currentStation = currentUser.getDetails().permission;
     factory.newInjured = {
         "Bracelet_id": "",
         "IsDead":false,
@@ -322,7 +316,7 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
         $scope.currentCommand = medAppFactory.currentCommand;
     });
     medAppFactory.getRole().then(function(res)
-    {
+    { 
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
         $location.path($scope.currentStaionNameLocation[amountLine].location);
     });
