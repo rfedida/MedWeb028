@@ -1,4 +1,13 @@
 myApp.controller('statisticController', function($scope, $http) {
+
+    $scope.roundMinutes = function(date){
+        date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
+        date.setMinutes(0)
+        date.setSeconds(0);
+
+        return date;
+    };
+
     $scope.pieChartOptions = {
         chart:
         {
@@ -31,87 +40,96 @@ myApp.controller('statisticController', function($scope, $http) {
         }        
     };  
 
-    // $scope.lineChartOptions = {
-    //     chart:
-    //     {
-    //         type: 'lineChart',
-    //         height: 350,
-    //         width: 350,
-    //         x: function(d){return d.key},
-    //         y: function(d){return d.y},
-    //         color: function(d, i) {
-    //             var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
-    //             return colorArray[i];        
-    //         },
-    //         duration: 500,
-    //         xAxis:
-    //         {
-    //             axisLable: 'שעה'
-    //         },
-    //         yAxis:
-    //         { 
-    //             axisLable: 'מספר נפגעים',
-    //             axisLableDistance: 0
-    //         }
-    //     }        
-    // };
-    //$http.get('./crud/patients').success(function(response) {
-    //    $scope.injuryLocationData = response.data;
-    //}).error(function(err){
-    //    throw err;
-    //});
+    $scope.lineChartOptions = {
+        chart:
+        {
+            type: 'multiChart',
+            height: 300,
+            width: 300,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 45,
+                left: 45
+            },
+            x: function(d){return d.x},
+            y: function(d){return d.y},            
+            color: function(d, i) {
+                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
+                return colorArray[i];        
+            },
+            duration: 500, 
+            useInteractiveGuideLine: true,                   
+            xAxis:
+            {
+                axisLable: 'זמן',            
+                tickFormat: function(d){
+                    return d3.time.format('%x %H:%M')(new Date(d));
+                }
+            },
+            yAxis:
+            { 
+                axisLable: 'כמות נפגעים',                
+                axisLabelDistance: 0
+            }
+        }        
+    };
 
-    $scope.injury = [];
+    $scope.injuryMechanismData = [];
     $http.get("/crud/injuryMechanism").success(function(data){
         $scope.injuryMechanismData = data; 
-    //     [
-    //         {
-    //             key: 'תלול מסלול',
-    //             y: $scope.injury
-    //         },
-    //         {
-    //             key: 'ירי',
-    //             y: 36
-    //         },
-    //         {
-    //             key: 'אב"כ',
-    //             y: 8
-    //         },
-    //         {
-    //             key: 'כוויה',
-    //             y: 49
-    //         },
-    //         {
-    //             key: 'שאיפה',
-    //             y: 49
-    //         },
-    //         {
-    //             key: 'תאונת דרכים',
-    //             y: 49
-    //         }
-    //    ];
     }).error(function(data){
         console.log(data);
     });
     
     
-    $scope.injuryLocationData = [
-        {
-            key: 'פגיעות מפשעה',
-            y: 7
-        },
-        {
-            key: 'פגיעות חזה',
-            y: 36
-        },
-        {
-            key: 'פגיעות גפיים',
-            y: 8
-        },
-        {
-            key: 'פגיעות ראש',
-            y: 49
+   $scope.injuryLocationData = [];
+    $http.get("/crud/patientsInjuryLocation").success(function(data){
+        $scope.injuryLocationData = data;
+    }).error(function(data){
+        console.log(data);
+    }); 
+
+    $scope.injuryLocationTimeData = [];
+    $http.get("/crud/patientsInjuryLocationByTime").success(function(data){
+        $scope.injuryLocationTimeData = $scope.buildData(data);
+    }).error(function(data){
+        console.log(data);
+    }); 
+
+    $scope.buildData = function(data){        
+        var locations = [];
+
+        for (var index in data) {
+            if (!(data[index]._id.key in locations)) {
+                locations[data[index]._id.key] = data[index]._id.key;
+            }
         }
-    ];
-   
+
+        var newData = [];
+
+        for (var index in locations) {
+            var injuryValues = [];
+
+            for (var innerIndex in data) {
+                if (data[innerIndex]._id.key == locations[index]) {
+                    injuryValues.push({
+                        x: $scope.roundMinutes(new Date(parseInt(data[innerIndex]._id.x))),
+                        y: data[innerIndex].y
+                    });
+                }
+            }
+
+            newData.push({
+                key: locations[index],
+                type: 'line',
+                yAxis: 1,
+                values: injuryValues
+            });
+        }        
+
+        return newData;
+    };
+
 });
+

@@ -1,8 +1,8 @@
 var express = require('express');
 var crudRouter = express.Router();
 var mongoose = require('mongoose');
-var Unit = require('../models/unitSchema');
-var Patient = require('../models/patientSchema');
+var Unit = require('../server/common/models/unitSchema');
+var Patient = require('../server/common/models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
 var index = require('../app');
 var pjson = require('../package.json');
@@ -212,6 +212,56 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
     }
 });
 
+crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate(
+        [
+            {$group :
+                { _id : "$generalData.injuryLocation", 
+                  count : {$sum : 1}}},
+            {$sort : {_id : 1}},
+            { $project : 
+                {
+                    key : "$_id",
+                    y : "$count",
+                    _id : 0
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             res.json(patients);
+             console.log(patients);
+        }
+        else {}
+    });
+});
+
+crudRouter.get('/patientsInjuryLocationByTime', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate([
+            {
+                $group : {
+                    _id : {key: "$generalData.injuryLocation", x: "$Stations.receptionTime"},
+                    y : {$sum : 1}
+                }
+            },
+            {
+                $sort : {
+                    _id : 1,
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             res.json(patients);
+             console.log(patients);
+        }
+        else {}
+    });
+});
 
 var InjuryMechanismType = {
    0:  "תלול מסלול" ,
@@ -225,7 +275,7 @@ var InjuryMechanismType = {
 
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
-    console.log("get requst for db");
+    console.log("db get requst for injuryMechanism");
     Patient.aggregate(
         [
             {$group :
@@ -249,9 +299,10 @@ crudRouter.get('/injuryMechanism' , function(req , res ){
              });
 
              res.json(lior);
-             console.log(lior);
         }
-        else {}
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
     });
     
 });

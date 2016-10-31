@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var graphOccupation = require('../server/agam/OccupationControl.js');
-var Units = require('../models/unitSchema.js');
-var Patient = require('../models/patientSchema.js');
+var graphOccupation = require('../server/agam/OccupationControl');
+var Units = require('../server/common/models/unitSchema');
+var Patient = require('../server/common/models/patientSchema');
 
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {

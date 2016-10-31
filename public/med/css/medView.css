@@ -9,3 +9,23 @@
 {
     margin-top:6px;
 }
+
+.btnDesignTitle
+{
+    background: rgba(231, 231, 236, 0.66);
+    height: 21px;
+    margin-top: 9px;
+    cursor: pointer;
+}
+
+.spanDesignTitle
+{
+    
+}
+
+.imgCss
+{
+    height: 14px;
+    margin-top: 13px;
+    width: 47px;
+}
