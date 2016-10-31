@@ -18,7 +18,7 @@
                             </td>
                             <td colspan="3">
                                 <div class="col-sm-12" style="padding-top: 10px;">
-                                    <select class="form-control" ng-model="selectedTreatMed" ng-options="treatMed.id as treatMed.name for treatMed in treat_Med">                            
+                                    <select class="form-control" id="selectedTreatMed" ng-model="selectedTreatMed" ng-options="treatMed.id as treatMed.name for treatMed in treat_Med">                            
                         </select>
                                 </div>
                             </td>
@@ -50,8 +50,8 @@
                             </td>
                             <td>
                                 <div class="col-sm-12" style="padding-top: 10px;">
-                                    <input type="text" class="form-control" id="HiBloodPressure" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                                        maxlength="3" placeholder="גבוה" ng-model="HiBloodPressure">
+                                    <input type="text" class="form-control" id="highBloodPressure" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                        maxlength="3" placeholder="גבוה" ng-model="highBloodPressure">
                                 </div>
                             </td>
                         </tr>

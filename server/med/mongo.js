@@ -77,20 +77,21 @@ module.exports = {
                     var newPatient = {};
                     newPatient.braceletId = patient.braceletId;
                     newPatient.status = patient.generalData.emergency;
-                    if (patient.measurements.temperatures.length > 0) {
-                        newPatient.measurements.temperatures = sortDesc(patient.measurements.temperatures, "timestamp")[0].tempreature;
+                    newPatient.measurements = {};
+                    if (patient.measurements.temperatures !== undefined && patient.measurements.temperatures.length > 0) {
+                        newPatient.measurements.temperatures = sortDesc(patient.measurements.temperatures, "timestamp")[0];
                     }
-                    if (patient.measurements.storations.length > 0) {
-                        newPatient.measurements.storations = sortDesc(patient.measurements.storations, "timestamp")[0].storations;
+                    if (patient.measurements.storations !== undefined && patient.measurements.storations.length > 0) {
+                        newPatient.measurements.storations = sortDesc(patient.measurements.storations, "timestamp")[0];
                     }
-                    if (patient.measurements.bloodPressures.length > 0) {
-                        newPatient.measurements.bloodPressures = sortDesc(patient.measurements.bloodPressures, "timestamp")[0].bloodPressures;
+                    if (patient.measurements.bloodPressures !== undefined && patient.measurements.bloodPressures.length > 0) {
+                        newPatient.measurements.bloodPressures = sortDesc(patient.measurements.bloodPressures, "timestamp")[0];
                     }
-                    if (patient.measurements.heartbeat.length > 0) {
-                        newPatient.measurements.heartbeat = sortDesc(patient.measurements.heartbeat, "timestamp")[0].heartbeat;
+                    if (patient.measurements.heartbeat !== undefined && patient.measurements.heartbeat.length > 0) {
+                        newPatient.measurements.heartbeat = sortDesc(patient.measurements.heartbeat, "timestamp")[0];
                     }
-                    if (patient.measurements.receptionTime.length > 0) {
-                        newPatient.measurements.receptionTime = sortDesc(patient.measurements.receptionTime, "timestamp")[0].receptionTime;
+                    if (patient.Stations.receptionTime !== undefined && patient.Stations.receptionTime.length > 0) {
+                        newPatient.Stations.receptionTime = sortDesc(patient.Stations.receptionTime, "timestamp")[0];
                     }
                     
                     result.push(newPatient);                
@@ -115,7 +116,7 @@ module.exports = {
                 callback(err); 
             } else {
 
-                var pattern = "^" + unitId + "(_[0-9]+)+$";
+                var pattern = "^" + unitId + "[_\d]{1}[0-9]+$";
                 var list = [];
                 var regex = new RegExp(pattern);
                 var bIsIdExist = false;
@@ -124,7 +125,7 @@ module.exports = {
                 // Find if the unit id is existed
                 for (var i=0; i<units.length; i++) {
                     if(units[i].id === unitId)
-                    bIsIdExist = true;
+                        bIsIdExist = true;
                 }
                 
                 // If the id exist
