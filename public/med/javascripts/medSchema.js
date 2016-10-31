@@ -19,7 +19,8 @@ function($scope, medAppFactory, $location, $interval)
            {
                $interval(function(){},60000);
            }
-     
+      
+
            function divByGrp ()
            {
                for(var i=0; i<$scope.currentInj.treatments.length; i++)
@@ -31,8 +32,23 @@ function($scope, medAppFactory, $location, $interval)
                    $scope.treatments[group].push($scope.currentInj.treatments[i]);
                }
 
-               //$scope.treatments.A.sort
-               //
+                $scope.treatments.A.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+                 $scope.treatments.B.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+                 $scope.treatments.C.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+                 $scope.treatments.D.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+             
            }
 
           function medFunc ()
@@ -43,8 +59,11 @@ function($scope, medAppFactory, $location, $interval)
                                            $scope.treat_Med[$scope.currentInj.medications[i].medicationId].name;
                     $scope.medications.push($scope.currentInj.medications[i]);                      
                }
-
-               // med.sort
+                 $scope.medications.sort(function(a,b)
+                 {
+                     return new Date(parseInt(b.date)) - new Date(parseInt(a.date))
+                 });
+         
            };
 
            function liqFunc ()
@@ -136,6 +155,10 @@ function($scope, medAppFactory, $location, $interval)
                         .storations[$scope.currentInj.measurements.storations.length-1].storation,
            };
 
+$scope.onClick = function()
+{
+ $location.path("/injInfo");
+}
          
 divByGrp();
 medFunc();
