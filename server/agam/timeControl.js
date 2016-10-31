@@ -1,4 +1,4 @@
-var Patient = require('../../models/patientSchema');
+var Patient = require('../common/models/patientSchema');
 
 var 
 var lengthOfHirarchy = userHirarchy.length

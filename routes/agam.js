@@ -1,10 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+<<<<<<< HEAD
 var graphOccupation = require('../server/agam/OccupationControl.js');
 var Units = require('../models/unitSchema.js');
 var MapUnits = require('../server/agam/MapUnitsControl.js');
 var Patient = require('../models/patientSchema.js');
+=======
+var graphOccupation = require('../server/agam/OccupationControl');
+var Units = require('../server/common/models/unitSchema');
+var Patient = require('../server/common/models/patientSchema');
+
+>>>>>>> cf74bd7979f1794cd7beaf85e81f9550a5af1e28
 /* GET home page of agam. */
 router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname,'../public/agam/views/agamView.html'));

@@ -1,14 +1,15 @@
 var express = require('express');
 var crudRouter = express.Router();
 var mongoose = require('mongoose');
-var Unit = require('../models/unitSchema');
-var Patient = require('../models/patientSchema');
+var Unit = require('../server/common/models/unitSchema');
+var Patient = require('../server/common/models/patientSchema');
 var dbDisk = require('../server/med/dbdiskconnection');
 var index = require('../app');
 var pjson = require('../package.json');
 var mongo = require('../server/med/mongo');
 var files = require('../server/med/files');
 var temp = require('../server/med/temp');
+
 
 crudRouter.get('/units', function (req, res, next) {
 
@@ -86,10 +87,10 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                 patients.forEach(function(patient){
 
                     // Pull out all station which equals to current station
-                    patient.Stations = getAllCurrentStationById(patient.Stations, req.params.unitId);
+                    patient.Stations = mongo.getAllCurrentStationById(patient.Stations, req.params.unitId);
 
                     // Sort the array by last reception time
-                    sortDesc(patient.Stations, "receptionTime");
+                    mongo.sortDesc(patient.Stations, "receptionTime");
                 })
 
                 var lastReceptionPatient = patients[0];
@@ -100,7 +101,7 @@ crudRouter.get('/patients/units/:unitId/last', function(req, res,next) {
                         lastReceptionPatient = patient;
                     }
                 })
-
+                res.setHeader('Access-Control-Allow-Origin', '*');
                 res.send(lastReceptionPatient);
             }
          })
@@ -211,9 +212,20 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
     }
 });
 
+
+var InjuryMechanismType = {
+   0:  "תלול מסלול" ,
+   1: "ירי" ,
+   2: "הדף" ,
+   3: "אבכ" ,
+   4: "כוויה" ,
+   5: "שאיפה" ,
+   6: "תאונת דרכים"
+};
+
 //trying
 crudRouter.get('/injuryMechanism' , function(req , res ){
-    console.log("get requst for db");
+    console.log("db get requst for injuryMechanism");
     Patient.aggregate(
         [
             {$group :
@@ -231,10 +243,16 @@ crudRouter.get('/injuryMechanism' , function(req , res ){
         function(err, patients){
         if(!err)
          {
-             res.json(patients);
-             console.log(patients);
+             var lior = patients.map(function(currPatient){
+                 currPatient.key = InjuryMechanismType[currPatient.key];
+                 return currPatient;
+             });
+
+             res.json(lior);
         }
-        else {}
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
     });
     
 });

@@ -1,5 +1,6 @@
 // Server
 var express = require('express');
+var bodyParser = require('body-parser');
 var path = require('path');
 var routes = require('./routes/index');
 var agamRoutes = require('./routes/agam'); 
@@ -12,27 +13,82 @@ var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
 var udpServer = dgram.createSocket('udp4');
 var pjson = require('./package.json');
+var bodyParser = require("body-parser");
 var temp = require('./server/med/temp');
 var mongo = require('./server/med/mongo');
+var cookieParser = require("cookie-parser");
+var session = require("express-session");
+var auth = require("./server/infrastructure/BL/authentication")
 
 var server = express();
+
+server.use(session({secret : "keyboard cat",
+                 resave : true,
+                 saveUninitialized : true,
+                 cookie : {}}));
+
+server.use(cookieParser());
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended:true}));
+
 server.use(function(req, res, next)
 {
-    var loginDetails = {};
-    var isLoggedOn = true;
-    console.log("req address : " + req.originalUrl);
-    console.log("check if user logged on");
-    if (isLoggedOn)
+    var url = req.originalUrl;
+    if (url === "/" ||
+        // url === "/med/" ||
+        // url === "/agam" ||
+        // url.startsWith("/agam/views") ||
+        // url.startsWith("/agam/javascripts")||
+        url.startsWith("/common/views") ||
+        url.startsWith("/common/javascripts")||
+        url.startsWith("/components") ||
+        url.startsWith("/infrastructure/views") ||
+        url.startsWith("/infrastructure/javascripts")||
+        // url.startsWith("/med/views") ||
+        // url.startsWith("/med/css") ||
+        // url.startsWith("/med/javascripts")||
+        url.startsWith("/infrastructure/login"))
     {
         next();
     }
     else
     {
-        res.status(401).send();
+        var loginDetails = {};
+        var isLoggedOn = req.cookies.hash != null && req.session[req.cookies.hash] != null;
+        console.log("req address : " + req.originalUrl);
+        console.log("check if user logged on");
+
+        if (isLoggedOn)
+        {
+            var currentUser = auth.getUser(req);
+
+            // Only agam
+            // if (currentUser.PermissionID.split("_").length < 4 && 
+            //     url.startsWith("/med"))
+            // {
+            //     res.writeHead(307, {Location : "/agam"});
+            //     res.end();
+            // }
+            // only med
+            if (currentUser.PermissionID.split("_").length == 4 && 
+                     url.startsWith("/agam"))
+            {
+                res.writeHead(307, {Location : "/med"});
+                res.end();
+            }
+            else
+            {                
+                next();
+            }
+        }
+        else
+        {
+            res.writeHead(307, {Location : "/"});
+            res.end();
+        }
     }
 });
 
-server.use(bodyParser.json());
 server.use(express.static(__dirname + '/public'));
 server.use('/', routes);
 server.use('/med', medRoutes);
@@ -90,7 +146,6 @@ if (pjson.isWeb) {
         }
     }, 3000);
 }
-
 // UDP Server
 var patient = undefined;
 
