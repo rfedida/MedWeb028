@@ -14,7 +14,7 @@ var GetUnitsOnMap = function(hirarchCode, callback)
      
         function(err,res)
         {
-            var jsonUnits = res;
+            var jsonUnits =[];
           // Go over all the stations
           res.forEach(function(element) 
             {
@@ -29,10 +29,12 @@ var GetUnitsOnMap = function(hirarchCode, callback)
              GetEmergency(element.id,2, function(data){
                 element.Urgent =data[0].count;
             });
-                      
+
+            jsonUnits.push(element);
+
             },this);
             // return all the units that should be displayed on the map
-            callback(res);
+            callback(jsonUnits);
         });
 }
 
