@@ -125,8 +125,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'multiChart',
-            height: 400,
-            width: 600,
+            height: 300,
+            width: 700,
             margin: {
                 top: 20,
                 right: 20,
@@ -136,7 +136,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             x: function(d){return d.x},
             y: function(d){return d.y},            
             color: function(d, i) {
-                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
+                var colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a'];           
                 return colorArray[i];        
             },
             duration: 500, 
@@ -156,7 +156,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         }        
     };
 
-    $scope.colorArray = ['gray','#660000'];
+    $scope.colorArray = ['#668cff','#a63807'];
     
     $scope.colorFunction = function() {
         return function(d,i){
@@ -168,7 +168,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'pieChart',
-            height: 200,
+            height: 150,
             width: 230,
             donut: true,
             x: function(d){return d.key},
