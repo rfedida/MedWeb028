@@ -28,7 +28,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
                         tagad: ""};
                         debugger;
 
-    factory.currentStation = "1_1_1_1"
+    factory.currentStation = currentUser.getDetails().permission;
     // currentUser.details.permission;
     
     factory.newInjured = {
