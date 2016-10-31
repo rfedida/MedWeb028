@@ -37,6 +37,10 @@ function updatePatient(patient, callback) {
         callback(false);
 }
 
+function insertUnit(unit) {
+    diskdb.Units.save(unit);
+}
+
 module.exports = {
     getAllPatients: (callback) => {
         callback(diskdb.Patients.find());
@@ -134,6 +138,7 @@ module.exports = {
         };
 
         var dataToBeUpdate = {
+            id: unit.id,
             name: unit.name,
             Medications: unit.Medications,
             Treatments: unit.Treatments,
@@ -142,15 +147,16 @@ module.exports = {
             location: unit.location
         };
 
-        if(diskdb.Units.update(query, dataToBeUpdate, options) == 1) {
+        if(diskdb.Units.update(query, dataToBeUpdate, options)) {
             callback(true);
+        } else {
+            callback(false);
         }
-
-        callback(false);
     },
     insertPatient: (patient) => {
         diskdb.Patients.save(patient);
     },
+    insertUnit: insertUnit,
     writePatientOrUpdateFromUsb: (p) => {
         updatePatient(p, function(data) {
             if (data)

@@ -172,11 +172,12 @@ if (!pjson.isWeb) {
     });
 
     udpServer.on('message', (msg, rinfo) => {
+        helpers.agentInfo = rinfo;
         patient = JSON.parse(msg.toString("utf8"));
-        // patient.stationId = helpers.stationID;
-        // patient.Stations.push({"stationId": helpers.stationID, 
-        //                        "receptionTime": new Date().getDate(),
-        //                        "leavingDate": null});
+        patient.CurrentStation = helpers.stationID;
+        patient.Stations.push({"stationId": helpers.stationID, 
+                               "receptionTime": new Date().getDate(),
+                               "leavingDate": null});
         helpers.patient = patient;
 
         // write to file
@@ -203,7 +204,7 @@ if (!pjson.isWeb) {
         var toSend = JSON.stringify(data);
         var buf = new Buffer(toSend.length);
         buf.write(toSend);
-        udpServer.send(buf, 0, buf.length, 9002, '150.0.0.123', (err)=> {
+        udpServer.send(buf, 0, buf.length, helpers.agentInfo.port, helpers.agentInfo.ip, (err)=> {
             if(err) {
                 console.log(err);
             }
