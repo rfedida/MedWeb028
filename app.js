@@ -173,6 +173,10 @@ if (!pjson.isWeb) {
 
     udpServer.on('message', (msg, rinfo) => {
         patient = JSON.parse(msg.toString("utf8"));
+        // patient.stationId = helpers.stationID;
+        // patient.Stations.push({"stationId": helpers.stationID, 
+        //                        "receptionTime": new Date().getDate(),
+        //                        "leavingDate": null});
         helpers.patient = patient;
 
         // write to file
