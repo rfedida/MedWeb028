@@ -1,5 +1,5 @@
 myApp.controller('numOfTreatsCtrl', function($scope, $http) {
-    $scope.unit = '1_1_1_1';
+    $scope.unit = '1_1_1_1';   
 
     $http.get("/crud/units/" + $scope.unit).then(function(response){
 
@@ -16,6 +16,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         $scope.dataCAT = emptyChart;
         $scope.dataNekezHaze = emptyChart;
         $scope.dataCombatGauze = emptyChart;
+        $treatsStockTimeData = emptyChart;
 
         $scope.mlay;
 
@@ -86,7 +87,6 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                 return new Date(parseInt(a)) - new Date(parseInt(b));
             });
 
-            
             var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
             var params = [];
             var currParam;
@@ -102,9 +102,59 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                 params.push(currParam);
             }
 
-            lines.push({"key" : treatments[i].id, "values": params});
+            var keyName;
+            if (treatments[i].id == 10)
+                keyName = "Vygon";
+            else if (treatments[i].id == 5)
+                keyName = "C.A.T";
+            else if (treatments[i].id == 4)
+                keyName = "נקז חזה";
+            else if (treatments[i].id == 7)
+                keyName = "תחבושת אישית";
+
+            lines.push({key : keyName,
+                        values: params,
+                        type: 'line',
+                        yAxis: 1,});
         }
+
+        $scope.treatsStockTimeData = lines;
     });
+
+     $scope.lineChartOptions = {
+        chart:
+        {
+            type: 'multiChart',
+            height: 400,
+            width: 600,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 45,
+                left: 45
+            },
+            x: function(d){return d.x},
+            y: function(d){return d.y},            
+            color: function(d, i) {
+                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];                 
+                return colorArray[i];        
+            },
+            duration: 500, 
+            useInteractiveGuideLine: true,                   
+            xAxis:
+            {
+                axisLable: 'זמן',            
+                tickFormat: function(d){
+                    return d3.time.format('%x %H:%M')(new Date(d));
+                }
+            },
+            yAxis:
+            { 
+                axisLable: 'כמות טיפולים במלאי',                
+                axisLabelDistance: 0
+            }
+        }        
+    };
 
     $scope.colorArray = ['gray','#660000'];
     
@@ -118,8 +168,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'pieChart',
-            height: 300,
-            width: 300,
+            height: 200,
+            width: 230,
             donut: true,
             x: function(d){return d.key},
             y: function(d){return d.y},
