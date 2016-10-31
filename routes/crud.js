@@ -212,6 +212,56 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
     }
 });
 
+crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate(
+        [
+            {$group :
+                { _id : "$generalData.injuryLocation", 
+                  count : {$sum : 1}}},
+            {$sort : {_id : 1}},
+            { $project : 
+                {
+                    key : "$_id",
+                    y : "$count",
+                    _id : 0
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             res.json(patients);
+             console.log(patients);
+        }
+        else {}
+    });
+});
+
+crudRouter.get('/patientsInjuryLocationByTime', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate([
+            {
+                $group : {
+                    _id : {key: "$generalData.injuryLocation", x: "$Stations.receptionTime"},
+                    y : {$sum : 1}
+                }
+            },
+            {
+                $sort : {
+                    _id : 1,
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             res.json(patients);
+             console.log(patients);
+        }
+        else {}
+    });
+});
 
 var InjuryMechanismType = {
    0:  "תלול מסלול" ,
@@ -255,6 +305,37 @@ crudRouter.get('/injuryMechanism' , function(req , res ){
         }
     });
     
+});
+
+crudRouter.get('/patientsInjuryMechanismByTime', function(req, res, next) {
+    console.log("get requst for db");
+    Patient.aggregate([
+            {
+                $group : {
+                    _id : {key: "$generalData.injuryMechanism", x: "$Stations.receptionTime"},
+                    y : {$sum : 1}
+                }
+            },
+            {
+                $sort : {
+                    _id : 1,
+                }
+            }
+        ],
+        function(err, patients){
+        if(!err)
+         {
+             var lior = patients.map(function(currPatient){
+                 currPatient._id.key = InjuryMechanismType[currPatient._id.key];
+                 return currPatient;
+             });
+
+             res.json(lior);
+        }
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
+    });
 });
 
 module.exports = crudRouter;
