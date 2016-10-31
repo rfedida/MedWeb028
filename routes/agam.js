@@ -74,4 +74,21 @@ router.get('/getPatientsAmount/:unitid', function(req, res, next){
     });
 });
 
+router.get('/allPatientsAmount/:userHirarchy', function(req, res, next){
+    var userHirarchy = res.req.params.userHirarchy;
+    Patient.aggregate(
+        [{"$match": {"CurrentStation" : {"$regex": "^" + userHirarchy}}},
+        {"$group" : {
+            "_id" : {"Station": "$CurrentStation",
+                "Emergency": "$generalData.emergency"},
+            "count": {"$sum": 1}
+            }},
+        {"$group":{
+            "_id" : "$_id.Emergency",
+            "values": { "$push" : {"x": "$_id.Station", "y": "$count"}}}    
+        }, {"$sort":{"_id" : 1}}], function(err, result){
+            res.send(result);
+        });
+});
+
 module.exports = router;

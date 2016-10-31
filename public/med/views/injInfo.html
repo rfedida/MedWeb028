@@ -7,13 +7,13 @@
             <div class="col-md-4 borderRight status">
                 <div class="row">
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-success btnStatus">גמר טיפול</button>
+                        <button type="button" class="btn btn-success btnStatus"" ng-click="finishTreatment()">גמר טיפול</button>
                     </div>
                     <div class="col-md-5">
-                        <button type="button" class="btn btn-danger btnStatus" style="width: 65px; margin-right:-20px">פנה</button>
+                        <button type="button" class="btn btn-danger btnStatus" style="width: 65px; margin-right:-20px" ng-click="transferPatient()">פנה</button>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-dead btnStatus" style="width: 65px">נפטר</button>
+                        <button type="button" class="btn btn-dead btnStatus" style="width: 65px" ng-click="patientPassed()">נפטר</button>
                     </div>
                 </div>
             </div>
@@ -165,7 +165,7 @@
                 </tr>
                 <tr ng-repeat="treatment in treatments" style="text-align: center;">
                     <td> {{calcDateDiff(treatment.date)}}</td>
-                    <td> {{treatment.treatmentType}} </td>
+                    <td> {{getNameById(treatment.treatmentType)}} </td>
                     <td> {{treatment.location}} </td>
                     <td> {{treatment.bloodPressure}} </td>
                     <td> {{treatment.heartbeat}} </td>
@@ -175,7 +175,6 @@
             </table>
         </div>
         <div class="col-md-20">
-            <button type="button" class="btn btn-primary" ng-click="addRow()">+</button>
             <button type="button" class="btn btn-primary" ng-click="showComplex()">++++</button>
         </div> 
     </div>
@@ -200,6 +199,5 @@
 
         <!-- Megama tab -->
         <div class="row component basicInfo" ng-if="selectedTab == 5">מגמות מדדים</div>
-
     </div>
 </div>

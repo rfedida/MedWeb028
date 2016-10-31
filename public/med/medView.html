@@ -1,66 +1,63 @@
 <!DCOTYPE html>
 <html ng-app="medApp">
+
 <head>
-      <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">       
-       <link href="/med/css/medSchema.css" rel="stylesheet">
-       <link href="/med/css/medView.css" rel="stylesheet">
-        <link href="/components/bootstrap/css/angular-bootstrap-toggle.min.css" rel="stylesheet ">
-        <link href="/med/css/injInfo.css" rel="stylesheet">
-        <script src="/components/jQuery/jquery-3.1.1.min.js">
-        </script>        
-        <script>
+    <link rel="stylesheet" href="/components/angular-material/angular-material/angular-material.css">
+    <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">
+    <link href="/med/css/medSchema.css" rel="stylesheet">
+    <link href="/med/css/medView.css" rel="stylesheet">
+    <link href="/components/bootstrap/css/angular-bootstrap-toggle.min.css" rel="stylesheet ">
+    <link href="/med/css/injInfo.css" rel="stylesheet">
+    <script src="/components/jQuery/jquery-3.1.1.min.js">
+        </script>
+    <script>
             try {
                 $ = jQuery = module.exports;
             } catch (e) {}
         </script>
-        
-        
-        <script src="/components/angular/angular.min.js"></script>
-        <script src="/components/angular/angular-route.min.js"></script>
-        <script src="/components/angular/angular-animate.js"></script>      
-        <script src="/components/angular/angular-aria.min.js" ></script>
-        <script src="/components/angular/angular-messages.min.js" ></script>
-        <script src="/components/angular/angular-cookies.min.js" ></script>
 
-        <script src="/components/angular-material/angular-material/angular-material.js" type="text/javascript"></script>    
-        <link rel="stylesheet" href="/components/angular-material/angular-material/angular-material.css">
-        
-        <script src="/infrastructure/javascripts/md-infra.js" type="text/javascript"></script>        
-        <script src="/infrastructure/javascripts/loginCardService.js" type="text/javascript"></script>
-        <script src="/infrastructure/javascripts/currentUser.js" type="text/javascript"></script>
 
-        <script src="/components/angular/angular-sanitize.js"></script>
-        <script src="/components/bootstrap/js/angular-bootstrap-toggle.min.js"></script>
-        <script src="/components/bootstrap/js/bootstrap.min.js"></script>
-        
-       <link href="/med/css/medSchema.css" rel="stylesheet">
-        <script src="/infrastructure/javascripts/md-infra.js"></script>
-        <script src="/infrastructure/javascripts/currentUser.js"></script>
-        <script src="/med/javascripts/main.js"></script>
-        <script src="/med/javascripts/injInfo.js"></script>
-        <script src="/med/javascripts/tmz.js"></script>
-         <script src="/med/javascripts/medSchema.js"></script>
-        <script src="/components/angular/angular-modal-service.min.js"></script>
-        <link href="/med/css/tmz.css" rel="stylesheet">
-    </head>
+    <script src="/components/angular/angular.min.js"></script>
+    <script src="/components/angular/angular-route.min.js"></script>
+    <script src="/components/angular/angular-animate.js"></script>
+    <script src="/components/angular/angular-aria.min.js"></script>
+    <script src="/components/angular/angular-messages.min.js"></script>
+    <script src="/components/angular/angular-cookies.min.js"></script>
+    <script src="/components/angular-material/angular-material/angular-material.js" type="text/javascript"></script>
+    <script src="/infrastructure/javascripts/md-infra.js" type="text/javascript"></script>
+    <script src="/infrastructure/javascripts/loginCardService.js" type="text/javascript"></script>
+    <script src="/infrastructure/javascripts/currentUser.js" type="text/javascript"></script>
+    <script src="/components/angular/angular-sanitize.js"></script>
+    <script src="/components/bootstrap/js/angular-bootstrap-toggle.min.js"></script>
+    <script src="/components/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/med/css/medSchema.css" rel="stylesheet">
+    <script src="/infrastructure/javascripts/md-infra.js"></script>
+    <script src="/infrastructure/javascripts/currentUser.js"></script>
+    <script src="/med/javascripts/main.js"></script>
+    <script src="/med/javascripts/injInfo.js"></script>
+    <script src="/med/javascripts/tmz.js"></script>
+    <script src="/med/javascripts/medSchema.js"></script>
+    <script src="/components/angular/angular-modal-service.min.js"></script>
+    <link href="/med/css/tmz.css" rel="stylesheet">
+</head>
 
 <body ng-controller="medViewCtrl" class="container-fluid">
     <div class="mainBaner row">
-         <div class="col-md-2 mainBannerText"> 
-             <div type="button" class="button" >
-                 <a href="/agam">
+        <div class="col-md-2 mainBannerText">
+            <div type="button" class="button">
+                <a href="/agam">
                  מעבר
                   </a>
-                  <md-button ng-click = "logout()">
+                <md-button ng-click="logout()">
                     logout
-                  </md-button>
+                </md-button>
             </div>
         </div>
-             <div class="col-md-2 col-md-offset-3 mainBannerText"> 
-                 {{currentCommand}}
+        <div class="col-md-2 col-md-offset-3 mainBannerText">
+            {{currentCommand}}
         </div>
-        <div class="col-md-2 col-md-offset-3 mainBannerText" ng-click=changeLocation(3)> רפואה שלמה  
-            
+        <div class="col-md-2 col-md-offset-3 mainBannerText" ng-click=changeLocation(3)> רפואה שלמה
+
         </div>
     </div>
     <div class="row" style="background:rgba(231, 231, 236, 0.66); height:40px;">
@@ -73,17 +70,17 @@
         <!--<div class="col-md-10 col-md-offset-2">
             <div class="row">
                 <div type="button" class="btnDesignTitle col-md-1 col-md-offset-6" ng-click=changeLocation(3)>
-                    <div class="spanDesignTitle"> {{currentStaionNameLocation[3].name}}  </div>
-                    </div>
-                <img class="imgCss col-md-1" src="\med\img\arrow.png"> 
+                    <div class="spanDesignTitle"> {{currentStaionNameLocation[3].name}} </div>
+                </div>
+                <img class="imgCss col-md-1" src="\med\img\arrow.png">
                 <div type="button" class="btnDesignTitle  col-md-1">
                     <div class="spanDesignTitle"> {{currentStaionNameLocation[2].name}} </div>
-                    </div>
-                <img class="imgCss col-md-1" src="\med\img\arrow.png"> 
+                </div>
+                <img class="imgCss col-md-1" src="\med\img\arrow.png">
                 <div type="button" class="btnDesignTitle  col-md-1">
                     <div class="spanDesignTitle"> {{currentStaionNameLocation[1].name}} </div>
-                    </div>
-                <img class="imgCss col-md-1" src="\med\img\arrow.png"> 
+                </div>
+                <img class="imgCss col-md-1" src="\med\img\arrow.png">
                 <div type="button" class="btnDesignTitle  col-md-1">
                     <div class="spanDesignTitle"> {{currentStaionNameLocation[0].name}} </div>
                 </div>
@@ -93,4 +90,5 @@
 
     <div ng-view></div>
 </body>
+
 </html>

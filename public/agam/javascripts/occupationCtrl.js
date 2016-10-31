@@ -1,14 +1,6 @@
 myApp.controller('occupationController', function($scope, $http) {
 
-    $scope.colorArray = ['gray','#660000'];
-    
-    $scope.colorFunction = function() {
-        return function(d,i){
-            return $scope.colorArray[i];
-        }
-    }
-    
-
+    $scope.colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a']; 
 
     $http.get('/agam/Occupation/'+'1_1_1'
     ).success(function(response){
@@ -33,6 +25,9 @@ myApp.controller('occupationController', function($scope, $http) {
                                 right: 20,
                             bottom: 45,
                                 left: 45
+                            },
+                            color: function(d, i) {                
+                                return $scope.colorArray[i];        
                             },
                             clipEdge: true,
                             stacked: true,
@@ -69,6 +64,9 @@ myApp.controller('occupationController', function($scope, $http) {
                             bottom: 45,
                                 left: 45
                             },
+                            color: function(d, i) {                
+                                return $scope.colorArray[i];        
+                            },                            
                             clipEdge: true,
                             stacked: true,
                             showLables: true,

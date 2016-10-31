@@ -19,7 +19,7 @@ var session = require("express-session");
 var auth = require("./server/infrastructure/BL/authentication")
 var crud = require('./routes/crud');
 var helpers = require('./routes/helpers');
-helpers.patient = "dasdsaa";
+var ping = require('ping');
 
 var server = express();
 
@@ -115,6 +115,7 @@ function connectToMongo () {
     var db = mongoose.connection;
     db.on('error', function(err) {
         helpers.isOnline = false;
+        mongoose.connection.close();
         console.log('Connection to mongo failed');
     });
     db.once('open', function(){
@@ -150,7 +151,14 @@ if (pjson.isWeb) {
 } else {
     setInterval(function() {
         if (!helpers.isOnline) {
-            connectToMongo();
+            ping.sys.probe('150.0.0.56', function(isAlive) {
+                if (isAlive) {
+                    console.log("PING GOOD!!!");
+                    connectToMongo();
+                } else {
+                    console.log("No network");
+                }
+            });
         }
     }, 3000);
 }
