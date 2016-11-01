@@ -1,20 +1,18 @@
-
-
-  
-
 <div class="modal">
-        <div class="modal-dialog modal-ld">
-            <div class="modal-content">
-                <center>
-                 <div class="modal-header">
-                    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                 </div>
-                </center>
-                <div class="row">   
+    <div class="modal-dialog modal-ld" 
+         style="padding-right: 5px; padding-left: 5px; width: 550px; height:330px; background: white;">
+ <div class="modal-content">
+               
+    <div class="modal-header col-md-12" style="border-bottom:none;">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    </div>
+                
+            
+     <div class="col-md-12" style="border-radius:7px;">   
       <div  class = "">
-        <table class="table table-bordered aBackground">
+        <table class="table table-bordered" style="background: lightgrey; border-radius:7px;">
           <tr>
             <th rowspan="100" type="button">
               <div class ="treatLetter"> {{letter}} </div>
@@ -31,10 +29,11 @@
       </table>
     </div>
   </div>
-                <div class="modal-footer">
+                <div class="modal-footer col-md-12" style="border-top:none; text-align: center; margin-top: 15px">
                     <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">סגור</button>
                 </div>
-            </div>
+                </div>
         </div>
     </div>
     
+

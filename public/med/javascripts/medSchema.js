@@ -139,12 +139,6 @@ function($scope, medAppFactory, $location, $interval,$sce,ModalService)
                         modal.element.modal();
                         modal.close.then(function(result)
                         {
-                            /*var newInjured = angular.copy(medAppFactory.newInjured);
-                            newInjured.Bracelet_id = result.braceId;
-                            newInjured.Stations.ReceptionDate = result.date;
-                            newInjured.Stations.ReceptionTime = result.time;
-                            medAppFactory.currentInjured = newInjured;*/
-
                             $location.path("/medSchema");
                         });
                     });
@@ -167,6 +161,15 @@ $scope.onClick = function()
 {
  $location.path("/injInfo");
 }
+
+/*$scope.diableDead = function()
+{
+ if ($scope.currentInj.generalData.emergency == 3)
+    //injBtn.disabled = true;
+    return false;
+return true;
+}*/
+
          
 divByGrp();
 medFunc();

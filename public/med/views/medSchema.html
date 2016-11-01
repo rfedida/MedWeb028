@@ -3,9 +3,11 @@
     
     <div class="row MarginTB">
       <div class="col-md-1">
+       
         <div type="button" class="button2" ng-click="onClick()">
            נתוני פצוע 
         </div>
+      
       </div>
           <div class="col-md-4 col-md-offset-3 detailsBorder title">
             תיק רפואי - צמיד {{inj.id}}
@@ -15,10 +17,10 @@
     <div class="col-md-12 detailsBorder MarginTB">
       <div class="row">
           <div class="col-md-3" ng-class="{'redColor': inj.Storation > 97 || inj.Storation < 92 }">
-            סטרוציה: {{inj.Storation}}
+            סטורציה: {{inj.Storation}}
           </div>
           <div class="col-md-3">
-          ל"ד: {{inj.BloodPressure}}
+           ל"ד: {{inj.BloodPressure}}
           </div>
           <div class="col-md-3" ng-class="{'redColor': inj.temp > 38.3 || inj.temp < 36 }">
             חום: {{inj.temp}}

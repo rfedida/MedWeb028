@@ -57,5 +57,9 @@ ul
 {
     direction: rtl;
     list-style-type: none;
-    font-size: 15px;    
+    font-size: 15px;  
+}  
+
+li a {
+    color:black !important;
 }

@@ -62,10 +62,11 @@
         </div>
         <span  ng-controller="unitsTreeController">
         <div class="{{sizestatic}}">
-            <div class="row" style="background: #B3E5FC">
+            <div class="row" style="background: rgb(218, 221, 241);">
                 <span class="col-md-4">  
-            <button type="button" style=" background-color: white; font-size: 13px;" class="btn">
-               <a href="/med"> צפה בפרטים </a>
+            <button type="button" style="font-size: 13px;" class="btn hamalBtn">
+                <a href="/med"> צפה בפרטים </a>
+                <span class="glyphicon glyphicon-eye-open"></span>
                 </button>
               </span>
                 <span class="col-md-4 text-center" style="color:black; font-size: 17px">{{patientsNum.total}}   :סה"כ פצועים</span>
@@ -74,31 +75,33 @@
               
                 </div>
             </div>
-            <div class="row" style="background: #B3E5FC">
+            <div class="row" style="background: #B3E5FC;height: 20px;">
                 <div class="progress">
                     <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{(patientsNum.notEmergencyInjured/patientsNum.total)*100}}%">
-                        {{patientsNum.notEmergencyInjured}}
+                        {{patientsNum.notEmergencyInjured}}:לא דחוף
                     </div>
                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{(patientsNum.emergencyInjured/patientsNum.total)*100}}%">
-                        {{patientsNum.emergencyInjured}}
+                        {{patientsNum.emergencyInjured}}:דחוף
                     </div>
                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{(patientsNum.deads/patientsNum.total)*100}}%">
-                        {{patientsNum.deads}}
+                        {{patientsNum.deads}}:חללים
                     </div>
                     <div class="progress-bar progress-bar-default" role="progressbar" style="width:{{(patientsNum.unknownInjured/patientsNum.total)*100}}%">
-                        {{patientsNum.unknownInjured}}
+                        {{patientsNum.unknownInjured}}:לא ידוע
                     </div>
                 </div>
             </div>
             <div class="row">
-                <nav class="navbar navbar-inverse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#typeOfInjury">גרף סוגי פגיעה</a></li>
-                        <li><a href="#useOfDrugs">גרף שימוש תרופות </a></li>
-                        <li><a href="#numOfTreats">גרף מספר טיפולים </a></li>
-                        <li><a href="#Occupation">גרף תפוסה</a></li>
-                        <li><a href="#injuryPerHour">גרף פגיעות לשעה</a></li>
+                <nav class="navbar navbar" style="background-color: #daddf1;border-color: #daddf1;">
+                    <div class="navbar-right" style="margin-right:0px">
+                    <ul class="nav navbar-nav" >
+                        <li ng-class="{ active: isActive('/typeOfInjury')}"><a href="#typeOfInjury">גרף סוגי פגיעה</a></li>
+                        <li ng-class="{ active: isActive('/useOfDrugs')}"><a href="#useOfDrugs">גרף שימוש תרופות </a></li>
+                        <li ng-class="{ active: isActive('/numOfTreats')}"><a href="#numOfTreats">גרף מספר טיפולים </a></li>
+                        <li ng-class="{ active: isActive('/Occupation')}"><a href="#Occupation">גרף תפוסה</a></li>
+                        <li ng-class="{ active: isActive('/injuryPerHour')}"><a href="#injuryPerHour">גרף פגיעות לשעה</a></li>
                     </ul>
+                    </div>
                 </nav>
                 <div ng-view></div>
             </div>
