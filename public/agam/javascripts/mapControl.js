@@ -116,25 +116,39 @@ myApp.controller('mapControl', ['$scope','$http', 'leafletData','unitIDService',
     $http.get('/agam/GetUnitsOnMap/'+ '1_1').success(function(response){
         console.log(JSON.stringify(response));
         var Units = response;
-   $http.get('/agam/GetEmergency/'+element.id+'1').success(function(response){
-       var urgent = response;
-   }) 
-   $http.get('/agam/GetEmergency/'+element.id+'1').success(function(response){
-       var urgent = response;
-   })      
+        var notUrgent;
+        var urgent;
         
-            Units.forEach(function(element) {
-                $scope.addMarker(
-                    {
-                        id:0,
-                        lat:element.lat,
-                        lng:element.lng
-                    },
-                    {
-                        urgent:urgent,
-                        notUrgent:notUrgent
-                    },
-                    element.name);
+            Units.forEach(function(element) 
+            {
+                console.log(JSON.stringify(element));
+                  $http.get('/agam/GetEmergency/'+element.id+'/'+1).success(function(response)
+                  {
+                         console.log(JSON.stringify(response));
+                         notUrgent = response;
+                        
+                         // get the amount of urgent 
+                         $http.get('/agam/GetEmergency/'+element.id+'/'+2).success(function(response)
+                         {
+                          urgent = response;
+                          console.log(JSON.stringify(response));
+                          $scope.addMarker(
+                          {
+                                id:0,
+                                lat:element.lat,
+                                lng:element.lng
+                          },
+                          {
+                                urgent:urgent,
+                                notUrgent:notUrgent
+                          },
+                            element.name);
+                
+                        })     
+
+                  }) 
+                  
+                
                 
             }, this);
 

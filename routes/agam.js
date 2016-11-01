@@ -47,9 +47,8 @@ router.get('/GetEmergency/:CurrentStation/:UrgencyType',function(req,res,next){
     var x=res.req.params;
     var CurrentStation = res.req.params.CurrentStation;
     var UrgencyType = res.req.params.UrgencyType;
-    MapUnits.GetEmergency(CurrentStation,function(CurrentStation,UrgencyType) {
+    MapUnits.GetEmergency(CurrentStation,function(count) {
         res.json(count)})
-  //  MapUnits.GetEmergency(CurrentStation,UrgencyType)
     });
 
 router.get('/getPatientsAmount/:unitid', function(req, res, next){

@@ -21,33 +21,35 @@ var GetUnitsOnMap = function (hirarchCode, callback)
 
 console.log("Test");
 
-module.exports = 
-{
-    GetUnitsOnMap : GetUnitsOnMap,
-    GetEmergency : GetEmergency
-};
-
 var GetEmergency = function(StationID,emergencyNum, callback)
 {
     var count = 0;
 
-    Patient.aggregate([
+   Patient.aggregate([
                 {"$match":{"CurrentStation":StationID}},
                 {"$match":{"generalData.emergency":emergencyNum}},
                 {"$group":{"_id":1, "count": {"$sum":1} }}
                 ],
                 function(err,res)
                 {
+
                     if (res !=null && res.length > 0)
                     {
                         console.log(JSON.stringify(res));
                         count = res[0].count;
                          
                     }
+                    
                    callback(count);
-                }
-   );
+                });
 }
+
+module.exports = 
+{
+    GetUnitsOnMap : GetUnitsOnMap,
+    GetEmergency : GetEmergency
+};
+
 
 /*
 עבור כל תחנה נדרשים הנתונים הבאים:

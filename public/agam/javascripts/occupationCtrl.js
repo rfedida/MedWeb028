@@ -1,6 +1,24 @@
 myApp.controller('occupationController', function($scope, $http) {
-
+    $scope.prediction_text = '';
     $scope.colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];
+
+    function getPredicition(id) {
+        $http.get("/crud/predict/hospital/" + id).success(function (r) { 
+            $scope.prediction = Math.round(parseInt(r['EstematedMinutesUntillFull']) / 60);
+            console.log($scope.prediction);
+            if ($scope.prediction <= 3) {
+                return `התחנה צפוייה להתמלא בעוד ${$scope.prediction} שעות`
+            } else if ($scope.prediction <= 6) {
+                return `המסגרת צפוייה לתמלא תוך בין 3 עד 6 שעות`;
+            } else if ($scope.prediction <= 12) {
+                return `המסגרת צפוייה לתמלא תוך בין 6 עד 12 שעות`;
+            } else {
+                return "המסגרת לא צפוייה להתמלא";
+            }
+        }).error(function (r) {
+            console.log('ERROR! ERROR! ERROR!');
+        });
+    }
 
     $http.get('/agam/Occupation/'+'1_1_1'
     ).success(function(response){

@@ -67,8 +67,8 @@
                <a href="/med"> צפה בפרטים </a>
                 </button>
               </span>
-                <span class="col-md-4 text-center" style="color:black">{{patientsNum.total}}   :סה"כ פצועים</span>
-                <span class="col-md-4 text-right" style="color:black" ng-model="currUnitName"> {{currUnitName}} </span>
+                <span class="col-md-4 text-center" style="color:black; font-size: 17px">{{patientsNum.total}}   :סה"כ פצועים</span>
+                <span class="col-md-4 text-right" style="color:black:; font-size: 17px" ng-model="currUnitName"> {{currUnitName}} </span>
                 <div class="progress">
               
                 </div>
@@ -103,11 +103,10 @@
             </div>
         </div> 
         <div>
-          {{X}}
-      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="selected">
                 {{node.name}}
         </treecontrol>
-        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node) ;loadPatients(node)" selected-node="node1">
+        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node) ;loadPatients(node)" selected-node="selected">
             {{node.name}}
         </div>
       </div>       
@@ -116,6 +115,4 @@
         </span>
 
       
-</body>
-
-</html>
+</body>                                                                                                                                               
