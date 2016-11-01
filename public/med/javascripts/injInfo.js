@@ -1,3 +1,4 @@
+
 angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFactory', '$http', 
                                                 '$interval', 'ModalService', '$sce','currentUser', '$location',
     function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce, currentUser, $location) {
@@ -111,44 +112,6 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
 */
 
-/******************  SHIR *****************************************************************************************/
-        $scope.medicationId = "medicationId";
-        $scope.liquidId = "medicationId";
-/******************  SHIR *****************************************************************************************/    
-}]);
-
-/******************  Gil *****************************************************************************************/
-angular.module("medApp").controller('ComplexControllerOperation', [
-    '$scope', '$element', '$filter', 'title', 'close',
-    function ($scope, $element, $filter, title, close) {
-
-        $scope.braceId = null;
-        $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
-        //$scope.time = $filter('time')(Date.now(), 'hh:mm:ss a');
-        $scope.time = null;
-        $scope.title = title;
-
-        //  This close function doesn't need to use jQuery or bootstrap, because
-        //  the button has the 'data-dismiss' attribute.
-        $scope.close = function () {
-            close({
-                selectedTreatMed: selectedTreatMed.selectedIndex,
-                treatLocation: treatLocation.value,
-                bloodPressure: highBloodPressure.value + "/" + lowBloodPressure.value,
-                heartbeat: heartbeat.value,
-                temperature: temperature.value,
-                storation: storation.value
-            }, 500); // close, but give 500ms for bootstrap to animate
-        };
-
-        //  This cancel function must use the bootstrap, 'modal' function because
-        //  the doesn't have the 'data-dismiss' attribute.
-        $scope.cancel = function () {
-
-            //  Manually hide the modal.
-            $element.modal('hide');
-
-        }
 
     //$http.get("/crud/injuryMechanism").success(function(data){
     //    $scope.injuryMechanismData = data;
@@ -159,17 +122,48 @@ angular.module("medApp").controller('ComplexControllerOperation', [
 
     $scope.indicatorsTrendsData = [
         {
-            key: 'line1',
+            key: 'temperature',
             color: '#660000',
             values: [
-                {x: 1, y: 12}
+                {x: 1, y: 36},
+                {x: 2, y: 38},
+                {x: 3, y: 37}
             ]
         },
         {
-            key: 'line2',
+            key: 'saturation',
             color: '#660000',
             values: [
-                {x: 1, y: 12}
+                {x: 1, y: 72},
+                {x: 2, y: 78},
+                {x: 3, y: 79}
+            ]
+        },
+        {
+            key: 'bloodPressureHigh',
+            color: '#660000',
+            values: [
+                {x: 1, y: 120},
+                {x: 2, y: 121},
+                {x: 3, y: 118}
+            ]
+        },
+        {
+            key: 'bloodPressureLow',
+            //color: '#660000',
+            values: [
+                {x: 1, y: 80},
+                {x: 2, y: 81},
+                {x: 3, y: 79}
+            ]
+        },
+        {
+            key: 'pulse',
+            color: '#660000',
+            values: [
+                {x: 1, y: 70},
+                {x: 2, y: 79},
+                {x: 3, y: 88}
             ]
         }
     ];
@@ -213,9 +207,54 @@ angular.module("medApp").controller('ComplexControllerOperation', [
             callback: function(){
                 d3.selectAll('.nv-legend-text').style('fill', 'black');
                 d3.selectAll('.nv-pieLabels text').style('fill', 'black');
+                //var drawArea = function() {
+                //    d3.select('.nv-lineWrap')
+                //        .append("path")
+                //        .datum()
+                //}
             }
         }
     };
+
+/******************  SHIR *****************************************************************************************/
+        $scope.medicationId = "medicationId";
+        $scope.liquidId = "medicationId";
+/******************  SHIR *****************************************************************************************/    
+}]);
+
+/******************  Gil *****************************************************************************************/
+angular.module("medApp").controller('ComplexControllerOperation', [
+    '$scope', '$element', '$filter', 'title', 'close',
+    function ($scope, $element, $filter, title, close) {
+
+        $scope.braceId = null;
+        $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
+        //$scope.time = $filter('time')(Date.now(), 'hh:mm:ss a');
+        $scope.time = null;
+        $scope.title = title;
+
+        //  This close function doesn't need to use jQuery or bootstrap, because
+        //  the button has the 'data-dismiss' attribute.
+        $scope.close = function () {
+            close({
+                selectedTreatMed: selectedTreatMed.selectedIndex,
+                treatLocation: treatLocation.value,
+                bloodPressure: highBloodPressure.value + "/" + lowBloodPressure.value,
+                heartbeat: heartbeat.value,
+                temperature: temperature.value,
+                storation: storation.value
+            }, 500); // close, but give 500ms for bootstrap to animate
+        };
+
+        //  This cancel function must use the bootstrap, 'modal' function because
+        //  the doesn't have the 'data-dismiss' attribute.
+        $scope.cancel = function () {
+
+            //  Manually hide the modal.
+            $element.modal('hide');
+
+        }
+
     }]);
 /******************  Gil *****************************************************************************************/
 
