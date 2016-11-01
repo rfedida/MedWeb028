@@ -3,6 +3,9 @@ var Unit = require('../common/models/unitSchema');
 var Patient = require('../common/models/patientSchema');
 
 function updatePatient(patient, callback) {
+    if (patient._id !== undefined || patient._id !== null) {
+        delete patient._id;
+    }
     patient.LastUpdate = new Date().getTime();
     Patient.update({"braceletId":patient.braceletId}, {$set: patient}, {new: false}, function (err, patient){
         if (err) { 
@@ -154,6 +157,9 @@ module.exports = {
         });
     },
     insertPatient: (patient, callback) => {
+        if (patient._id !== undefined || patient._id !== null) {
+            delete patient._id;
+        }
         var newP = new Patient(patient);
         newP.save(function(err) {
             if (err) {
@@ -163,54 +169,59 @@ module.exports = {
             }
         })
     },
-    updatePatientsAfterConnection: (tempPatients) => {
-        for (var i=0; i<tempPatients.length; i++) {
-            Patient.findOne({"braceletId" : tempPatients[i].braceletId}, function(err, patient) {
-                if (err || patient == null) {
-                    var newP = new Patient(tempPatients[i]);
-                    newP.save(function(err) {
+    updatePatientAfterConnection: (p) => {
+        Patient.findOne({"braceletId" : p.braceletId}, function(err, patient) {
+            if (p._id !== undefined || p._id !== null) {
+                delete p._id;
+            }   
+            if (err || patient == null) {
+                var newP = new Patient(p);
+                newP.save(function(err) {
+                    if (!err) { 
+                        console.log("Insert db")
+                    } 
+                })
+            } else {
+                // check if data need to update according timestamps
+                if (p.LastUpdate > patient.LastUpdate) {
+                    Patient.update({"braceletId":p.braceletId}, {$set: p}, {new: false}, function (err, patient){
                         if (!err) { 
-                            console.log("Insert db")
-                        } 
-                    })
-                } else {
-                    // check if data need to update according timestamps
-                    if (tempPatients[i].LastUpdate > patient.LastUpdate) {
-                        Patient.update({"braceletId":patient.braceletId}, {$set: tempPatients[i]}, {new: false}, function (err, patient){
-                            if (!err) { 
-                                console.log("Update db");
-                            }
-                        });
-                    }
-                }
-            })
-        }
-    },
-    updateUnitsAfterConnection: (tempUnits) => {
-        for (var i=0; i<tempUnits.length; i++) {
-            Unit.findOne({'id' : tempUnits[i].id}, function(err, unit) {
-                if (err) { 
-                    // insert
-                    var newU = new Unit(tempUnits[i]);
-                    newU.save(function(err) {
-                        if (!err) {
-                            console.log("Insert db");
-                        }
-                    })
-                } else {
-                    Unit.update({"id":tempUnits[i].id}, {$set: unit}, {new: false}, function (err, unit){
-                        if (!err) { 
-                            console.log("Update db")
+                            console.log("Update db");
                         }
                     });
                 }
-            })
-        }
+            }
+        })
+    },
+    updateUnitAfterConnection: (u) => {
+        Unit.findOne({'id' : u.id}, function(err, unit) {
+            if (u._id !== undefined || u._id !== null) {
+                delete u._id;
+            }   
+            if (err) { 
+                // insert
+                var newU = new Unit(u);
+                newU.save(function(err) {
+                    if (!err) {
+                        console.log("Insert db");
+                    }
+                })
+            } else {
+                Unit.update({"id":u.id}, {$set: u}, {new: false}, function (err, unit){
+                    if (!err) { 
+                        console.log("Update db")
+                    }
+                });
+            }
+        })
     },
     getAllCurrentStationById: getAllCurrentStationById,
     sortDesc: sortDesc,
     writePatientOrUpdateFromUsb: function(p) {
         Patient.findOne({"braceletId" : p.braceletId}, function(err, patient) {
+            if (p._id !== undefined || p._id !== null) {
+                delete p._id;
+            }
             if (err || patient == null) {
                 pNew = new Patient(p);
                 pNew.save(function(err) {

@@ -1,156 +1,149 @@
-myApp.controller('useOfDrugsCtrl', function($scope, $http) {
-    $scope.unit = '1_1_1_1';
+myApp.controller('useOfDrugsCtrl', ['$scope','$http','unitIDService', function($scope,$http,unitIDService) {   
+    $scope.unit = unitIDService.unitDetails;
+    $scope.$watch('unit.unitID', function() {
 
-    $http.get("/crud/units/" + $scope.unit).then(function(response){
-        var medications = response.data.Medications;
-        debugger;
+        $http.get("/crud/units/" + $scope.unit.unitID).then(function(response){
+            var medications = response.data.Medications;
 
-        var emptyChart = [
+            $scope.dataDormikom = [];
+            $scope.dataHexakapron = [];
+            $scope.dataAkamol = [];
+            $scope.dataKetamine = [];
+            $scope.dataPantenyl = [];
+            $scope.dataMorphium = [];
+            $scope.drugsStockTimeData = [];
+
+            $scope.mlay;
+            
+            for (i=0; i<medications.length; i++)
             {
-                key: 'אין נתונים להציג',
-                x: [[]]
+                $scope.mlay = medications[i].Standard - medications[i].Stock.CurrStock;
+
+                if (medications[i].id == 13)
+                {
+                    $scope.dataDormikom = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: medications[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (medications[i].id == 14)
+                {
+                    $scope.dataHexakapron = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: medications[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (medications[i].id == 16)
+                {
+                    $scope.dataAkamol = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: medications[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (medications[i].id == 11)
+                {
+                    $scope.dataKetamine = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: medications[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (medications[i].id == 15)
+                {
+                    $scope.dataPantenyl = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: medications[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (medications[i].id == 12)
+                {
+                    $scope.dataMorphium = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: medications[i].Stock.CurrStock
+                        }
+                    ];
+                }
             }
-        ];
 
-        $scope.dataDormikom = emptyChart;
-        $scope.dataHexakapron = emptyChart;
-        $scope.dataAkamol = emptyChart;
-        $scope.dataKetamine = emptyChart;
-        $scope.dataPantenyl = emptyChart;
-        $scope.dataMorphium = emptyChart;
-        $scope.drugsStockTimeData = emptyChart;
-
-        $scope.mlay;
-        debugger;
-        
-        for (i=0; i<medications.length; i++)
-        {
-            $scope.mlay = medications[i].Standard - medications[i].Stock.CurrStock;
-
-            if (medications[i].id == 13)
+            // for timeline
+            var lines = [];
+            for (i=0; i<medications.length; i++)
             {
-                $scope.dataDormikom = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: medications[i].Stock.CurrStock
+                medications[i].Stock.Usage.sort(function (a,b) {
+                    return new Date(parseInt(a)) - new Date(parseInt(b));
+                });
+
+                var countStock = medications[i].Stock.CurrStock + medications[i].Stock.Usage.length;
+                var params = [];
+                var currParam;
+
+                for (j=0; j < medications[i].Stock.Usage.length; j++)
+                {
+                    countStock--;
+                    currParam = {
+                        "x" : medications[i].Stock.Usage[j],
+                        "y" : countStock
                     }
-                ];
-            }
-            else if (medications[i].id == 14)
-            {
-                $scope.dataHexakapron = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: medications[i].Stock.CurrStock
-                    }
-                ];
-            }
-            else if (medications[i].id == 16)
-            {
-                $scope.dataAkamol = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: medications[i].Stock.CurrStock
-                    }
-                ];
-            }
-            else if (medications[i].id == 11)
-            {
-                $scope.dataKetamine = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: medications[i].Stock.CurrStock
-                    }
-                ];
-            }
-            else if (medications[i].id == 15)
-            {
-                $scope.dataPantenyl = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: medications[i].Stock.CurrStock
-                    }
-                ];
-            }
-            else if (medications[i].id == 12)
-            {
-                $scope.dataMorphium = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: medications[i].Stock.CurrStock
-                    }
-                ];
-            }
-        }
 
-        // for timeline
-        var lines = [];
-        for (i=0; i<medications.length; i++)
-        {
-            medications[i].Stock.Usage.sort(function (a,b) {
-                return new Date(parseInt(a)) - new Date(parseInt(b));
-            });
-
-            var countStock = medications[i].Stock.CurrStock + medications[i].Stock.Usage.length;
-            var params = [];
-            var currParam;
-
-            for (j=0; j < medications[i].Stock.Usage.length; j++)
-            {
-                countStock--;
-                currParam = {
-                    "x" : medications[i].Stock.Usage[j],
-                    "y" : countStock
+                    params.push(currParam);
                 }
 
-                params.push(currParam);
+                var keyName;
+                if (medications[i].id == 13)
+                    keyName = "Dormikom";
+                else if (medications[i].id == 14)
+                    keyName = "Hexakapron";
+                else if (medications[i].id == 16)
+                    keyName = "Akamol";
+                else if (medications[i].id == 11)
+                    keyName = "Ketamine";
+                else if (medications[i].id == 15)
+                    keyName = "Pantenyl";
+                else if (medications[i].id == 12)
+                    keyName = "Morphium";
+                    
+                lines.push({key : keyName,
+                            values: params,
+                            type: 'line',
+                            yAxis: 1,});
             }
 
-            var keyName;
-            if (medications[i].id == 13)
-                keyName = "Dormikom";
-            else if (medications[i].id == 14)
-                keyName = "Hexakapron";
-            else if (medications[i].id == 16)
-                keyName = "Akamol";
-            else if (medications[i].id == 11)
-                keyName = "Ketamine";
-            else if (medications[i].id == 15)
-                keyName = "Pantenyl";
-            else if (medications[i].id == 12)
-                keyName = "Morphium";
-                
-            lines.push({key : keyName,
-                        values: params,
-                        type: 'line',
-                        yAxis: 1,});
-        }
-
-        $scope.drugsStockTimeData = lines;
+            $scope.drugsStockTimeData = lines;
+        });
     });
 
      $scope.lineChartOptions = {
@@ -168,7 +161,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             x: function(d){return d.x},
             y: function(d){return d.y},            
             color: function(d, i) {
-                var colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a'];      
+                var colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];      
                 return colorArray[i];        
             },
             duration: 500, 
@@ -177,18 +170,19 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             {
                 axisLable: 'זמן',            
                 tickFormat: function(d){
-                    return d3.time.format('%x %H:%M')(new Date(d));
+                    return d3.time.format('%d/%m %H:%M')(new Date(d));
                 }
             },
             yAxis:
             { 
                 axisLable: 'כמות טיפולים במלאי',                
                 axisLabelDistance: 0
-            }
+            },
+            noData: "אין נתונים"
         }        
     };
 
-    $scope.colorArray = ['#668cff','#a63807'];
+    $scope.colorArray = ['#008000','#800000'];
     
     $scope.colorFunction = function() {
         return function(d,i){
@@ -211,6 +205,7 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
             duration: 500,
             labelThreshold: 0.01,
             labelSunbeamLayout: true,
+            valueFormat: d3.format('d'),
             legend: {
                 margin:
                 {
@@ -219,7 +214,8 @@ myApp.controller('useOfDrugsCtrl', function($scope, $http) {
                     bottom: 5,
                     left: 0
                 }
-            } 
+            },
+            noData: "אין נתונים" 
         }        
     };
-});
+}]);

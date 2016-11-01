@@ -2,17 +2,12 @@
 var Units = require('../../server/common/models/unitSchema');
 //require('../../models/unitSchema');
 var Patient = require('../../server/common/models/patientSchema');
+var jsonUnits =[];
 
-var GetUnitsOnMap = function(hirarchCode, callback) 
+var GetUnitsOnMap = function (hirarchCode, callback) 
 {
-    // A variable for the units that are needed acording to the hirarchy
-    var jsonPartOne = {};
-    var jsonPartTow = {};
-    var jsonUnits = {};
-   
-    //A query for all the stations under the users permission.
     Units.aggregate([
-
+        //A query for all the stations under the users permission.
         {"$match": {"$and":[{"id" : {"$regex": "^" + hirarchCode}},
                            {"$or":[{"name":{$regex: "Taagad"}},
                            {"name":{$regex: "Palhak"}}]}]}},
@@ -20,27 +15,41 @@ var GetUnitsOnMap = function(hirarchCode, callback)
      
         function(err,res)
         {
-            // return all the units that should be displayed on the map
-            callback(res);
+          callback(res);
         });
-
-        /*  Patient.aggregate([
-         {"$match": [{"CurrentStation":{"$regex": "^" + hirarchCode}},{"generalData.emergency":0}]},
-         {"$group":{
-            "_id":null,
-            "count": {"$sum":1 } }}
-    ]);*/
-console.log("Passed step one");
- 
-
 }
 
 console.log("Test");
 
+var GetEmergency = function(StationID,emergencyNum,callback)
+{
+    var count = 0;
+    var num = parseInt(emergencyNum);
+   Patient.aggregate([
+                {"$match":{"CurrentStation":StationID}},
+                {"$match":{"generalData.emergency":num}},
+                {"$group":{"_id":1, "count": {"$sum":1} }}
+                ],
+                function(err,res)
+                {
+
+                    if (res !=null && res.length > 0)
+                    {
+                        console.log(JSON.stringify(res));
+                        count = res[0].count;
+                         
+                    }
+                    
+                   callback(count);
+                });
+}
+
 module.exports = 
 {
-    GetUnitsOnMap : GetUnitsOnMap
+    GetUnitsOnMap : GetUnitsOnMap,
+    GetEmergency : GetEmergency
 };
+
 
 /*
 עבור כל תחנה נדרשים הנתונים הבאים:

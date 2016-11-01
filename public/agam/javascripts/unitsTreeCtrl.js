@@ -1,4 +1,4 @@
-myApp.controller('unitsTreeController', function ($scope, $http, currentUser, unitIDService) {
+myApp.controller('unitsTreeController', function ($scope, $http, currentUser, unitIDService, $location) {
     $scope.treeInd = true;
     $scope.showTree=false;
     $scope.sizestatic = "col-md-8";
@@ -73,6 +73,10 @@ myApp.controller('unitsTreeController', function ($scope, $http, currentUser, un
         $scope.dataForTheTree = $scope.heirarchyUnits.children[0];
     }
 
+    $scope.isActive = function(viewLocation){
+        return viewLocation === $location.path();
+    }
+
     $scope.units = [];
     $scope.user_id = currentUser.getDetails().permission;
     unitIDService.setUnitID($scope.user_id);
@@ -80,7 +84,8 @@ myApp.controller('unitsTreeController', function ($scope, $http, currentUser, un
         $http.get('/agam/units/'+ $scope.user_id).success(function(data){
              $scope.dataForTheTree = data;
              $scope.orgenizeHierarchy($scope.user_id);
-             $scope.loadPatients($scope.dataForTheTree.children[0])
+             $scope.loadPatients($scope.dataForTheTree.children[0]);
+             $scope.selected = $scope.dataForTheTree.children[0];
         });
     };
 

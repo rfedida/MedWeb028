@@ -183,7 +183,6 @@ angular.module("medApp").controller('ComplexControllerSchema', [
   '$scope', '$element', '$filter', 'title', 'data','letter', 'close', 
   function($scope, $element, $filter, title, data,letter, close) {
 
-debugger;
   $scope.title = title;
   $scope.treatments = data;
    $scope.letter = letter;
