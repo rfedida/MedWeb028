@@ -85,7 +85,7 @@ angular.module("medApp").directive('statusGraph', ['medAppFactory', '$http',
                             return d3.format(',.0f')(d);
                         },
                         color: function(d, i) {  
-                           var colorArray = ['#9E9E9E', '#5bc0de', '#FFF59D', '#5cb85c', '#ee4035'];      // 7bc043    99ff66  5cd65c rgb(3, 146, 207)       glyphicon glyphicon-random  
+                           var colorArray = ['#9E9E9E', '#5bc0de', '#FFF59D', '#5cb85c', '#ee4035'];      // 7bc043    99ff66  5cd65c rgb(3, 146, 207)      
                             return colorArray[i];        
                         },
                         transitionDuration: 50,

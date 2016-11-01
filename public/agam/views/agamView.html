@@ -46,11 +46,12 @@
     <link rel="stylesheet" href="\components\angular-tree-control\css\tree-control-attribute.css">
 </head>
 <body ng-app="myApp"  style="overflow-x : hidden">
-    <div class="mainBaner row">
-        <div class="col-md-2 mainBannerText"> רפואה שלמה
+    <div class="mainBaner row" style="text-align:left">
+        <div class="col-md-2 col-md-offset-3 mainBannerText"> רפואה שלמה
         </div>    
-        <div ng-controller="modalController" class="col-md-4">
+        <div ng-controller="modalController" >
             <button id="hamal" type="button" class="btn hamalBtn" ng-click="showComplex()">
+                <span class="glyphicon glyphicon-list-alt"></span>
                 תצוגת חמ"ל
             </button>
         </div>
