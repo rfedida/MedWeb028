@@ -43,9 +43,10 @@ router.get('/GetUnitsOnMap/:userHirarchy',function(req,res,next){
   //  MapUnits.GetEmergency(CurrentStation,UrgencyType)
     });
 
-router.get('/GetEmergency/:CurrentStation',function(req,res,next){
+router.get('/GetEmergency/:CurrentStation/:UrgencyType',function(req,res,next){
     var x=res.req.params;
     var CurrentStation = res.req.params.CurrentStation;
+    var UrgencyType = res.req.params.UrgencyType;
     MapUnits.GetEmergency(CurrentStation,function(CurrentStation,UrgencyType) {
         res.json(count)})
   //  MapUnits.GetEmergency(CurrentStation,UrgencyType)
