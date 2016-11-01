@@ -7,13 +7,13 @@
             <div class="col-md-4 borderRight status">
                 <div class="row">
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-success btnStatus">גמר טיפול</button>
+                        <button type="button" class="btn btn-success btnStatus"" ng-click="finishTreatment()">גמר טיפול</button>
                     </div>
                     <div class="col-md-5">
-                        <button type="button" class="btn btn-danger btnStatus" style="width: 65px; margin-right:-20px">פנה</button>
+                        <button type="button" class="btn btn-danger btnStatus" style="width: 65px; margin-right:-20px" ng-click="transferPatient()">פנה</button>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-dead btnStatus" style="width: 65px">נפטר</button>
+                        <button type="button" class="btn btn-dead btnStatus" style="width: 65px" ng-click="patientPassed()">נפטר</button>
                     </div>
                 </div>
             </div>
