@@ -224,7 +224,6 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
     }
 });
 crudRouter.get('/patientsInjuryLocation/:id', function(req, res, next) {
-    console.log("get requst for db");
     Patient.aggregate(
         [
             {
@@ -254,7 +253,6 @@ crudRouter.get('/patientsInjuryLocation/:id', function(req, res, next) {
     });
 });
 crudRouter.get('/patientsInjuryLocationByTime/:id', function(req, res, next) {
-    console.log("get requst for db");
     Patient.aggregate([
         {
                 $match : {
@@ -293,7 +291,6 @@ var InjuryMechanismType = {
 };
 //trying
 crudRouter.get('/injuryMechanism/:id' , function(req , res ){
-    console.log("db get requst for injuryMechanism");
     Patient.aggregate(
         [
             {
@@ -329,7 +326,6 @@ crudRouter.get('/injuryMechanism/:id' , function(req , res ){
     
 });
 crudRouter.get('/patientsInjuryMechanismByTime/:id', function(req, res, next) {
-    console.log("get requst for db");
     Patient.aggregate([
             {
                 $match : {
@@ -365,7 +361,6 @@ crudRouter.get('/patientsInjuryMechanismByTime/:id', function(req, res, next) {
 
 
 crudRouter.get('/injuryPerHour' , function(req , res){
-    console.log("get requst from db to injuryPerHour");
     Patients.aggregate(
 	[
 		{
