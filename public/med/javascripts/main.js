@@ -70,6 +70,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
     };
 
     factory.currentStation = currentUser.getDetails().permission;
+    factory.currentCommandNumber = (factory.currentStation.match(/_/g) || []).length;
 
     // 0 - unknwon, not-urgent, urgent, dead
     factory.EMERGENCY_CONSTANTS = {
@@ -265,6 +266,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
 
 app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http, currentUser) 
 {
+    $scope.currentCommandNumber = medAppFactory.currentCommandNumber;
     $scope.currentStaionNameNavagationBarFull = medAppFactory.navagationBarFull;
 
     $scope.currentNavagationBar = medAppFactory.currentNavagationBar;
@@ -289,7 +291,6 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
         $scope.currentNavagationBar[0].name = medAppFactory.currentStationName;  
         $scope.currentNavagationBar[0].location =  medAppFactory.navagationBarFull[amountLine].location;
         $scope.currentNavagationBar[0].currentStation =  medAppFactory.currentStation;
-        debugger;
         if(!amountLine)
             $scope.currentNavagationBar[0].parentCurrentStation =  medAppFactory.currentStationName;
         else
