@@ -171,8 +171,6 @@ angular.module("medApp").controller("presentTableCtrl", function ($scope, medApp
     };
 
     $scope.calcDateDiff = function(dateTime){
-        debugger;
-    
         var dateBefore = new Date(parseInt(dateTime));
         var timeDiffByMinutes = Math.ceil(Math.abs((new Date().getTime() - 
                                             dateBefore.getTime()) * 
