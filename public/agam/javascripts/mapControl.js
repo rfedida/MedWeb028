@@ -113,23 +113,42 @@ myApp.controller('mapControl', ['$scope','$http', 'leafletData','unitIDService',
     });
 
     // Puting the stations on the map
-    $http.get('/agam/MapUnits/'+ '1_1').success(function(response){
+    $http.get('/agam/GetUnitsOnMap/'+ '1_1').success(function(response){
         console.log(JSON.stringify(response));
         var Units = response;
-
+        var notUrgent;
+        var urgent;
         
-            Units.forEach(function(element) {
-                $scope.addMarker(
-                    {
-                        id:0,
-                        lat:element.lat,
-                        lng:element.lng
-                    },
-                    {
-                        urgent:2,
-                        notUrgent:4
-                    },
-                    element.name);
+            Units.forEach(function(element) 
+            {
+                console.log(JSON.stringify(element));
+                  $http.get('/agam/GetEmergency/'+element.id+'/'+1).success(function(response)
+                  {
+                         console.log(JSON.stringify(response));
+                         notUrgent = response;
+                        
+                         // get the amount of urgent 
+                         $http.get('/agam/GetEmergency/'+element.id+'/'+2).success(function(response)
+                         {
+                          urgent = response;
+                          console.log(JSON.stringify(response));
+                          $scope.addMarker(
+                          {
+                                id:0,
+                                lat:element.lat,
+                                lng:element.lng
+                          },
+                          {
+                                urgent:urgent,
+                                notUrgent:notUrgent
+                          },
+                            element.name);
+                
+                        })     
+
+                  }) 
+                  
+                
                 
             }, this);
 

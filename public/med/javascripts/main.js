@@ -1,4 +1,4 @@
-var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial", "nvd3"  ]);
+var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial","nvd3"]);
 
 app.remote="";
 app.config(['$routeProvider', '$sceDelegateProvider',
