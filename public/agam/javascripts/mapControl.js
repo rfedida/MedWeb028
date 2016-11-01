@@ -113,10 +113,15 @@ myApp.controller('mapControl', ['$scope','$http', 'leafletData','unitIDService',
     });
 
     // Puting the stations on the map
-    $http.get('/agam/MapUnits/'+ '1_1').success(function(response){
+    $http.get('/agam/GetUnitsOnMap/'+ '1_1').success(function(response){
         console.log(JSON.stringify(response));
         var Units = response;
-
+   $http.get('/agam/GetEmergency/'+element.id+'1').success(function(response){
+       var urgent = response;
+   }) 
+   $http.get('/agam/GetEmergency/'+element.id+'1').success(function(response){
+       var urgent = response;
+   })      
         
             Units.forEach(function(element) {
                 $scope.addMarker(
@@ -126,8 +131,8 @@ myApp.controller('mapControl', ['$scope','$http', 'leafletData','unitIDService',
                         lng:element.lng
                     },
                     {
-                        urgent:element.urgent,
-                        notUrgent:element.NotUrgent
+                        urgent:urgent,
+                        notUrgent:notUrgent
                     },
                     element.name);
                 

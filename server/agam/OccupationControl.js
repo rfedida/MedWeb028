@@ -48,7 +48,7 @@ var Patient = require('../../server/common/models/patientSchema');
                 }], function(err, res){
                     res.forEach(function(element) {
                     var key = element._id; 
-                    jsonDataTwo[key] = {'key': element._id, values : element.values};
+                    jsonDataOne[key] = {'key': element._id, values : element.values};
                     }, this);
                     
                     // Get all the taagads in the hirarchy
