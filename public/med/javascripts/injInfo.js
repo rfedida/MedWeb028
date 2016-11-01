@@ -26,8 +26,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
         $scope.finishTreatment = function() 
         {
-            // TODO : change to 5
-            $scope.injured.generalData.emergency = 4;
+            $scope.injured.generalData.emergency = 5;
             $scope.SaveInj();
             $location.path("/tmz");
         };
