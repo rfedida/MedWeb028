@@ -85,8 +85,26 @@ server.use(function(req, res, next)
         }
         else
         {
-            res.writeHead(307, {Location : "/"});
-            res.end();
+            if (req.cookies.user)
+            {
+                var user = JSON.parse(req.cookies.user);
+                
+                var userToSession = { 
+                    "UserId" : user.userId, 
+                    "UserName" : user.username, 
+                    "Password" : user.hash,
+                    "hash" : user.hash,
+                    "PermissionID" : user.permission
+                };
+
+                req.session[req.cookies.hash] = userToSession;
+                next();
+            }
+            else
+            {
+                res.writeHead(307, {Location : "/"});
+                res.end();
+            }
         }
     }
 });

@@ -1,6 +1,6 @@
 myApp.controller('occupationController', function($scope, $http) {
 
-    $scope.colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a']; 
+    $scope.colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];
 
     $http.get('/agam/Occupation/'+'1_1_1'
     ).success(function(response){
