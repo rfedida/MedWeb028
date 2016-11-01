@@ -228,9 +228,9 @@ crudRouter.get('/patientsInjuryLocation/:id', function(req, res, next) {
     Patient.aggregate(
         [
             {
-                $match : {
-			  	    "CurrentStation" : req.params.id
-			    }
+	            $match: {
+                    'CurrentStation': {$regex: '^' + req.params.id}
+                }
             },
             {$group :
                 { _id : "$generalData.injuryLocation", 
@@ -256,9 +256,9 @@ crudRouter.get('/patientsInjuryLocation/:id', function(req, res, next) {
 crudRouter.get('/patientsInjuryLocationByTime/:id', function(req, res, next) {
     Patient.aggregate([
         {
-                $match : {
-			  	    "CurrentStation" : req.params.id
-			    }
+                $match: {
+                    'CurrentStation': {$regex: '^' + req.params.id}
+                }
             },
             {
                 $group : {
@@ -290,14 +290,14 @@ var InjuryMechanismType = {
    5: "שאיפה" ,
    6: "תאונת דרכים"
 };
-//trying
+
 crudRouter.get('/injuryMechanism/:id' , function(req , res ){
     Patient.aggregate(
         [
             {
-                $match : {
-			  	    "CurrentStation" : req.params.id
-			    }
+                $match: {
+                    'CurrentStation': {$regex: '^' + req.params.id}
+                }
             },
             {$group :
                 { _id : "$generalData.injuryMechanism", 
@@ -326,12 +326,13 @@ crudRouter.get('/injuryMechanism/:id' , function(req , res ){
     });
     
 });
+
 crudRouter.get('/patientsInjuryMechanismByTime/:id', function(req, res, next) {
     Patient.aggregate([
             {
-                $match : {
-			  	    "CurrentStation" : req.params.id
-			    }
+                $match: {
+                    'CurrentStation': {$regex: '^' + req.params.id}
+                }
             },
             {
                 $group : {

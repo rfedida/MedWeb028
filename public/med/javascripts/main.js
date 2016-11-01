@@ -1,4 +1,4 @@
-var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial", "nvd3"  ]);
+var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial","nvd3"]);
 
 app.remote="";
 app.config(['$routeProvider', '$sceDelegateProvider',
@@ -24,37 +24,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
 
     // currentUser.details.permission;
     factory.currentStation = currentUser.getDetails().permission;
-    factory.newInjured = {
-        "braceletId": "",
-        "CurrentStation": factory.currentStation,
-        "LastUpdate": 0,
-        "generalData": {
-            "emergency": 0,
-            "breathingHit": true,
-            "airwayHit": true,
-            "shock": true,
-            "injuryMechanism": 2,
-            "consciousness": "P",
-            "injuryLocation": "",
-            "comments": ""
-        },
-        "treatments": [],
-        "medications": [],
-        "liquids": [],
-        "measurements": {
-            "temperatures": [],
-            "storations": [],
-            "bloodPressures": [],
-            "heartbeat": []
-        },
-        "Stations": [
-            {
-                "receptionTime": 0,
-                "stationId": factory.currentStation,
-                "leavingDate": 0
-            }
-        ]
-    };
+
 
     //Ugly solution
     factory.gTreatments = {
@@ -133,6 +103,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
             }
         ]
     };
+
 	factory.treatmentsMed = 
     {
         "0": {name: "A.W", group:"A"},
@@ -191,7 +162,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
     // Check after insert to DB;
     factory.getCommand = function()
     {
-        debugger;
         return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.lastIndexOf('_')))
         .then(function(res)
         {
