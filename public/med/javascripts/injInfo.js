@@ -109,48 +109,48 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
     $scope.indicatorsTrendsData = [
         {
-            key: 'temperature',
-            color: '#660000',
-            values: [
-                {x: 1, y: 36},
-                {x: 2, y: 38},
-                {x: 3, y: 37}
-            ]
-        },
-        {
-            key: 'saturation',
-            color: '#660000',
-            values: [
-                {x: 1, y: 72},
-                {x: 2, y: 78},
-                {x: 3, y: 79}
-            ]
-        },
-        {
-            key: 'bloodPressureHigh',
-            color: '#660000',
-            values: [
-                {x: 1, y: 120},
-                {x: 2, y: 121},
-                {x: 3, y: 118}
-            ]
-        },
-        {
-            key: 'bloodPressureLow',
+            key: 'חום',
             //color: '#660000',
             values: [
-                {x: 1, y: 80},
-                {x: 2, y: 81},
-                {x: 3, y: 79}
+                {x: new Date(2016, 11, 1, 16,  3, 3,  5), y: 36},
+                {x: new Date(2016, 11, 1, 16, 15, 7, 55), y: 38},
+                {x: new Date(2016, 11, 1, 16, 32, 8, 67), y: 37}
             ]
         },
         {
-            key: 'pulse',
-            color: '#660000',
+            key: 'סטורציה',
+            //color: '#660000',
             values: [
-                {x: 1, y: 70},
-                {x: 2, y: 79},
-                {x: 3, y: 88}
+                {x: new Date(2016, 11, 1, 16,  3, 3,  5), y: 72},
+                {x: new Date(2016, 11, 1, 16, 15, 7, 55), y: 78},
+                {x: new Date(2016, 11, 1, 16, 32, 8, 67), y: 79}
+            ]
+        },
+        {
+            key: 'לחץ דם סיסטולי',
+            //color: '#660000',
+            values: [
+                {x: new Date(2016, 11, 1, 16,  3, 3,  5), y: 120},
+                {x: new Date(2016, 11, 1, 16, 15, 7, 55), y: 121},
+                {x: new Date(2016, 11, 1, 16, 32, 8, 67), y: 118}
+            ]
+        },
+        //{
+        //    key: 'לחץ דם דיאסטולי',
+        //    //color: '#660000',
+        //    values: [
+        //        {x: new Date(2016, 11, 1, 16,  3, 3,  5), y: 80},
+        //        {x: new Date(2016, 11, 1, 16, 15, 7, 55), y: 81},
+        //        {x: new Date(2016, 11, 1, 16, 32, 8, 67), y: 79}
+        //    ]
+        //},
+        {
+            key: 'דופק',
+            //color: '#660000',
+            values: [
+                {x: new Date(2016, 11, 1, 16,  3, 3,  5), y: 70},
+                {x: new Date(2016, 11, 1, 16, 15, 7, 55), y: 79},
+                {x: new Date(2016, 11, 1, 16, 32, 8, 67), y: 88}
             ]
         }
     ];
@@ -159,7 +159,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
         chart: {
             type: 'lineChart',
             height: 350,
-            width:350,
+            width:800,
             x: function(d){return d.x},
             y: function(d){return d.y},
             color: function(d, i) {
@@ -174,22 +174,14 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
             showLegend: true,
             showXAxis: true,
             showYAxis: true,
-            legend: {
-                margin: {
-                    top: 5,
-                    right: 35,
-                    bottom: 5,
-                    left: 100
-                }
-            },
             xScale: d3.time.scale(),
             xAxis: {
-                axisLabel: 'WW',
-                tickFormat: d3.format(',r')
+                axisLabel: 'זמן טיפול',
+                tickFormat: function(d){return d3.time.format('%H:%M')(d)},
             },
+            forceY: [0, 150],
             yAxis: {
-                axisLabel: 'WW',
-                tickFormat: d3.format('0.2f')
+                tickFormat: d3.format('d')
             },
             callback: function(){
                 d3.selectAll('.nv-legend-text').style('fill', 'black');
