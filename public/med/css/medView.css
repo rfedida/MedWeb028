@@ -1,13 +1,14 @@
 .mainBaner
 {
     height: 40px;
-    background-color: rgba(95, 143, 185, 0.75);
+    background: linear-gradient(rgb(137, 145, 210), rgb(219, 222, 241));
     font-size: 20px;
 }
 
 .mainBannerText
 {
-    margin-top:6px;
+        font-weight: bold;
+    margin-top:3px;
 }
 
 .btnDesignTitle
@@ -27,7 +28,7 @@
 
 .btnInBanner
 {
-    background-color: rgba(206, 214, 220, 0.75);
+    background-color:rgba(242, 249, 255, 0.75);
     font-size: 13px;
     border-color: rgba(22, 62, 97, 0.75)
 }
@@ -39,7 +40,7 @@
 
 .bannerColor
 {
-    background:rgba(231, 231, 236, 0.66); height:40px;
+    background:rgb(241,241,241); height:40px;
 }
 
 .commandNameDesign

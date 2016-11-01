@@ -4,14 +4,6 @@ myApp.controller('useOfDrugsCtrl', ['$scope','$http','unitIDService', function($
 
         $http.get("/crud/units/" + $scope.unit.unitID).then(function(response){
             var medications = response.data.Medications;
-            debugger;
-
-            var emptyChart = [
-                {
-                    key: 'אין נתונים להציג',
-                    x: [[]]
-                }
-            ];
 
             $scope.dataDormikom = [];
             $scope.dataHexakapron = [];
@@ -22,7 +14,6 @@ myApp.controller('useOfDrugsCtrl', ['$scope','$http','unitIDService', function($
             $scope.drugsStockTimeData = [];
 
             $scope.mlay;
-            debugger;
             
             for (i=0; i<medications.length; i++)
             {
