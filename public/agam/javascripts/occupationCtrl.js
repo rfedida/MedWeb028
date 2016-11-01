@@ -8,108 +8,165 @@ myApp.controller('occupationController', function($scope, $http) {
         var jsonTwo = response[1];
         var AllUnits;
 
-        $http.get('/crud/units')
+        $http.get('/agam/units/1_1_1')
             .success(function(units){
                  AllUnits = BuildUnits(units);
 
-                if (!isEmpty(jsonOne))
-                {
-                    $scope.optionsOne = {
-                        chart:
-                        {
-                            id: "firstGraph",
-                            type: 'multiBarChart',
-                            height: 450,
-                            margin: {
-                                top: 20,
-                                right: 20,
-                            bottom: 45,
-                                left: 45
-                            },
-                            color: function(d, i) {                
-                                return $scope.colorArray[i];        
-                            },
-                            clipEdge: true,
-                            stacked: true,
-                            showLables: true,
-                            duration: 500,
-                            xAxis: {
-                                axisLabel:'מספר התחנה',
-                                showMaxMin: false,
-                            },
-                            yAxis: {
-                                axisLabel: 'כמות פצועים',
-                                axisLabelDistance: -20,
-                                tickFormat: function(d){
-                                    return d3.format(',.1f')(d);
-                                }
-                            },  
-                            noData:"" 
-                        }        
-                    };                     
-                
-                    $scope.dataOne = buildData(jsonOne, AllUnits);
-                }
-                if (!isEmpty(jsonTwo))
-                {
-  
-                    $scope.optionsTwo = {
-                        chart:
-                        {
-                            type: 'multiBarChart',
-                            height: 450,
-                            margin: {
-                                top: 20,
-                                right: 20,
-                            bottom: 45,
-                                left: 45
-                            },
-                            color: function(d, i) {                
-                                return $scope.colorArray[i];        
-                            },                            
-                            clipEdge: true,
-                            stacked: true,
-                            showLables: true,
-                            duration: 500,
-                            xAxis: {
-                                axisLabel:'מספר התחנה',
-                                showMaxMin: false
-                            },
-                            yAxis: {
-                                axisLabel: 'כמות פצועים',
-                                axisLabelDistance: -20,
-                                tickFormat: function(d){
-                                    return d3.format(',.1f')(d);
-                                }
-                            },  
-                            noData:""   
-                        }        
-                    };              
+                 // TODO: change 1_1_1 to the variable from the tree
+                 switch ("1_1_1".length) 
+                 {
+                     case 1:
+                     {
+                         delete AllUnits['1_1_1']; // delete the pikud num from all units
 
-                    $scope.dataTwo = buildData(jsonTwo, AllUnits);                
-                }
+                         // change the units only to ugdot
+                         for (var unit in AllUnits)
+                         {
+                             if (unit.length != 3)
+                             {
+                                 delete AllUnits[unit];
+                             }
+                         }
+
+                         $scope.dataOne = buildData(jsonOne, AllUnits);
+
+                         break;
+                     }
+                     case 3:
+                     {
+                         var AllUnitsOne = AllUnits;
+                         var AllUnitsTwo = AllUnits;
+
+                         for (var unit in AllUnits)
+                         {
+                             if (unit.length != 5)
+                             {
+                                 delete AllUnitsOne[unit];
+                             }
+
+                             if (unit.length != 7)
+                             {
+                                 delete AllUnitsTwo[unit];
+                             }
+                         }
+
+                         $scope.dataOne = buildData(jsonOne, AllUnitsOne);
+                         $scope.dataTwo = buildData(jsonTwo, AllUnitsTwo);
+
+                         break;
+                     }
+                     case 5:
+                     {
+                         var CurrUnit = AllUnits["1_1_1"];
+                         var AllUnitsTwo = {}; // Change to generic when available
+                         AllUnitsTwo["1_1_1"] = CurrUnit; 
+                         var AllUnitsOne = AllUnits;
+                         delete AllUnitsOne["1_1_1"];
+                         
+                         $scope.dataOne = buildData(jsonOne, AllUnitsOne);
+                         $scope.dataTwo = buildData(jsonTwo, AllUnitsTwo);
+
+                         break;
+                     }
+                     case 7:
+                     {
+                         $scope.dataOne = buildData(jsonOne, AllUnits);
+                         break;
+                     }                                                           
+                     default:
+                         break;
+                 }
+
+                $scope.options = {
+                    chart:
+                    {
+                        id: "firstGraph",
+                        type: 'multiBarChart',
+                        height: 450,
+                        margin: {
+                            top: 20,
+                            right: 20,
+                        bottom: 45,
+                            left: 45
+                        },
+                        color: function(d, i) {                
+                            return $scope.colorArray[i];        
+                        },
+                        clipEdge: true,
+                        stacked: true,
+                        showLables: true,
+                        duration: 500,
+                        xAxis: {
+                            axisLabel:'מספר התחנה',
+                            showMaxMin: false,
+                        },
+                        yAxis: {
+                            axisLabel: 'כמות פצועים',
+                            axisLabelDistance: -20,
+                            tickFormat: function(d){
+                                return d3.format(',.1f')(d);
+                            }
+                        },  
+                        noData:"" 
+                    }        
+                };                      
+
             });
-
     });
     
 });
 
-function buildData(data, units)
+function BuildUnits(units)
 {
-    var GoodData = [];
-    var ourUnits = {};
-    var maxCapacity = {
-        'key' : 'כמות שנותרה',
-        'values': []
-    };
+        var map = {};   
+        units.forEach(function(unit) {
+            map[unit.id]= {name: unit.name ,maxCapacity: unit.Max_Capacity, currCapacity: 0 };
+        }, this); 
 
-    for (var index in data)
-    {
-        if (data[index].key != 4)
-        {
-        var currInjury = data[index];
+        return (map);
+}
 
-        switch (currInjury.key) {
+ function doesExist(data, unitId)
+ {
+     var found = -1;
+ 
+     for (var i=0; i <data.length; i++)
+     {
+         if (data[i].x == unitId)
+         {
+             found = i;
+             break;
+         }
+     }
+ 
+     return (found);       
+ }                   
+
+function buildData(data, units)
+ {
+     
+      var FullData = [];
+
+      // Go over the data and fill the values 
+      for (var index in data)
+      {
+          if (index != 4)
+          {
+            var currInjury = data[index];
+            var GenericValues = [];
+
+            // Build the generic values
+            for (var unit in units)
+            {
+                var valueToAdd = {
+                    'x' : units[unit].name,
+                    'y': 0
+                };
+
+                GenericValues.push(valueToAdd);
+            }
+
+            switch (currInjury.key) {
             case 0:
                 {
                     currInjury.key = 'לא ידוע';
@@ -134,88 +191,59 @@ function buildData(data, units)
         
             default:
                 break;
-        }
+            }
 
-        var injuryData = {
-            'key' : currInjury.key,
-            'values': []
-        };
+            var injuryData = {
+                'key': currInjury.key,
+                'values': GenericValues 
+            };
 
+            for (var unitIndex in units)
+            {
+                var indexInData = doesExist(currInjury.values, unitIndex);
 
-                
-        for (var statIndex in currInjury.values)
+                if (indexInData > -1)
+                {
+                    var indexInGeneric = doesExist(injuryData.values, units[unitIndex].name);
+                    injuryData.values[indexInGeneric].y = currInjury.values[indexInData].y;
+                    units[unitIndex].currCapacity += injuryData.values[indexInGeneric].y;
+                }
+            }
+
+            FullData.push(injuryData);
+      }}
+
+        // Build the generic values
+        GenericValues = [];
+
+        for (var unit in units)
         {
-            var currStation = currInjury.values[statIndex];
-            injuryData.values.push({
-                'x' : units[currStation.x].name, // TODO: change to currStation.x when getting the stations is available 
-                'y' : currStation.y
-            });
+            var valueToAdd = {
+                'x' : units[unit].name,
+                'y': 0
+            };
 
-            if (!ourUnits.hasOwnProperty(currStation.x))
+            GenericValues.push(valueToAdd);
+        }
+        
+      var currCapacity = {
+                'key': 'כמות שנותרה',
+                'values': GenericValues 
+            };
+
+        for (var unitIndex in units)
+        {
+            for (var valueIndex in currCapacity.values)
             {
-                ourUnits[currStation.x] = {
-                    name: units[currStation.x].name,
-                    currCapacity: currStation.y,
-                    maxCapacity: units[currStation.x].capacity
-                };
-            }
-            else
-            {
-                ourUnits[currStation.x].currCapacity += currStation.y;
+                // check if this is the value to change
+                if (currCapacity.values[valueIndex].x == units[unitIndex].name)
+                {
+                    currCapacity.values[valueIndex].y = units[unitIndex].maxCapacity - units[unitIndex].currCapacity;
+                }
             }
         }
 
-        GoodData.push(injuryData);
-        }
-    }
+        FullData.push(currCapacity);  
 
-    for (var currUnit in ourUnits)
-    {
-        maxCapacity.values.push({
-            'x': ourUnits[currUnit].name,
-            'y': ourUnits[currUnit].maxCapacity - ourUnits[currUnit].currCapacity
-        });
-    }
-
-    GoodData.push(maxCapacity);
-
-    return (GoodData);
-}
-
-// Checks if the json is empty.
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-function isEmpty(obj)
-{
-    if (obj == null) return true;
-    if(obj.length > 0) return false;
-    if (obj.length === 0) return true;
-    
-    for (var key in obj){
-        if (hasOwnProperty.call(obj, key)) return false;
-    }
-}
-
-function BuildUnits(units)
-{
-        var map = {};   
-        units.forEach(function(unit) {
-            map[unit.id]= {name: unit.name ,capacity: unit.Max_Capacity };
-        }, this); 
-
-        return (map);
-}
-
-function buildMaxCapacity(data, units)
-{
-    var maxCapacity = {
-        'key' : 'תפוסה מקסימלית',
-        'values': []
-    }
-
-    var ourUnits = [];
-
-    data.forEach(function(curr){
-        curr.values.forEach(function(currUnit){
-        });
-    });
-}
+        return (FullData);     
+ }
