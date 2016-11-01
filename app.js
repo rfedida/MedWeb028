@@ -143,14 +143,18 @@ function connectToMongo () {
         // Update db according files
         if (!pjson.isWeb) {
             temp.getTempPatients(function(data) {
-                mongo.updatePatientsAfterConnection(data);
+                for (var i=0; i<data.length; i++) {
+                    mongo.updatePatientAfterConnection(data[i]);
+                }
             });
             temp.getTempUnits(function(data) {
-                mongo.updateUnitsAfterConnection(data);
+                for (var i=0; i<data.length; i++) {
+                    mongo.updateUnitAfterConnection(data[i]);
+                }
             });
             mongo.getAllUnits(function(data) {
                 for (var i=0; i<data.length; i++) {
-                    files.updateUnit(data[i].id, function(data) {
+                    files.updateUnit(data[i], function(data) {
                         // Decide to check if there was update
                     });
                 }
@@ -190,7 +194,12 @@ if (!pjson.isWeb) {
     });
 
     udpServer.on('message', (msg, rinfo) => {
+        helpers.agentInfo = rinfo;
         patient = JSON.parse(msg.toString("utf8"));
+        patient.CurrentStation = helpers.stationID;
+        patient.Stations.push({"stationId": helpers.stationID, 
+                               "receptionTime": new Date().getDate(),
+                               "leavingDate": null});
         helpers.patient = patient;
 
         // write to file
@@ -217,7 +226,7 @@ if (!pjson.isWeb) {
         var toSend = JSON.stringify(data);
         var buf = new Buffer(toSend.length);
         buf.write(toSend);
-        udpServer.send(buf, 0, buf.length, 9002, '150.0.0.123', (err)=> {
+        udpServer.send(buf, 0, buf.length, helpers.agentInfo.port, helpers.agentInfo.ip, (err)=> {
             if(err) {
                 console.log(err);
             }
