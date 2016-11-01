@@ -13,13 +13,13 @@ myApp.controller('useOfDrugsCtrl', ['$scope','$http','unitIDService', function($
                 }
             ];
 
-            $scope.dataDormikom = emptyChart;
-            $scope.dataHexakapron = emptyChart;
-            $scope.dataAkamol = emptyChart;
-            $scope.dataKetamine = emptyChart;
-            $scope.dataPantenyl = emptyChart;
-            $scope.dataMorphium = emptyChart;
-            $scope.drugsStockTimeData = emptyChart;
+            $scope.dataDormikom = [];
+            $scope.dataHexakapron = [];
+            $scope.dataAkamol = [];
+            $scope.dataKetamine = [];
+            $scope.dataPantenyl = [];
+            $scope.dataMorphium = [];
+            $scope.drugsStockTimeData = [];
 
             $scope.mlay;
             debugger;
@@ -186,7 +186,8 @@ myApp.controller('useOfDrugsCtrl', ['$scope','$http','unitIDService', function($
             { 
                 axisLable: 'כמות טיפולים במלאי',                
                 axisLabelDistance: 0
-            }
+            },
+            noData: "אין נתונים"
         }        
     };
 
@@ -222,7 +223,8 @@ myApp.controller('useOfDrugsCtrl', ['$scope','$http','unitIDService', function($
                     bottom: 5,
                     left: 0
                 }
-            } 
+            },
+            noData: "אין נתונים" 
         }        
     };
 }]);

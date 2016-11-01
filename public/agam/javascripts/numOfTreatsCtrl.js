@@ -5,18 +5,11 @@ myApp.controller('numOfTreatsCtrl', ['$scope','$http','unitIDService', function(
 
             var treatments = response.data.Treatments;
 
-            var emptyChart = [
-                {
-                    key: 'אין נתונים להציג',
-                    x: [[]]
-                }
-            ];
-
-            $scope.dataVygon = emptyChart;
-            $scope.dataCAT = emptyChart;
-            $scope.dataNekezHaze = emptyChart;
-            $scope.dataCombatGauze = emptyChart;
-            $treatsStockTimeData = emptyChart;
+            $scope.dataVygon = [];
+            $scope.dataCAT = [];
+            $scope.dataNekezHaze = [];
+            $scope.dataCombatGauze = [];
+            $treatsStockTimeData = [];
 
             $scope.mlay;
 
@@ -188,7 +181,8 @@ myApp.controller('numOfTreatsCtrl', ['$scope','$http','unitIDService', function(
                     bottom: 5,
                     left: 0
                 }
-            }
+            },
+            noData: "אין נתונים"
         }        
     };   
 }]);
