@@ -1,4 +1,4 @@
-myApp.controller('unitsTreeController', function ($scope, $http, currentUser, unitIDService) {
+myApp.controller('unitsTreeController', function ($scope, $http, currentUser, unitIDService, $location) {
     $scope.treeInd = true;
     $scope.showTree=false;
     $scope.sizestatic = "col-md-8";
@@ -71,6 +71,10 @@ myApp.controller('unitsTreeController', function ($scope, $http, currentUser, un
 
         $scope.heirarchyUnits.children.push(currentRoot);
         $scope.dataForTheTree = $scope.heirarchyUnits.children[0];
+    }
+
+    $scope.isActive = function(viewLocation){
+        return viewLocation === $location.path();
     }
 
     $scope.units = [];

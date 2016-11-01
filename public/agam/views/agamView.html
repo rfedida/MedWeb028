@@ -92,14 +92,14 @@
                 </div>
             </div>
             <div class="row">
-                <nav class="navbar navbar-inverse" style="background-color: #daddf1;border-color: #daddf1;">
+                <nav class="navbar navbar" style="background-color: #daddf1;border-color: #daddf1;">
                     <div class="navbar-right" style="margin-right:0px">
                     <ul class="nav navbar-nav" >
-                        <li><a href="#typeOfInjury">גרף סוגי פגיעה</a></li>
-                        <li><a href="#useOfDrugs">גרף שימוש תרופות </a></li>
-                        <li><a href="#numOfTreats">גרף מספר טיפולים </a></li>
-                        <li><a href="#Occupation">גרף תפוסה</a></li>
-                        <li><a href="#injuryPerHour">גרף פגיעות לשעה</a></li>
+                        <li ng-class="{ active: isActive('/typeOfInjury')}"><a href="#typeOfInjury">גרף סוגי פגיעה</a></li>
+                        <li ng-class="{ active: isActive('/useOfDrugs')}"><a href="#useOfDrugs">גרף שימוש תרופות </a></li>
+                        <li ng-class="{ active: isActive('/numOfTreats')}"><a href="#numOfTreats">גרף מספר טיפולים </a></li>
+                        <li ng-class="{ active: isActive('/Occupation')}"><a href="#Occupation">גרף תפוסה</a></li>
+                        <li ng-class="{ active: isActive('/injuryPerHour')}"><a href="#injuryPerHour">גרף פגיעות לשעה</a></li>
                     </ul>
                     </div>
                 </nav>
