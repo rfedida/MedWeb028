@@ -50,52 +50,32 @@
 
 <body ng-controller="medViewCtrl" class="container-fluid">
     <div class="mainBaner row">
-        <div class="col-md-2 mainBannerText">
-            <div type="button" class="button">
-                <a href="/agam">
+        <div class="col-md-3 mainBannerText" style="text-align:left;">
+            <div type="button" class="btn btnInBanner" ng-if="currentCommandNumber < 3">
+                <a href="/agam"  class="blackColor">
                  מעבר
                   </a>
-                <md-button ng-click="logout()">
-                    logout
-                </md-button>
+            </div>
+       
+            <div type="button" class="btn btnInBanner" ng-click="logout()">
+                 התנתקות מהמערכת
             </div>
         </div>
-        <div class="col-md-2 col-md-offset-3 mainBannerText">
-            {{currentNavagationBar[currentNavagationBar.length-1].parentCurrentStation}}
+        <div class="col-md-2 col-md-offset-2 mainBannerText" 
+        ng-model="currentNavagationBar[currentNavagationBar.length-1].parentCurrentStation">
         </div>
         <div class="col-md-2 col-md-offset-3 mainBannerText" ng-click=changeLocation(3)> רפואה שלמה
 
         </div>
     </div>
-    <div class="row" style="background:rgba(231, 231, 236, 0.66); height:40px;">
+    </div>
+    <div class="row bannerColor">
     <ol class="breadcrumb">
         <li ng-repeat="obj in currentNavagationBar" ng-click="changePage($index)">
-            <div style="width: 75px;
-                        border: 2px solid black;
-                        border-radius: 5px;
-                        text-align: center; cursor: pointer">
+            <div class="commandNameDesign">
                         {{obj.name}}
             </div></li>
     </ol>
-        <!--<div class="col-md-10 col-md-offset-2">
-            <div class="row">
-                <div type="button" class="btnDesignTitle col-md-1 col-md-offset-6" ng-click=changeLocation(3)>
-                    <div class="spanDesignTitle"> {{currentStaionNameLocation[3].name}} </div>
-                </div>
-                <img class="imgCss col-md-1" src="\med\img\arrow.png">
-                <div type="button" class="btnDesignTitle  col-md-1">
-                    <div class="spanDesignTitle"> {{currentStaionNameLocation[2].name}} </div>
-                </div>
-                <img class="imgCss col-md-1" src="\med\img\arrow.png">
-                <div type="button" class="btnDesignTitle  col-md-1">
-                    <div class="spanDesignTitle"> {{currentStaionNameLocation[1].name}} </div>
-                </div>
-                <img class="imgCss col-md-1" src="\med\img\arrow.png">
-                <div type="button" class="btnDesignTitle  col-md-1">
-                    <div class="spanDesignTitle"> {{currentStaionNameLocation[0].name}} </div>
-                </div>
-                </div>
-        </div>-->
     </div>
 
     <div ng-view></div>

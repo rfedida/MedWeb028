@@ -1,124 +1,116 @@
-myApp.controller('numOfTreatsCtrl', function($scope, $http) {
-    $scope.unit = '1_1_1_1';   
+myApp.controller('numOfTreatsCtrl', ['$scope','$http','unitIDService', function($scope,$http,unitIDService) {   
+    $scope.unit = unitIDService.unitDetails;
+    $scope.$watch('unit.unitID', function() {
+       $http.get("/crud/units/" + $scope.unit.unitID).then(function(response){
 
-    $http.get("/crud/units/" + $scope.unit).then(function(response){
+            var treatments = response.data.Treatments;
 
-        var treatments = response.data.Treatments;
+            $scope.dataVygon = [];
+            $scope.dataCAT = [];
+            $scope.dataNekezHaze = [];
+            $scope.dataCombatGauze = [];
+            $treatsStockTimeData = [];
 
-        var emptyChart = [
+            $scope.mlay;
+
+            for (i=0; i<treatments.length; i++)
             {
-                key: 'אין נתונים להציג',
-                x: [[]]
+                $scope.mlay = treatments[i].Standard - treatments[i].Stock.CurrStock;
+                if (treatments[i].id == 10)
+                {
+                    $scope.dataVygon = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: treatments[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (treatments[i].id == 5)
+                {
+                    $scope.dataCAT = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: treatments[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (treatments[i].id == 4)
+                {
+                    $scope.dataNekezHaze = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: treatments[i].Stock.CurrStock
+                        }
+                    ];
+                }
+                else if (treatments[i].id == 7)
+                {
+                    $scope.dataCombatGauze = [
+                        {
+                            key: 'במלאי',
+                            y: $scope.mlay
+                        },
+                        {
+                            key: 'שימוש',
+                            y: treatments[i].Stock.CurrStock
+                        }
+                    ];
+                }
             }
-        ];
 
-        $scope.dataVygon = emptyChart;
-        $scope.dataCAT = emptyChart;
-        $scope.dataNekezHaze = emptyChart;
-        $scope.dataCombatGauze = emptyChart;
-        $treatsStockTimeData = emptyChart;
-
-        $scope.mlay;
-
-        for (i=0; i<treatments.length; i++)
-        {
-            $scope.mlay = treatments[i].Standard - treatments[i].Stock.CurrStock;
-            if (treatments[i].id == 10)
+            // for timeline
+            var lines = [];
+            for (i=0; i<treatments.length; i++)
             {
-                $scope.dataVygon = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: treatments[i].Stock.CurrStock
+                treatments[i].Stock.Usage.sort(function (a,b) {
+                    return new Date(parseInt(a)) - new Date(parseInt(b));
+                });
+
+                var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
+                var params = [];
+                var currParam;
+
+                for (j=0; j < treatments[i].Stock.Usage.length; j++)
+                {
+                    countStock--;
+                    currParam = {
+                        "x" : treatments[i].Stock.Usage[j],
+                        "y" : countStock
                     }
-                ];
-            }
-            else if (treatments[i].id == 5)
-            {
-                $scope.dataCAT = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: treatments[i].Stock.CurrStock
-                    }
-                ];
-            }
-            else if (treatments[i].id == 4)
-            {
-                $scope.dataNekezHaze = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: treatments[i].Stock.CurrStock
-                    }
-                ];
-            }
-            else if (treatments[i].id == 7)
-            {
-                $scope.dataCombatGauze = [
-                    {
-                        key: 'במלאי',
-                        y: $scope.mlay
-                    },
-                    {
-                        key: 'שימוש',
-                        y: treatments[i].Stock.CurrStock
-                    }
-                ];
-            }
-        }
 
-        debugger;
-
-        // for timeline
-        var lines = [];
-        for (i=0; i<treatments.length; i++)
-        {
-            treatments[i].Stock.Usage.sort(function (a,b) {
-                return new Date(parseInt(a)) - new Date(parseInt(b));
-            });
-
-            var countStock = treatments[i].Stock.CurrStock + treatments[i].Stock.Usage.length;
-            var params = [];
-            var currParam;
-
-            for (j=0; j < treatments[i].Stock.Usage.length; j++)
-            {
-                countStock--;
-                currParam = {
-                    "x" : treatments[i].Stock.Usage[j],
-                    "y" : countStock
+                    params.push(currParam);
                 }
 
-                params.push(currParam);
+                var keyName;
+                if (treatments[i].id == 10)
+                    keyName = "Vygon";
+                else if (treatments[i].id == 5)
+                    keyName = "C.A.T";
+                else if (treatments[i].id == 4)
+                    keyName = "נקז חזה";
+                else if (treatments[i].id == 7)
+                    keyName = "תחבושת אישית";
+
+                lines.push({key : keyName,
+                            values: params,
+                            type: 'line',
+                            yAxis: 1,});
             }
 
-            var keyName;
-            if (treatments[i].id == 10)
-                keyName = "Vygon";
-            else if (treatments[i].id == 5)
-                keyName = "C.A.T";
-            else if (treatments[i].id == 4)
-                keyName = "נקז חזה";
-            else if (treatments[i].id == 7)
-                keyName = "תחבושת אישית";
-
-            lines.push({key : keyName,
-                        values: params,
-                        type: 'line',
-                        yAxis: 1,});
-        }
-
-        $scope.treatsStockTimeData = lines;
+            $scope.treatsStockTimeData = lines;
+        });
     });
 
      $scope.lineChartOptions = {
@@ -152,7 +144,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             { 
                 axisLable: 'כמות טיפולים במלאי',                
                 axisLabelDistance: 0
-            }
+            },
+            noData: "אין נתונים"
         }        
     };
 
@@ -188,7 +181,8 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
                     bottom: 5,
                     left: 0
                 }
-            }
+            },
+            noData: "אין נתונים"
         }        
     };   
-});
+}]);

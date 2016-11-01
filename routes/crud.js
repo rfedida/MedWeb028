@@ -224,10 +224,15 @@ crudRouter.delete('/patients/:id', function (req, res, next) {
         });
     }
 });
-crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
+crudRouter.get('/patientsInjuryLocation/:id', function(req, res, next) {
     console.log("get requst for db");
     Patient.aggregate(
         [
+            {
+                $match : {
+			  	    "CurrentStation" : req.params.id
+			    }
+            },
             {$group :
                 { _id : "$generalData.injuryLocation", 
                   count : {$sum : 1}}},
@@ -249,9 +254,14 @@ crudRouter.get('/patientsInjuryLocation', function(req, res, next) {
         else {}
     });
 });
-crudRouter.get('/patientsInjuryLocationByTime', function(req, res, next) {
+crudRouter.get('/patientsInjuryLocationByTime/:id', function(req, res, next) {
     console.log("get requst for db");
     Patient.aggregate([
+        {
+                $match : {
+			  	    "CurrentStation" : req.params.id
+			    }
+            },
             {
                 $group : {
                     _id : {key: "$generalData.injuryLocation", x: "$Stations.receptionTime"},
@@ -283,10 +293,15 @@ var InjuryMechanismType = {
    6: "תאונת דרכים"
 };
 //trying
-crudRouter.get('/injuryMechanism' , function(req , res ){
+crudRouter.get('/injuryMechanism/:id' , function(req , res ){
     console.log("db get requst for injuryMechanism");
     Patient.aggregate(
         [
+            {
+                $match : {
+			  	    "CurrentStation" : req.params.id
+			    }
+            },
             {$group :
                 { _id : "$generalData.injuryMechanism", 
                   count : {$sum : 1}}},
@@ -314,9 +329,14 @@ crudRouter.get('/injuryMechanism' , function(req , res ){
     });
     
 });
-crudRouter.get('/patientsInjuryMechanismByTime', function(req, res, next) {
+crudRouter.get('/patientsInjuryMechanismByTime/:id', function(req, res, next) {
     console.log("get requst for db");
     Patient.aggregate([
+            {
+                $match : {
+			  	    "CurrentStation" : req.params.id
+			    }
+            },
             {
                 $group : {
                     _id : {key: "$generalData.injuryMechanism", x: "$Stations.receptionTime"},
@@ -349,6 +369,38 @@ crudRouter.get('/predict/:type/:id', function (req, res, next) {
         res.send(data);
     });
 });
+
+crudRouter.get('/injuryPerHour' , function(req , res){
+    console.log("get requst from db to injuryPerHour");
+    Patients.aggregate(
+	[
+		{
+			$group: {
+			    _id : {receptionTime: "$Stations.receptionTime", leavingDate: "$Stations.leavingDate"},
+			            
+			}
+		},
+
+	], 
+    function(err, patients){
+        if(!err)
+         {
+             var nowTime = new Date().getHours;
+             var lior = patients.map(function(currPatient){
+                 currPatient._id.key = InjuryMechanismType[currPatient._id.key];
+                 return currPatient;
+             });
+             res.json(lior);
+        }
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
+    });
+});
+
+
+
+module.exports = crudRouter;
 
 crudRouter.get('/newPatient', function (req, res, next){
     if(!pjson.isWeb) {
