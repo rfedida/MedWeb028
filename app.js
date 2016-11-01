@@ -195,7 +195,7 @@ if (!pjson.isWeb) {
 
     udpServer.on('message', (msg, rinfo) => {
         helpers.agentInfo = rinfo;
-        patient = JSON.parse(msg.toString("utf8"));
+        var patient = JSON.parse(msg.toString("utf8"));
         patient.CurrentStation = helpers.stationID;
         patient.Stations.push({"stationId": helpers.stationID, 
                                "receptionTime": new Date().getDate(),
