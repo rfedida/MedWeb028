@@ -26,8 +26,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
         $scope.finishTreatment = function() 
         {
-            // TODO : change to 5
-            $scope.injured.generalData.emergency = 4;
+            $scope.injured.generalData.emergency = 5;
             $scope.SaveInj();
             $location.path("/tmz");
         };
@@ -40,7 +39,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
         };
 
 
-        /*************  Gil  ****************************************************************/
+/************* Start Gil  ****************************************************************/
         $scope.treat_Med = medAppFactory.treatmentsMed;
         $scope.allTreatmenrs = medAppFactory.gTreatments;
         $scope.treatments = $scope.injured.treatments;
@@ -83,7 +82,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
                 modal.element.modal();
                 modal.close.then(function (result) {
                     var newTreat = angular.copy(medAppFactory.newTreatment);
-                   newTreat.treatmentType = result.selectedTreat;
+                    newTreat.treatmentType = result.selectedTreat;
                     newTreat.location = result.treatLocation;
                     newTreat.bloodPressure =result.bloodPressure;
                     newTreat.heartbeat = result.heartbeat;
@@ -96,32 +95,123 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
                     });   
              });
-                debugger;
             });
         };
 
-/* 220.
-        $scope.close = function () {
-            close({
-                date: new Date(),
-                treatmentType: $scope.selectedTreatMed,
-                location: $scope.treatLocation,
-                bloodPressure: $scope.highBloodPressure + "/" + $scope.lowBloodPressure,
-                heartbeat: heartbeat,
-                temperature: temperature,
-                storation: storation
-            }, 500); // close, but give 500ms for bootstrap to animate
-        };
 
-*/
+
+    //$http.get("/crud/injuryMechanism").success(function(data){
+    //    $scope.injuryMechanismData = data;
+    //
+    //}).error(function(data){
+    //    console.log(data);
+    //});
+
+    $scope.indicatorsTrendsData = [
+        {
+            key: 'temperature',
+            color: '#660000',
+            values: [
+                {x: 1, y: 36},
+                {x: 2, y: 38},
+                {x: 3, y: 37}
+            ]
+        },
+        {
+            key: 'saturation',
+            color: '#660000',
+            values: [
+                {x: 1, y: 72},
+                {x: 2, y: 78},
+                {x: 3, y: 79}
+            ]
+        },
+        {
+            key: 'bloodPressureHigh',
+            color: '#660000',
+            values: [
+                {x: 1, y: 120},
+                {x: 2, y: 121},
+                {x: 3, y: 118}
+            ]
+        },
+        {
+            key: 'bloodPressureLow',
+            //color: '#660000',
+            values: [
+                {x: 1, y: 80},
+                {x: 2, y: 81},
+                {x: 3, y: 79}
+            ]
+        },
+        {
+            key: 'pulse',
+            color: '#660000',
+            values: [
+                {x: 1, y: 70},
+                {x: 2, y: 79},
+                {x: 3, y: 88}
+            ]
+        }
+    ];
+
+   $scope.lineChartOptions = {
+        chart: {
+            type: 'lineChart',
+            height: 350,
+            width:350,
+            x: function(d){return d.x},
+            y: function(d){return d.y},
+            color: function(d, i) {
+                var colorArray = ['#000000', '#660000', '#CC0000', '#FF6666', '#FF3333', '#FFE6E6'];
+                return colorArray[i];
+            },
+            showLables: true,
+            duration: 500,
+            labelThreshold: 0.01,
+            labelSunbeamLayout: true,
+            useInteractiveGuideline: true,
+            showLegend: true,
+            showXAxis: true,
+            showYAxis: true,
+            legend: {
+                margin: {
+                    top: 5,
+                    right: 35,
+                    bottom: 5,
+                    left: 100
+                }
+            },
+            xScale: d3.time.scale(),
+            xAxis: {
+                axisLabel: 'WW',
+                tickFormat: d3.format(',r')
+            },
+            yAxis: {
+                axisLabel: 'WW',
+                tickFormat: d3.format('0.2f')
+            },
+            callback: function(){
+                d3.selectAll('.nv-legend-text').style('fill', 'black');
+                d3.selectAll('.nv-pieLabels text').style('fill', 'black');
+                //var drawArea = function() {
+                //    d3.select('.nv-lineWrap')
+                //        .append("path")
+                //        .datum()
+                //}
+            }
+        }
+    };
 
 /******************  SHIR *****************************************************************************************/
         $scope.medicationId = "medicationId";
         $scope.liquidId = "medicationId";
 /******************  SHIR *****************************************************************************************/    
+
 }]);
 
-/******************  Gil *****************************************************************************************/
+/****************** Start Gil *****************************************************************************************/
+
 angular.module("medApp").controller('ComplexControllerOperation', [
     '$scope', '$element', '$filter', 'title', 'close',
     function ($scope, $element, $filter, title, close) {
@@ -153,10 +243,12 @@ angular.module("medApp").controller('ComplexControllerOperation', [
             $element.modal('hide');
 
         }
-    }]);
-/******************  Gil *****************************************************************************************/
 
-/******************  SHIR *****************************************************************************************/
+    }]);
+
+/****************** End Gil *****************************************************************************************/
+
+/****************** Start SHIR *****************************************************************************************/
 angular.module("medApp").directive("presentTable", function () {
     return {
         restrict: 'E',
@@ -182,8 +274,6 @@ angular.module("medApp").controller("presentTableCtrl", function ($scope, medApp
     };
 
     $scope.calcDateDiff = function(dateTime){
-        debugger;
-    
         var dateBefore = new Date(parseInt(dateTime));
         var timeDiffByMinutes = Math.ceil(Math.abs((new Date().getTime() - 
                                             dateBefore.getTime()) * 
@@ -199,7 +289,7 @@ angular.module("medApp").controller("presentTableCtrl", function ($scope, medApp
                 length) + minutesDiff);
     }
 });
-/******************  SHIR *****************************************************************************************/
+/****************** End SHIR *****************************************************************************************/
 
 
 

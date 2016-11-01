@@ -1,8 +1,63 @@
 myApp.controller('occupationController', ['$scope', '$http', 'unitIDService', function($scope, $http, unitIDService) {
-
+    $scope.prediction_text = '';
     $scope.colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];
     $scope.hirarchyCode = unitIDService.unitDetails;
     $scope.$watch('hirarchyCode.unitID', function() {
+
+    // $http.get('/agam/Occupation/'+$scope.hirarchyCode.unitID).then(function (r) { 
+    //         debugger;
+    //          alert("ADAM");
+    //         $scope.prediction = Math.round(parseInt(r['EstematedMinutesUntillFull']) / 60);
+    //         console.log($scope.prediction);
+    //         if ($scope.prediction <= 3) {
+    //             return `התחנה צפויה להתמלא בעוד ${$scope.prediction} שעות`
+    //         } else if ($scope.prediction <= 6) {
+    //             return `המסגרת צפוייה להתמלא תוך בין 3 עד 6 שעות`;
+    //         } else if ($scope.prediction <= 12) {
+    //             return `המסגרת צפוייה להתמלא תוך בין 6 עד 12 שעות`;
+    //         } else {
+    //             return "המסגרת לא צפוייה להתמלא";
+    //         }
+    //     });
+
+    // $scope.getPredicition = function (units) {
+    //     $http.get('/agam/Occupation/'+$scope.hirarchyCode.unitID).then(function (r) { 
+    //         debugger;
+    //         $scope.prediction = Math.round(parseInt(r['EstematedMinutesUntillFull']) / 60);
+    //         console.log($scope.prediction);
+    //         if ($scope.prediction <= 3) {
+    //             return `התחנה צפויה להתמלא בעוד ${$scope.prediction} שעות`
+    //         } else if ($scope.prediction <= 6) {
+    //             return `המסגרת צפוייה להתמלא תוך בין 3 עד 6 שעות`;
+    //         } else if ($scope.prediction <= 12) {
+    //             return `המסגרת צפוייה להתמלא תוך בין 6 עד 12 שעות`;
+    //         } else {
+    //             return "המסגרת לא צפוייה להתמלא";
+    //         }
+    //     });
+    // }
+
+    
+
+    function buildPredictions(units)
+    {
+        var FullData = [];
+
+        for (var curr in units)
+        {
+            var prediction = {
+                unitName: units[curr].name,
+                prediction: $scope.getPredicition(curr)
+            } 
+
+            FullData.push(prediction);
+
+        }
+
+        
+        return (FullData);
+    }
+
     $http.get('/agam/Occupation/'+$scope.hirarchyCode.unitID
     ).success(function(response){
         var jsonOne = response[0];
@@ -12,6 +67,39 @@ myApp.controller('occupationController', ['$scope', '$http', 'unitIDService', fu
         $http.get('/agam/units/'+$scope.hirarchyCode.unitID)
             .success(function(units){
                  AllUnits = BuildUnits(units);
+                 AllUnitsCopy = BuildUnits(units);
+                       
+                $scope.predictionValue = [];
+
+                Object.keys(AllUnitsCopy).forEach(function(key)
+                {
+                    var currPrediction = {};
+
+                    $http.get('/crud/predict/hospital/'+ key).then(function (r) { 
+                    debugger;
+                    var predictionNum = Math.round(parseInt(r.data['EstematedMinutesUntillFull']) / 60);
+                    var predictionString = "";
+                    console.log(predictionNum);
+                    if (predictionNum <= 3) {
+                        predictionString =  `התחנה צפויה להתמלא בעוד ${predictionNum} שעות`
+                    } else if (predictionNum <= 6) {
+                        predictionString =  `המסגרת צפוייה להתמלא בעוד 3 - 6 שעות`;
+                    } else if (predictionNum <= 12) {
+                        predictionString = `המסגרת צפוייה להתמלא בעוד  6 - 12 שעות`;
+                    } else {
+                        predictionString = "המסגרת לא צפוייה להתמלא";
+                    }
+
+                    currPrediction['unitName'] = AllUnitsCopy[key].name;
+                    currPrediction['prediction'] = predictionString;   
+
+                     return currPrediction;                 
+                    }).then(function(d) {
+                        $scope.predictionValue.push(d);
+                        return;
+                    })
+                    
+                });
 
                  switch ($scope.hirarchyCode.unitID.length) 
                  {
@@ -71,7 +159,7 @@ myApp.controller('occupationController', ['$scope', '$http', 'unitIDService', fu
                      case 7:
                      {
                          $scope.dataOne = buildData(jsonTwo, AllUnits);
-                         $scope.dataTwo = {};
+                         $scope.dataTwo = [];
                          
                          break;
                      }                                                           
@@ -157,7 +245,7 @@ function buildData(data, units)
       // Go over the data and fill the values 
       for (var index in data)
       {
-          if (index != 4)
+          if (index < 4)
           {
             var currInjury = data[index];
             var GenericValues = [];

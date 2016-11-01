@@ -126,7 +126,8 @@ myApp.controller('statisticController', ['$scope','$http','unitIDService', funct
             callback: function(){
                 d3.selectAll('.nv-legend-text').style('fill', 'black');            
                 d3.selectAll('.nv-pieLabels text').style('fill', 'black');                
-            }
+            },
+            noData: "אין נתונים"
         }        
     };    
 

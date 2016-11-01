@@ -21,21 +21,26 @@ body
 .mainBaner
 {
     height: 40px;
-    background-color: #90CAF9;
-    direction: rtl;
+    background: linear-gradient(rgb(137, 145, 210), rgb(219, 222, 241));
+    font-size: 20px;
 }
 
 .mainBannerText
 {
-    font-size: 18px;
-    width: 200px;
+    font-size: 20px;
+    width: 140px;
     float: right;  
+    margin-top: 5px;
+    font-weight: bold;
 }
 
 .hamalBtn
 {
-    background-color: white; 
-    float: left;
+    background-color:rgba(242, 249, 255, 0.75);
+    border-color: rgba(22, 62, 97, 0.75);
+    cursor: pointer;
+    margin-left: 20px;
+    margin-top: 3px;
 }
 
 .belkinClass{
@@ -46,4 +51,11 @@ body
 .table
 {
     direction: rtl;
+}
+
+ul
+{
+    direction: rtl;
+    list-style-type: none;
+    font-size: 15px;    
 }
