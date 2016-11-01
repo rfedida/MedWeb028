@@ -90,7 +90,6 @@ angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalSe
             "timestamp": dateMili,
             "storation": result.storation
           });
-          debugger;
           medAppFactory.currentInjured = newInjured;
 
           // insert the new patient to the db

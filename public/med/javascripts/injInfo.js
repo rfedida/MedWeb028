@@ -95,7 +95,6 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
                     });   
              });
-                debugger;
             });
         };
 

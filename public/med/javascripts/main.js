@@ -162,7 +162,6 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
     // Check after insert to DB;
     factory.getCommand = function()
     {
-        debugger;
         return $http.get("/crud/units/" + factory.currentStation.substring(0, factory.currentStation.lastIndexOf('_')))
         .then(function(res)
         {
