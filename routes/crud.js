@@ -23,7 +23,7 @@ crudRouter.get('/units', function (req, res, next) {
 });
 crudRouter.get('/units/:id', function (req, res, next) {
     if (pjson.isWeb) {
-        mongo.getUnitByUnitId(req.params.id, function(data) {
+        mongo.getUnitByUnitId(req.params.id, function(data) {  
             res.send(data);
         });
     } else {
@@ -110,7 +110,9 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
 // Insert patient details
 crudRouter.post('/patients', function (req, res, next) {
     if (pjson.isWeb) {
-        res.send(mongo.insertPatient(req.body.patient));
+        mongo.insertPatient(req.body.patient, function(data) {
+            res.send(data);
+        });
     } else {
         files.insertPatient(req.body.patient);
         

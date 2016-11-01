@@ -165,7 +165,7 @@
                 </tr>
                 <tr ng-repeat="treatment in treatments" style="text-align: center;">
                     <td> {{calcDateDiff(treatment.date)}}</td>
-                    <td> {{treatment.treatmentType}} </td>
+                    <td> {{getNameById(treatment.treatmentType)}} </td>
                     <td> {{treatment.location}} </td>
                     <td> {{treatment.bloodPressure}} </td>
                     <td> {{treatment.heartbeat}} </td>
@@ -175,7 +175,6 @@
             </table>
         </div>
         <div class="col-md-20">
-            <button type="button" class="btn btn-primary" ng-click="addRow()">+</button>
             <button type="button" class="btn btn-primary" ng-click="showComplex()">++++</button>
         </div> 
     </div>
@@ -200,8 +199,6 @@
 
         <!-- Megama tab -->
         <div class="row component basicInfo" ng-if="selectedTab == 5">מגמות מדדים</div>
-
     </div>
-
     <a href="#/">מעבר לתמצ</a>
 </div>

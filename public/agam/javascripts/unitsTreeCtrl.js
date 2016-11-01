@@ -79,6 +79,7 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
         $http.get('/agam/units/'+ $scope.user_id).success(function(data){
              $scope.dataForTheTree = data;
              $scope.orgenizeHierarchy($scope.user_id);
+             $scope.loadPatients($scope.dataForTheTree.children[0])
         });
     };
 
@@ -93,7 +94,7 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
     $scope.patientsNum.total;
     $scope.loadPatients = function(unit){
         $scope.currUnitName = unit.name;
-         $http.get('/agam/getPatients/'+unit.id).success(function(data){
+         $http.get('/agam/getPatientsAmount/'+unit.id).success(function(data){
              $scope.currentStationPatients = data;
              // Checks if there are unInitialize emergency fields
              for (index = 0; index < 4; index++){
@@ -113,5 +114,4 @@ myApp.controller('unitsTreeController', function ($scope, $http) {
                                         $scope.patientsNum.deads;
          });
     };
-
 });
