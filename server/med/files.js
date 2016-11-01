@@ -30,11 +30,11 @@ function updatePatient(patient, callback) {
             Stations: patient.Stations
         };
 
-        if(diskdb.Patients.update(query, dataToBeUpdate, options) == 1) {
+        if(diskdb.Patients.update(query, dataToBeUpdate, options)) {
             callback(true);
-        } 
-
-        callback(false);
+        } else {
+            callback(false);
+        }
 }
 
 function insertUnit(unit) {
@@ -64,6 +64,7 @@ module.exports = {
                     medications: patients[i].medications,
                     liquids: patients[i].liquids,
                     Stations: patients[i].Stations,
+                    status: patients[i].generalData.emergency,
                     measurements: {}
                 };
 

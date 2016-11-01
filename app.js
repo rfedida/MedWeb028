@@ -143,10 +143,14 @@ function connectToMongo () {
         // Update db according files
         if (!pjson.isWeb) {
             temp.getTempPatients(function(data) {
-                mongo.updatePatientsAfterConnection(data);
+                for (var i=0; i<data.length; i++) {
+                    mongo.updatePatientAfterConnection(data[i]);
+                }
             });
             temp.getTempUnits(function(data) {
-                mongo.updateUnitsAfterConnection(data);
+                for (var i=0; i<data.length; i++) {
+                    mongo.updateUnitAfterConnection(data[i]);
+                }
             });
             mongo.getAllUnits(function(data) {
                 for (var i=0; i<data.length; i++) {
