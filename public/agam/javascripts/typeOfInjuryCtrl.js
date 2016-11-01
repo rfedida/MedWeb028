@@ -1,6 +1,6 @@
 myApp.controller('statisticController', function($scope, $http) {
 
-    $scope.colorArray = ['#132639', '#2d5986', '#538cc6', '#9fbfdf', '#ecf2f9', '#ffffff']; 
+    $scope.colorArray = ['#b3c6ff', '#668cff' ,'#1a53ff', '#002699', '#00134d', '#00061a']; 
 
     $scope.roundMinutes = function(date){
         date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
@@ -45,7 +45,7 @@ myApp.controller('statisticController', function($scope, $http) {
         chart:
         {
             type: 'multiChart',
-            height: 300,
+            height: 250,
             width: 300,
             margin: {
                 top: 20,
