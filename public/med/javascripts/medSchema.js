@@ -139,12 +139,6 @@ function($scope, medAppFactory, $location, $interval,$sce,ModalService)
                         modal.element.modal();
                         modal.close.then(function(result)
                         {
-                            /*var newInjured = angular.copy(medAppFactory.newInjured);
-                            newInjured.Bracelet_id = result.braceId;
-                            newInjured.Stations.ReceptionDate = result.date;
-                            newInjured.Stations.ReceptionTime = result.time;
-                            medAppFactory.currentInjured = newInjured;*/
-
                             $location.path("/medSchema");
                         });
                     });
@@ -156,7 +150,7 @@ function($scope, medAppFactory, $location, $interval,$sce,ModalService)
                    "temp": $scope.currentInj.measurements.temperatures[$scope.currentInj
                             .measurements.temperatures.length-1].tempreature,
                    "HeartBeat": $scope.currentInj.measurements
-                        .heartbeat[$scope.currentInj.measurements.heartbeat.length-1].Heartbeat,
+                        .heartbeat[$scope.currentInj.measurements.heartbeat.length-1].heartbeat,
                    "BloodPressure":  $scope.currentInj.measurements
                         .bloodPressures[$scope.currentInj.measurements.bloodPressures.length-1].bloodPressure,
                    "Storation":  $scope.currentInj.measurements
@@ -167,6 +161,15 @@ $scope.onClick = function()
 {
  $location.path("/injInfo");
 }
+
+/*$scope.diableDead = function()
+{
+ if ($scope.currentInj.generalData.emergency == 3)
+    //injBtn.disabled = true;
+    return false;
+return true;
+}*/
+
          
 divByGrp();
 medFunc();
