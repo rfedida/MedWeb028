@@ -1,4 +1,3 @@
-
 var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial", "nvd3"  ]);
 
 app.remote="";
@@ -23,7 +22,55 @@ function($routeProvider, $sceDelegateProvider){
 angular.module("medApp").factory('medAppFactory', function ($http, currentUser, $location, $rootScope) {
     var factory = {};
 
+    // currentUser.details.permission;
     factory.currentStation = currentUser.getDetails().permission;
+    factory.newInjured = {
+        "braceletId": "",
+        "CurrentStation": factory.currentStation,
+        "LastUpdate": 0,
+        "generalData": {
+            "emergency": 0,
+            "breathingHit": true,
+            "airwayHit": true,
+            "shock": true,
+            "injuryMechanism": 2,
+            "consciousness": "P",
+            "injuryLocation": "",
+            "comments": ""
+        },
+        "treatments": [],
+        "medications": [],
+        "liquids": [],
+        "measurements": {
+            "temperatures": [],
+            "storations": [],
+            "bloodPressures": [],
+            "heartbeat": []
+        },
+        "Stations": [
+            {
+                "receptionTime": 0,
+                "stationId": factory.currentStation,
+                "leavingDate": 0
+            }
+        ]
+    };
+
+    //Ugly solution
+    factory.gTreatments = {
+        "0": { name: "A.W" },
+        "1": { name: "קוניוטו" },
+        "2": { name: "איטוב" },
+        "3": { name: "N.A" },
+        "4": { name: "נקז חזה" },
+        "5": { name: "C.A.T" },
+        "6": { name: "BIG" },
+        "7": { name: "Combat Gauze" },
+        "8": { name: "AVPU" }
+    };
+
+    factory.currentStation = currentUser.getDetails().permission;
+    factory.currentCommandNumber = (factory.currentStation.match(/_/g) || []).length;
 
     // 0 - unknwon, not-urgent, urgent, dead
     factory.EMERGENCY_CONSTANTS = {
@@ -109,17 +156,19 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
         "18": {name: "מים"},
         "19": {name: "דם"}
 };
+
     factory.currentInjured = {};
-    
-     factory.newTreatment= {
-                date: new Date(),
-                treatmentType: "",
-                location: "",
-                bloodPressure: "",
-                heartbeat: "",
-                temperature: "",
-                storation: ""
-            };
+
+
+    factory.newTreatment = {
+        date: new Date().getTime(),
+        treatmentType: "",
+        location: "",
+        bloodPressure: "",
+        heartbeat: "",
+        temperature: "",
+        storation: ""
+    };
 
     factory.InjuryMechanismType = [
         { id: 0, name: "תלול מסלול" },
@@ -133,14 +182,12 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
     factory.currentCommand = "";
     factory.currentStationName = "";
     // checnku
-    factory.getStationName = function()
-    {
-        return $http.get("/crud/units/" + factory.currentStation).then(function(res)
-        {
+    factory.getStationName = function () {
+        return $http.get("/crud/units/" + factory.currentStation).then(function (res) {
             factory.currentStationName = res.data.name;
         });
     }
-  
+
     // Check after insert to DB;
     factory.getCommand = function()
     {
@@ -150,6 +197,7 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
         {
             factory.currentCommand = res.data.name;
         });
+
     }
 
     factory.navagationBarFull =  [{id: "0", location: "/commandTmz"}, // pikud
@@ -215,8 +263,10 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser, 
     return factory;
 });
 
+
 app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http, currentUser) 
 {
+    $scope.currentCommandNumber = medAppFactory.currentCommandNumber;
     $scope.currentStaionNameNavagationBarFull = medAppFactory.navagationBarFull;
 
     $scope.currentNavagationBar = medAppFactory.currentNavagationBar;
@@ -225,18 +275,22 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
         currentUser.logout();            
     };
 
-    medAppFactory.getCommand().then(function (response)
-    {
+    $scope.logout = function () {
+        currentUser.logout();
+    };
+
+    medAppFactory.getCommand().then(function (response) {
         $scope.currentCommand = medAppFactory.currentCommand;
     });
 
+
     medAppFactory.getStationName().then(function(res)
     {
+
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
         $scope.currentNavagationBar[0].name = medAppFactory.currentStationName;  
         $scope.currentNavagationBar[0].location =  medAppFactory.navagationBarFull[amountLine].location;
         $scope.currentNavagationBar[0].currentStation =  medAppFactory.currentStation;
-        debugger;
         if(!amountLine)
             $scope.currentNavagationBar[0].parentCurrentStation =  medAppFactory.currentStationName;
         else
@@ -260,6 +314,7 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
             $http.get('/crud/newPatient').then(function(response){
                 if(response.data != "")
                 {
+
                     medAppFactory.currentInjured = response.data;
                     $location.path("/medSchema");
                 }
@@ -268,7 +323,7 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
     }
 
     checkInput();
-    
+
 });
 
 
