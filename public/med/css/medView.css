@@ -44,8 +44,23 @@
 
 .commandNameDesign
 {
-    width: 75px;
-    border: 2px solid black;
-    border-radius: 5px;
-    text-align: center; cursor: pointer;
+    border: none;
 }
+
+.commandNameDesignChosen
+{
+      margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background: rgba(201, 210, 208, 0.52);
+}
+
+.breadcrumb>li+li:before
+{
+    color: #4e4646;
+    font-weight: bold;
+}
+
+
+
+    
