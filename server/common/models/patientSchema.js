@@ -63,7 +63,7 @@ var patientSchema = new mongoose.Schema({
 		}],
 		bloodPressures: [{
 			timestamp: Number,
-			bloodPressure: Number
+			bloodPressure: String
 		}],
 		heartbeat: [{
 			heartbeat: String,

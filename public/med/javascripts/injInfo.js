@@ -83,7 +83,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
                 modal.element.modal();
                 modal.close.then(function (result) {
                     var newTreat = angular.copy(medAppFactory.newTreatment);
-                   newTreat.treatmentType = result.selectedTreat;
+                    newTreat.treatmentType = result.selectedTreat;
                     newTreat.location = result.treatLocation;
                     newTreat.bloodPressure =result.bloodPressure;
                     newTreat.heartbeat = result.heartbeat;
