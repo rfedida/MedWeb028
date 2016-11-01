@@ -26,8 +26,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
         $scope.finishTreatment = function() 
         {
-            // TODO : change to 5
-            $scope.injured.generalData.emergency = 4;
+            $scope.injured.generalData.emergency = 5;
             $scope.SaveInj();
             $location.path("/tmz");
         };
@@ -83,7 +82,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
                 modal.element.modal();
                 modal.close.then(function (result) {
                     var newTreat = angular.copy(medAppFactory.newTreatment);
-                   newTreat.treatmentType = result.selectedTreat;
+                    newTreat.treatmentType = result.selectedTreat;
                     newTreat.location = result.treatLocation;
                     newTreat.bloodPressure =result.bloodPressure;
                     newTreat.heartbeat = result.heartbeat;
