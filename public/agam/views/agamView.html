@@ -102,11 +102,10 @@
             </div>
         </div> 
         <div>
-          {{X}}
-      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="node1">
+      <div ng-show="showTree" <treecontrol class="tree-light belkinClass" tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node)" selected-node="selected">
                 {{node.name}}
         </treecontrol>
-        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node) ;loadPatients(node)" selected-node="node1">
+        <div treecontrol class="tree-light " tree-model="dataForTheTree" options="treeOptions" on-selection="showSelected(node) ;loadPatients(node)" selected-node="selected">
             {{node.name}}
         </div>
       </div>       
@@ -115,6 +114,4 @@
         </span>
 
       
-</body>
-
-</html>
+</body>                                                                                                                                               
