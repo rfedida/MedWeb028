@@ -83,6 +83,7 @@ myApp.controller('occupationController', function($scope, $http) {
                         id: "firstGraph",
                         type: 'multiBarChart',
                         height: 450,
+                        width: 300,
                         margin: {
                             top: 20,
                             right: 20,
