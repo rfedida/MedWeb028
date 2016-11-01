@@ -1,24 +1,23 @@
-myApp.controller('occupationController', function($scope, $http) {
+myApp.controller('occupationController', ['$scope', '$http', 'unitIDService', function($scope, $http, unitIDService) {
 
     $scope.colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];
-
-    $http.get('/agam/Occupation/'+'1_1_1'
+    $scope.hirarchyCode = unitIDService.unitDetails;
+    $scope.$watch('hirarchyCode.unitID', function() {
+    $http.get('/agam/Occupation/'+$scope.hirarchyCode.unitID
     ).success(function(response){
         var jsonOne = response[0];
         var jsonTwo = response[1];
         var AllUnits;
 
-        $http.get('/agam/units/1_1_1')
+        $http.get('/agam/units/'+$scope.hirarchyCode.unitID)
             .success(function(units){
                  AllUnits = BuildUnits(units);
 
-                 // TODO: change 1_1_1 to the variable from the tree
-                 switch ("1_1_1".length) 
+                 switch ($scope.hirarchyCode.unitID.length) 
                  {
                      case 1:
                      {
-                         delete AllUnits['1_1_1']; // delete the pikud num from all units
-
+                         delete AllUnits[$scope.hirarchyCode.unitID]; 
                          // change the units only to ugdot
                          for (var unit in AllUnits)
                          {
@@ -29,7 +28,8 @@ myApp.controller('occupationController', function($scope, $http) {
                          }
 
                          $scope.dataOne = buildData(jsonOne, AllUnits);
-
+                         $scope.dataOne = [];
+                       
                          break;
                      }
                      case 3:
@@ -57,11 +57,11 @@ myApp.controller('occupationController', function($scope, $http) {
                      }
                      case 5:
                      {
-                         var CurrUnit = AllUnits["1_1_1"];
+                         var CurrUnit = AllUnits[$scope.hirarchyCode.unitID];
                          var AllUnitsTwo = {}; // Change to generic when available
-                         AllUnitsTwo["1_1_1"] = CurrUnit; 
+                         AllUnitsTwo[$scope.hirarchyCode.unitID] = CurrUnit; 
                          var AllUnitsOne = AllUnits;
-                         delete AllUnitsOne["1_1_1"];
+                         delete AllUnitsOne[$scope.hirarchyCode.unitID];
                          
                          $scope.dataOne = buildData(jsonOne, AllUnitsOne);
                          $scope.dataTwo = buildData(jsonTwo, AllUnitsTwo);
@@ -70,52 +70,58 @@ myApp.controller('occupationController', function($scope, $http) {
                      }
                      case 7:
                      {
-                         $scope.dataOne = buildData(jsonOne, AllUnits);
+                         $scope.dataOne = buildData(jsonTwo, AllUnits);
+                         $scope.dataTwo = {};
+                         
                          break;
                      }                                                           
                      default:
                          break;
                  }
 
-                $scope.options = {
-                    chart:
-                    {
-                        id: "firstGraph",
-                        type: 'multiBarChart',
-                        height: 450,
-                        width: 300,
-                        margin: {
-                            top: 20,
-                            right: 20,
-                        bottom: 45,
-                            left: 45
-                        },
-                        color: function(d, i) {                
-                            return $scope.colorArray[i];        
-                        },
-                        clipEdge: true,
-                        stacked: true,
-                        showLables: true,
-                        duration: 500,
-                        xAxis: {
-                            axisLabel:'מספר התחנה',
-                            showMaxMin: false,
-                        },
-                        yAxis: {
-                            axisLabel: 'כמות פצועים',
-                            axisLabelDistance: -20,
-                            tickFormat: function(d){
-                                return d3.format(',.1f')(d);
-                            }
-                        },  
-                        noData:"" 
-                    }        
-                };                      
+                      
 
             });
     });
+    });
+            $scope.options = {
+            chart:
+            {
+                id: "firstGraph",
+                type: 'multiBarChart',
+                height: 450,
+                width: 300,
+                margin: {
+                    top: 20,
+                    right: 20,
+                bottom: 45,
+                    left: 45
+                },
+                color: function(d, i) {                
+                    return $scope.colorArray[i];        
+                },
+                clipEdge: true,
+                stacked: true,
+                showLables: true,
+                duration: 500,
+                xAxis: {
+                    axisLabel:'מספר התחנה',
+                    showMaxMin: false,
+                },
+                yAxis: {
+                    axisLabel: 'כמות פצועים',
+                    axisLabelDistance: -20,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },  
+                noData:"" 
+            }        
+        };
+
     
-});
+    
+}]);
 
 function BuildUnits(units)
 {
