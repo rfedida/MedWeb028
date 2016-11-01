@@ -78,16 +78,16 @@
             <div class="row" style="background: #B3E5FC;height: 20px;">
                 <div class="progress">
                     <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{(patientsNum.notEmergencyInjured/patientsNum.total)*100}}%">
-                        {{patientsNum.notEmergencyInjured}}
+                        {{patientsNum.notEmergencyInjured}}:לא דחוף
                     </div>
                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{(patientsNum.emergencyInjured/patientsNum.total)*100}}%">
-                        {{patientsNum.emergencyInjured}}
+                        {{patientsNum.emergencyInjured}}:דחוף
                     </div>
                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{(patientsNum.deads/patientsNum.total)*100}}%">
-                        {{patientsNum.deads}}
+                        {{patientsNum.deads}}:חללים
                     </div>
                     <div class="progress-bar progress-bar-default" role="progressbar" style="width:{{(patientsNum.unknownInjured/patientsNum.total)*100}}%">
-                        {{patientsNum.unknownInjured}}
+                        {{patientsNum.unknownInjured}}:לא ידוע
                     </div>
                 </div>
             </div>
