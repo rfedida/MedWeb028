@@ -41,11 +41,13 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
 
         /*************  Gil  ****************************************************************/
         $scope.treat_Med = medAppFactory.treatmentsMed;
+        $scope.allTreatmenrs = medAppFactory.gTreatments;
         $scope.treatments = $scope.injured.treatments;
+
         refresh();
 
         $scope.getNameById = function (num) {
-            return $scope.treat_Med[num].name;
+            return $scope.allTreatmenrs[num].name;
         };
 
         function refresh($scope) {
@@ -80,12 +82,13 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
                 modal.element.modal();
                 modal.close.then(function (result) {
                     var newTreat = angular.copy(medAppFactory.newTreatment);
-                   newTreat.treatmentType = result.selectedTreatMed;
+                   newTreat.treatmentType = result.selectedTreat;
                     newTreat.location = result.treatLocation;
-                    newTreat.bloodPressure =result.highBloodPressure + "/" + result.lowBloodPressure;
+                    newTreat.bloodPressure =result.bloodPressure;
                     newTreat.heartbeat = result.heartbeat;
                     newTreat.temperature = result.temperature;
                     newTreat.storation = result.storation;
+
                     $scope.treatments.push(newTreat);
 
                      $http.put('/crud/patients', { "patient": $scope.injured }).then(function (response) {
@@ -132,12 +135,12 @@ angular.module("medApp").controller('ComplexControllerOperation', [
         //  the button has the 'data-dismiss' attribute.
         $scope.close = function () {
             close({
-                selectedTreatMed: selectedTreatMed.selectedIndex,
+                selectedTreat: selectedTreat.selectedIndex,
                 treatLocation: treatLocation.value,
                 bloodPressure: highBloodPressure.value + "/" + lowBloodPressure.value,
                 heartbeat: heartbeat.value,
                 temperature: temperature.value,
-                storation: storation.value
+                storation: storation.value + "%" 
             }, 500); // close, but give 500ms for bootstrap to animate
         };
 
