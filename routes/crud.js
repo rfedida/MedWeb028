@@ -344,6 +344,36 @@ crudRouter.get('/patientsInjuryMechanismByTime', function(req, res, next) {
 });
 
 
+crudRouter.get('/injuryPerHour' , function(req , res){
+    console.log("get requst from db to injuryPerHour");
+    Patients.aggregate(
+	[
+		{
+			$group: {
+			    _id : {receptionTime: "$Stations.receptionTime", leavingDate: "$Stations.leavingDate"},
+			            
+			}
+		},
+
+	], 
+    function(err, patients){
+        if(!err)
+         {
+             var nowTime = new Date().getHours;
+             var lior = patients.map(function(currPatient){
+                 currPatient._id.key = InjuryMechanismType[currPatient._id.key];
+                 return currPatient;
+             });
+             res.json(lior);
+        }
+        else {
+            console.log("error in get requst from db injuryMechanism" + err);
+        }
+    });
+});
+
+
+
 module.exports = crudRouter;
 
 

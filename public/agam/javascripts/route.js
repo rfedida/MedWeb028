@@ -27,7 +27,7 @@ myApp.config(function($routeProvider){
 
         .when("/injuryPerHour" , {
             templateUrl : "/agam/views/injuryPerHour.html",
-            controller : "statisticController"
+            controller : "injuryPerHour"
         })
 
         .otherwise({
