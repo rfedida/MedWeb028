@@ -103,7 +103,7 @@ crudRouter.get('/patients/units/:unitId', function(req, res,next) {
             res.send(data);
         });
      } else {
-         mongo.getPatientsByUnitId(req.params.unitId, function(data) {
+         files.getPatientsByUnitId(req.params.unitId, function(data) {
             res.send(data);
          });
      }    

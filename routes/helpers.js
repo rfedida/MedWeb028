@@ -4,7 +4,8 @@ var exports = {
     patient: undefined,
     sendToBracelet: undefined,
     isOnline: undefined,
-    stationID : undefined
+    stationID : undefined,
+    agentInfo: undefined
 }
 
 module.exports = exports;

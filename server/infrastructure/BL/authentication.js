@@ -8,6 +8,7 @@ function login(username, password, request)
     var promise = new Promise(function(resolve, reject)
     {
         var hash = crypto.createHash("sha256").update(password).digest("base64");
+
         User.findOne({UserName : username, Password : hash}, function(err, user)
         {
             if (err || user == null)

@@ -1,4 +1,3 @@
-
 var app = angular.module("medApp", ["ngRoute", "angularModalService", "ui.toggle", "ngSanitize", "infra", "ngMaterial", "nvd3"  ]);
 
 app.remote="";
@@ -20,8 +19,55 @@ function($routeProvider, $sceDelegateProvider){
 		templateUrl: app.remote + "/med/views/commandTmz.html"
     	});
 }]);
-angular.module("medApp").factory('medAppFactory', function ($http, currentUser) {
+angular.module("medApp").factory('medAppFactory', function ($http, currentUser, $location, $rootScope) {
     var factory = {};
+
+    // currentUser.details.permission;
+    factory.currentStation = currentUser.getDetails().permission;
+    factory.newInjured = {
+        "braceletId": "",
+        "CurrentStation": factory.currentStation,
+        "LastUpdate": 0,
+        "generalData": {
+            "emergency": 0,
+            "breathingHit": true,
+            "airwayHit": true,
+            "shock": true,
+            "injuryMechanism": 2,
+            "consciousness": "P",
+            "injuryLocation": "",
+            "comments": ""
+        },
+        "treatments": [],
+        "medications": [],
+        "liquids": [],
+        "measurements": {
+            "temperatures": [],
+            "storations": [],
+            "bloodPressures": [],
+            "heartbeat": []
+        },
+        "Stations": [
+            {
+                "receptionTime": 0,
+                "stationId": factory.currentStation,
+                "leavingDate": 0
+            }
+        ]
+    };
+
+    //Ugly solution
+    factory.gTreatments = {
+        "0": { name: "A.W" },
+        "1": { name: "קוניוטו" },
+        "2": { name: "איטוב" },
+        "3": { name: "N.A" },
+        "4": { name: "נקז חזה" },
+        "5": { name: "C.A.T" },
+        "6": { name: "BIG" },
+        "7": { name: "Combat Gauze" },
+        "8": { name: "AVPU" }
+    };
 
     factory.currentStation = currentUser.getDetails().permission;
 
@@ -109,17 +155,19 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
         "18": {name: "מים"},
         "19": {name: "דם"}
 };
+
     factory.currentInjured = {};
-    
-     factory.newTreatment= {
-                date: new Date(),
-                treatmentType: "",
-                location: "",
-                bloodPressure: "",
-                heartbeat: "",
-                temperature: "",
-                storation: ""
-            };
+
+
+    factory.newTreatment = {
+        date: new Date().getTime(),
+        treatmentType: "",
+        location: "",
+        bloodPressure: "",
+        heartbeat: "",
+        temperature: "",
+        storation: ""
+    };
 
     factory.InjuryMechanismType = [
         { id: 0, name: "תלול מסלול" },
@@ -133,14 +181,12 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
     factory.currentCommand = "";
     factory.currentStationName = "";
     // checnku
-    factory.getStationName = function()
-    {
-        return $http.get("/crud/units/" + factory.currentStation).then(function(res)
-        {
+    factory.getStationName = function () {
+        return $http.get("/crud/units/" + factory.currentStation).then(function (res) {
             factory.currentStationName = res.data.name;
         });
     }
-  
+
     // Check after insert to DB;
     factory.getCommand = function()
     {
@@ -150,17 +196,72 @@ angular.module("medApp").factory('medAppFactory', function ($http, currentUser) 
         {
             factory.currentCommand = res.data.name;
         });
+
     }
 
     factory.navagationBarFull =  [{id: "0", location: "/commandTmz"}, // pikud
                                   {id: "1", location: "/commandTmz"}, // ogda
                                   {id: "2", location: "/commandTmz"}, // hativa
-                                  {id: "3", location: "/tmz"}] // plhak
+                                  {id: "3", location: "/tmz"}] // plhak / tmz
 
     factory.currentNavagationBar = [{name:'', location:'', currentStation: '', parentCurrentStation: ''}];
 
+    factory.stepIntoUnit = function (unit) {
+
+            var unitIdToStepInto;
+
+            // If the unit is defined -> push the current station and name into factory(for drealdown)
+            if (unit != undefined) 
+            {
+                var amountUnderscore;
+                if(!unit.id)
+                    amountUnderscore = (unit.currentStation.match(/_/g) || []).length;
+                    else
+                    amountUnderscore = (unit.id.match(/_/g) || []).length;
+                 var jsnToPush = {};
+                 var length = factory.currentNavagationBar.length;
+                 if (amountUnderscore == 3) 
+                 {
+                    jsnToPush.location = "/tmz";
+              
+                 }
+                else {
+                    jsnToPush.location = "/commandTmz";
+                }
+                 if(!unit.id)
+                   unitIdToStepInto = jsnToPush.currentStation = factory.currentStation = unit.currentStation;
+                else
+                    unitIdToStepInto = jsnToPush.currentStation = factory.currentStation = unit.id;
+                      
+                    jsnToPush.name = factory.currentStationName = unit.name;
+                    jsnToPush.parentCurrentStation = factory.currentNavagationBar[length-1].name; 
+
+                    var isAlreadyExist = false;
+                    factory.currentNavagationBar.forEach(function (x){
+                        if (x.currentStation==unitIdToStepInto)
+                            isAlreadyExist = true
+                    });
+
+                    if (!isAlreadyExist) {    
+                        factory.currentNavagationBar.push(jsnToPush);
+                    }
+                    $location.path(jsnToPush.location);
+            }
+            else {
+                unitIdToStepInto = factory.currentStation;
+            }
+
+            // Get all unit under current units
+            $http.get("/crud/units/" + unitIdToStepInto + "/units").then(function(res)
+            {
+                factory.unitsUnderCommand = res.data;
+                $rootScope.$broadcast('changePage');
+            });
+        }
+
     return factory;
 });
+
 
 app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $interval, $http, currentUser) 
 {
@@ -172,13 +273,18 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
         currentUser.logout();            
     };
 
-    medAppFactory.getCommand().then(function (response)
-    {
+    $scope.logout = function () {
+        currentUser.logout();
+    };
+
+    medAppFactory.getCommand().then(function (response) {
         $scope.currentCommand = medAppFactory.currentCommand;
     });
 
+
     medAppFactory.getStationName().then(function(res)
     {
+
         var amountLine = (medAppFactory.currentStation.match(/_/g) || []).length;
         $scope.currentNavagationBar[0].name = medAppFactory.currentStationName;  
         $scope.currentNavagationBar[0].location =  medAppFactory.navagationBarFull[amountLine].location;
@@ -194,9 +300,12 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
 
     $scope.changePage  = function (index)
     {
-        $scope.currentNavagationBar = medAppFactory.currentNavagationBar[index];
-        $location.path($scope.currentNavagationBar.location);
-        medAppFactory.currentStation = $scope.currentNavagationBar.currentStation;
+        medAppFactory.currentNavagationBar.splice(index + 1);
+        $location.path($scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].location);
+        
+        medAppFactory.currentStation = 
+                $scope.currentNavagationBar[$scope.currentNavagationBar.length - 1].currentStation;
+                 medAppFactory.stepIntoUnit(medAppFactory.currentNavagationBar[medAppFactory.currentNavagationBar.length-1]);
     }
 
     function checkInput(){
@@ -204,6 +313,7 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
             $http.get('/crud/newPatient').then(function(response){
                 if(response.data != "")
                 {
+
                     medAppFactory.currentInjured = response.data;
                     $location.path("/medSchema");
                 }
@@ -212,7 +322,7 @@ app.controller('medViewCtrl',  function ($scope, $location, medAppFactory, $inte
     }
 
     checkInput();
-    
+
 });
 
 
