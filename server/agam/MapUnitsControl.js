@@ -21,13 +21,13 @@ var GetUnitsOnMap = function (hirarchCode, callback)
 
 console.log("Test");
 
-var GetEmergency = function(StationID,emergencyNum, callback)
+var GetEmergency = function(StationID,emergencyNum,callback)
 {
     var count = 0;
-
+    var num = parseInt(emergencyNum);
    Patient.aggregate([
                 {"$match":{"CurrentStation":StationID}},
-                {"$match":{"generalData.emergency":emergencyNum}},
+                {"$match":{"generalData.emergency":num}},
                 {"$group":{"_id":1, "count": {"$sum":1} }}
                 ],
                 function(err,res)
