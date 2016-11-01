@@ -7,46 +7,57 @@
             <div class="col-md-4 borderRight status">
                 <div class="row">
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-success btnStatus"" ng-click="finishTreatment()">גמר טיפול</button>
+                        <button type="button" class="btn btn-success btnStatus" " ng-click="finishTreatment() ">גמר טיפול</button>
                     </div>
-                    <div class="col-md-5">
-                        <button type="button" class="btn btn-danger btnStatus" style="width: 65px; margin-right:-20px" ng-click="transferPatient()">פנה</button>
+                    <div class="col-md-5 ">
+                        <button type="button " class="btn btn-danger btnStatus " style="width: 65px; margin-right:-20px
+                            " ng-click="transferPatient() ">פנה</button>
                     </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-dead btnStatus" style="width: 65px" ng-click="patientPassed()">נפטר</button>
+                    <div class="col-md-3 ">
+                        <button type="button " class="btn btn-dead btnStatus " style="width: 65px " ng-click="patientPassed() ">נפטר</button>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-3">
+            <div class="col-md-8 ">
+                <div class="row ">
+                    <div class="col-md-3 ">
                         <h4>חום:
-                            <small ng-class="{'redColor':injured.measurements.temperatures[injured.measurements.temperatures.length - 1].tempreature < 36 || injured.measurements.temperatures[injured.measurements.temperatures.length - 1].tempreature > 38.3, 'greenColor': injured.measurements.temperatures[injured.measurements.temperatures.length - 1].tempreature >= 36 && injured.measurements.temperatures[injured.measurements.temperatures.length - 1].tempreature <= 38.3}">
+                            <small ng-class="{ 'redColor':injured.measurements.temperatures[injured.measurements.temperatures.length
+                            - 1].tempreature < 36 || injured.measurements.temperatures[injured.measurements.temperatures.length
+                            - 1].tempreature> 38.3, 'greenColor': injured.measurements.temperatures[injured.measurements.temperatures.length
+                        - 1].tempreature >= 36 && injured.measurements.temperatures[injured.measurements.temperatures.length
+                        - 1].tempreature
+                        <=3 8.3} ">
                                 {{injured.measurements.temperatures[injured.measurements.temperatures.length - 1].tempreature}}
                             </small>
                         </h4>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 ">
                         <h4>לחץ דם:
-                            <small ng-class="{'redColor': injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure < 90 || injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure > 140, 'greenColor': injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure >= 90 && injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure <=140}">
+                            <small ng-class="{ 'redColor': injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure
+                            < 90 || injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure>
+                        140, 'greenColor': injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure
+                            >= 90 && injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure
+                            <=140} ">
                                 {{injured.measurements.bloodPressures[injured.measurements.bloodPressures.length-1].bloodPressure}}
                             </small>
                         </h4>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 ">
                         <h4>מזהה צמיד:
                             <small>{{injured.braceletId}}</small>
                         </h4>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-3">
+                <div class="row ">
+                    <div class="col-md-3 ">
                         <h4>סטורציה:
-                            <small ng-class="{'redColor': injured.measurements.storations[injured.measurements.storations.length-1].storation <= 92, 'greenColor': injured.measurements.storations[injured.measurements.storations.length-1].storation > 92}">
-                                {{injured.measurements.storations[injured.measurements.storations.length-1].storation}}%
-                            </small>
-                        </h4>
+                            <small ng-class="{ 'redColor': injured.measurements.storations[injured.measurements.storations.length-1].storation
+                                <=9 2, 'greenColor': injured.measurements.storations[injured.measurements.storations.length-1].storation>
+                            92}"> {{injured.measurements.storations[injured.measurements.storations.length-1].storation}}%
+                                </small>
+                                </h4>
                     </div>
                     <div class="col-md-3">
                         <h4>דופק:
@@ -152,52 +163,48 @@
         <!-- Actions preformed tab -->
         <div class="row component basicInfo" ng-if="selectedTab == 2">פעולות שבוצעו
 
-        <div dir="rtl">
-            <table class="table table-bordered" border="5">
-                <tr>
-                    <th style="text-align: center;"> לפני.. (HH:MM)</th>
-                    <th style="text-align: center;"> הליך שבוצע</th>
-                    <th style="text-align: center;"> מיקום בגוף</th>
-                    <th style="text-align: center;"> ל"ד</th>
-                    <th style="text-align: center;"> דופק</th>
-                    <th style="text-align: center;"> חום</th>
-                    <th style="text-align: center;"> סטורציה</th>
-                </tr>
-                <tr ng-repeat="treatment in treatments" style="text-align: center;">
-                    <td> {{calcDateDiff(treatment.date)}}</td>
-                    <td> {{getNameById(treatment.treatmentType)}} </td>
-                    <td> {{treatment.location}} </td>
-                    <td> {{treatment.bloodPressure}} </td>
-                    <td> {{treatment.heartbeat}} </td>
-                    <td> {{treatment.temperature}} </td>
-                    <td> {{treatment.storation}} </td>
-                </tr>
-            </table>
+            <div dir="rtl">
+                <table class="table table-bordered" border="5">
+                    <tr>
+                        <th style="text-align: center;"> לפני.. (HH:MM)</th>
+                        <th style="text-align: center;"> הליך שבוצע</th>
+                        <th style="text-align: center;"> מיקום בגוף</th>
+                        <th style="text-align: center;"> ל"ד</th>
+                        <th style="text-align: center;"> דופק</th>
+                        <th style="text-align: center;"> חום</th>
+                        <th style="text-align: center;"> סטורציה</th>
+                    </tr>
+                    <tr ng-repeat="treatment in treatments" style="text-align: center;">
+                        <td> {{calcDateDiff(treatment.date)}}</td>
+                        <td> {{getNameById(treatment.treatmentType)}} </td>
+                        <td> {{treatment.location}} </td>
+                        <td> {{treatment.bloodPressure}} </td>
+                        <td> {{treatment.heartbeat}} </td>
+                        <td> {{treatment.temperature}} </td>
+                        <td> {{treatment.storation}} </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-1 col-md-offset-11 fade">
+                <button type="button" class="addImg" ng-click="showComplex()">+</button>
+            </div>
         </div>
-        <div class="col-md-20">
-            <button type="button" class="btn btn-primary" ng-click="showComplex()">++++</button>
-        </div> 
+
     </div>
 
-        </div>
-
-        <!-- Med info tab -->
-        <div class="row component basicInfo" ng-if="selectedTab == 3">תרופות שניתנו
-            <present-table data = injured.medications 
-                           tableTitle = "תרופה" 
-                           fieldName="medicationId">
-            </present-table>
-        </div>
-
-        <!-- Liquid info tab -->
-        <div class="row component basicInfo" ng-if="selectedTab == 4">נוזלים שניתנו
-             <present-table data = injured.liquids 
-                           tabletitle = "נוזל"
-                           fieldname="liquidId">
-            </present-table>
-        </div>
-
-        <!-- Megama tab -->
-        <div class="row component basicInfo" ng-if="selectedTab == 5">מגמות מדדים</div>
+    <!-- Med info tab -->
+    <div class="row component basicInfo" ng-if="selectedTab == 3">תרופות שניתנו
+        <present-table data= injured.medications tableTitle="תרופה" fieldName="medicationId">
+        </present-table>
     </div>
+
+    <!-- Liquid info tab -->
+    <div class="row component basicInfo" ng-if="selectedTab == 4">נוזלים שניתנו
+        <present-table data= injured.liquids tabletitle="נוזל" fieldname="liquidId">
+        </present-table>
+    </div>
+
+    <!-- Megama tab -->
+    <div class="row component basicInfo" ng-if="selectedTab == 5">מגמות מדדים</div>
+</div>
 </div>
