@@ -1,12 +1,14 @@
 var User = require("../../common/models/usersSchema");
 var Promise = require("es6-promise").Promise;
 var crypto = require("crypto");
+var helpers = require("../../../routes/helpers");
 
 function login(username, password, request)
 {
     var promise = new Promise(function(resolve, reject)
     {
         var hash = crypto.createHash("sha256").update(password).digest("base64");
+
         User.findOne({UserName : username, Password : hash}, function(err, user)
         {
             if (err || user == null)
@@ -15,6 +17,7 @@ function login(username, password, request)
             }
             else 
             {
+                helpers.stationID = user.PermissionID;
                 user.hash = hash;
                 resolve(user);
             }

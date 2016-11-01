@@ -125,7 +125,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'multiChart',
-            height: 400,
+            height: 300,
             width: 700,
             margin: {
                 top: 20,
@@ -136,7 +136,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             x: function(d){return d.x},
             y: function(d){return d.y},            
             color: function(d, i) {
-                var colorArray = ['#132639', '#25517e', '#00d4ff', '#004aff', '#06a5c6', '#5d6ea9'];                
+                var colorArray = ['#ee4035', '#f37736' ,'#fdf498', '#7bc043', '#0392cf', '#be29ec'];        
                 return colorArray[i];        
             },
             duration: 500, 
@@ -145,7 +145,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             {
                 axisLable: 'זמן',            
                 tickFormat: function(d){
-                    return d3.time.format('%x %H:%M')(new Date(d));
+                    return d3.time.format('%d/%m %H:%M')(new Date(d));
                 }
             },
             yAxis:
@@ -156,7 +156,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         }        
     };
 
-    $scope.colorArray = ['#494d1b','#a63807'];
+    $scope.colorArray = ['#008000','#800000'];
     
     $scope.colorFunction = function() {
         return function(d,i){
@@ -168,7 +168,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
         chart:
         {
             type: 'pieChart',
-            height: 200,
+            height: 150,
             width: 230,
             donut: true,
             x: function(d){return d.key},
@@ -179,6 +179,7 @@ myApp.controller('numOfTreatsCtrl', function($scope, $http) {
             duration: 500,
             labelThreshold: 0.01,
             labelSunbeamLayout: true,
+            valueFormat: d3.format('d'),
             legend: {
                 margin:
                 {

@@ -1,0 +1,40 @@
+
+
+  
+
+<div class="modal">
+        <div class="modal-dialog modal-ld">
+            <div class="modal-content">
+                <center>
+                 <div class="modal-header">
+                    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                 </div>
+                </center>
+                <div class="row">   
+      <div  class = "">
+        <table class="table table-bordered aBackground">
+          <tr>
+            <th rowspan="100" type="button">
+              <div class ="treatLetter"> {{letter}} </div>
+            </th>
+            </tr>
+          <tr class="">
+              <th>לפני</th>
+              <th>תיאור</th>
+          </tr>
+          <tr ng-repeat = "treatment in treatments">
+              <td>{{timeGap(treatment.date)}}</td>
+              <td>{{treatment.name}}</td>
+          </tr>
+      </table>
+    </div>
+  </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">סגור</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    

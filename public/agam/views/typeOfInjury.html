@@ -1,4 +1,4 @@
-<table ng-controller="statisticController">
+<table ng-controller="statisticController" align="center">
     <thead>
         <tr align="center">
             <td><h3>מנגנון פגיעה</h3></td>
@@ -9,8 +9,26 @@
         <td> <nvd3 options='pieChartOptions' data='injuryMechanismData'></nvd3></td>
         <td> <nvd3 options='pieChartOptions' data='injuryLocationData'></nvd3></td>
     </tr>
+</table>
+<table align="center">
+    <tr>
+        <th>
+            יום
+        </th>
+        <th>
+          שבוע
+        </th>
+         <th>
+            יום
+        </th>
+        <th>
+          שבוע
+        </th>
+    </tr>
    <tr>
-        <td> <nvd3 options='lineChartOptions' data='injuryMechanismTimeData'></nvd3></td>
-        <td> <nvd3 options='lineChartOptions' data='injuryLocationTimeData'></nvd3></td>
+        <td> <nvd3 options='timePieChartOptions' data='injuryMechanismDayData'> </td>
+        <td> <nvd3 options='timePieChartOptions' data='injuryMechanismWeekData'> </td>
+        <td> <nvd3 options='timePieChartOptions' data='injuryLocationDayData'> </td>
+        <td> <nvd3 options='timePieChartOptions' data='injuryLocationWeekData'> </td>
     </tr>
 </table>

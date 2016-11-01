@@ -14,11 +14,12 @@
                         <!--הליך שבוצע-->
                         <tr class="form-group">
                             <td>
-                                <label for="selectedTreatMed" class="col-sm-20 control-label">הליך שבוצע</label>
+                                <label for="selectedTreat" class="col-sm-20 control-label">הליך שבוצע</label>
                             </td>
                             <td colspan="3">
                                 <div class="col-sm-12" style="padding-top: 10px;">
-                                    <select class="form-control" ng-model="selectedTreatMed" ng-options="treatMed.id as treatMed.name for treatMed in treat_Med">                            
+                                    <select class="form-control" id="selectedTreat" 
+                                    ng-model="selectedTreat" ng-options="treatMent.id as treatMent.name for treatMent in allTreatmenrs">                            
                         </select>
                                 </div>
                             </td>
@@ -50,8 +51,8 @@
                             </td>
                             <td>
                                 <div class="col-sm-12" style="padding-top: 10px;">
-                                    <input type="text" class="form-control" id="HiBloodPressure" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                                        maxlength="3" placeholder="גבוה" ng-model="HiBloodPressure">
+                                    <input type="text" class="form-control" id="highBloodPressure" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                        maxlength="3" placeholder="גבוה" ng-model="highBloodPressure">
                                 </div>
                             </td>
                         </tr>
@@ -103,76 +104,3 @@
         </div>
     </div>
 </div>
-
-
-<!--
-<div class="modal ">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <center>
-                <div class="modal-header">
-                    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><strong>טיפול חדש</strong>
-                    </h4>
-                </div>
-                </center>
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-                        
-                   <!-- <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" placeholder="הכנס מספר צמיד" ng-model="braceId">
-                        </div>
-                        <label for="braceId" class="col-sm-2 control-label">הליך שבוצע</label>
-                    </div>
-
-                
-                    <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                            <div class="input-group date">
-                                <input type="date" id="date" class="form-control" 
-                                placeholder="הכנס תאריך קליטה" ng-model="date" 
-                                value="{{date}}" style="border-radius: 3px;"/>
-                                <span class="input-group-addon" dir="rtl">
-                                    <span class="glyphicon glyphicon-calendar" ></span>
-                                </span>
-
-                            </div>
-                        </div>
-                        <label for="date" class="col-sm-2 control-label">תאריך קליטה</label>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                            <div class="input-group date" >
-                                <input type="time" id="time"class="form-control"  
-                                placeholder="הכנס שעת קליטה" ng-model="time" 
-                                value="{{time}}" style="border-radius: 3px;"/>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
-                            </div>
-                        </div>
-                        <label for="time" class="col-sm-2 control-label">שעת קליטה</label>
-                    </div>
-                    </form>
-
-                </div>
-                <div class="form-group">
-                <div class="col-sm-10" style="padding-top: 10px;">
-                    <select ng-model="treatmentType" data-ng-options="v.value for v in Alo">
-                </div>
-                <div class="form-group">
-                        <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" placeholder="הכנס מיקום בגוף" ng-model="braceId">
-                 </div>
-                        <label for="braceId" class="col-sm-2 control-label">מיקום בגוף</label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">אישור</button>
-                    <button type="button" ng-click="cancel()" class="btn">ביטול</button>
-                </div>
-            </div>
-        </div>
-    </div>
--->

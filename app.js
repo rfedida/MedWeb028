@@ -19,7 +19,7 @@ var session = require("express-session");
 var auth = require("./server/infrastructure/BL/authentication")
 var crud = require('./routes/crud');
 var helpers = require('./routes/helpers');
-//var ping = require('net-ping');
+var ping = require('ping');
 
 var server = express();
 
@@ -85,8 +85,26 @@ server.use(function(req, res, next)
         }
         else
         {
-            res.writeHead(307, {Location : "/"});
-            res.end();
+            if (req.cookies.user)
+            {
+                var user = JSON.parse(req.cookies.user);
+                
+                var userToSession = { 
+                    "UserId" : user.userId, 
+                    "UserName" : user.username, 
+                    "Password" : user.hash,
+                    "hash" : user.hash,
+                    "PermissionID" : user.permission
+                };
+
+                req.session[req.cookies.hash] = userToSession;
+                next();
+            }
+            else
+            {
+                res.writeHead(307, {Location : "/"});
+                res.end();
+            }
         }
     }
 });
@@ -115,6 +133,7 @@ function connectToMongo () {
     var db = mongoose.connection;
     db.on('error', function(err) {
         helpers.isOnline = false;
+        mongoose.connection.close();
         console.log('Connection to mongo failed');
     });
     db.once('open', function(){
@@ -124,14 +143,18 @@ function connectToMongo () {
         // Update db according files
         if (!pjson.isWeb) {
             temp.getTempPatients(function(data) {
-                mongo.updatePatientsAfterConnection(data);
+                for (var i=0; i<data.length; i++) {
+                    mongo.updatePatientAfterConnection(data[i]);
+                }
             });
             temp.getTempUnits(function(data) {
-                mongo.updateUnitsAfterConnection(data);
+                for (var i=0; i<data.length; i++) {
+                    mongo.updateUnitAfterConnection(data[i]);
+                }
             });
             mongo.getAllUnits(function(data) {
                 for (var i=0; i<data.length; i++) {
-                    files.updateUnit(data[i].id, function(data) {
+                    files.updateUnit(data[i], function(data) {
                         // Decide to check if there was update
                     });
                 }
@@ -149,16 +172,15 @@ if (pjson.isWeb) {
     connectToMongo();
 } else {
     setInterval(function() {
-        // var session = ping.ctreateSession();
-        // session.pingHost('150.0.0.56', function(error, target) {
-        //     if (error) {
-        //         console.log("There is no connection to MongoDB server");
-        //     } else {
-        //         connectToMongo();
-        //     }
-        // })
         if (!helpers.isOnline) {
-            connectToMongo();
+            ping.sys.probe('150.0.0.56', function(isAlive) {
+                if (isAlive) {
+                    console.log("PING GOOD!!!");
+                    connectToMongo();
+                } else {
+                    console.log("No network");
+                }
+            });
         }
     }, 3000);
 }
@@ -172,7 +194,12 @@ if (!pjson.isWeb) {
     });
 
     udpServer.on('message', (msg, rinfo) => {
+        helpers.agentInfo = rinfo;
         patient = JSON.parse(msg.toString("utf8"));
+        patient.CurrentStation = helpers.stationID;
+        patient.Stations.push({"stationId": helpers.stationID, 
+                               "receptionTime": new Date().getDate(),
+                               "leavingDate": null});
         helpers.patient = patient;
 
         // write to file
@@ -199,7 +226,7 @@ if (!pjson.isWeb) {
         var toSend = JSON.stringify(data);
         var buf = new Buffer(toSend.length);
         buf.write(toSend);
-        udpServer.send(buf, 0, buf.length, 9002, '150.0.0.123', (err)=> {
+        udpServer.send(buf, 0, buf.length, helpers.agentInfo.port, helpers.agentInfo.ip, (err)=> {
             if(err) {
                 console.log(err);
             }
