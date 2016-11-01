@@ -18,19 +18,27 @@ var GetUnitsOnMap = function(hirarchCode, callback)
           // Go over all the stations
           res.forEach(function(element) 
             {
-                console.log(element.name);
+             console.log(element.name);
 
             //Get the amount of non ergent patients in the station    
             GetEmergency(element.id,1, function(data){
-                element.NotUrgent =data[0].count;
+                if(data[0].count > 0)
+                 {
+                    element.NotUrgent =data[0].count;
+                 }
+                 else
+                 { element.NotUrgent =0;}
             });
  
             //Get the amount of ergent patients in the station
              GetEmergency(element.id,2, function(data){
-                element.Urgent =data[0].count;
+                
+                if(data[0].count > 0)
+                {element.Urgent =data[0].count;}
+                else
+                {element.Urgent =0;}
+                jsonUnits.push(element);
             });
-
-            jsonUnits.push(element);
 
             },this);
             // return all the units that should be displayed on the map
@@ -49,7 +57,7 @@ var GetEmergency = function(StationID,emergencyNum, callback)
 {
     Patient.aggregate([
                 {"$match":{"CurrentStation":StationID}},
-                //{"$match":{"generalData.emergency":emergencyNum}},
+                {"$match":{"generalData.emergency":emergencyNum}},
                 {"$group":{"_id":1, "count": {"$sum":1} }}
                 ],
                 function(err,res)
