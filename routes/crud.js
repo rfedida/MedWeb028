@@ -365,7 +365,7 @@ crudRouter.get('/patientsInjuryMechanismByTime/:id', function(req, res, next) {
 });
 
 crudRouter.get('/predict/:type/:id', function (req, res, next) {
-    got(`localhost:8888/newPredict/${req.params.type}/${req.params.id}`, function (err, data, response) {
+    got(`150.0.0.232:8888/newPredict/${req.params.type}/${req.params.id}`, function (err, data, response) {
         res.send(data);
     });
 });
