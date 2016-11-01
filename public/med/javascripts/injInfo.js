@@ -1,3 +1,4 @@
+
 angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFactory', '$http', 
                                                 '$interval', 'ModalService', '$sce','currentUser', '$location',
     function InjuredController($scope, medAppFactory, $http, $interval, ModalService, $sce, currentUser, $location) {
