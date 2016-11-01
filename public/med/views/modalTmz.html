@@ -48,50 +48,55 @@
                             </div>
                         </div>
                         <label for="time" class="col-sm-2 control-label">שעת קליטה</label>
-                    </div>
+                    </div> 
+
+                    <!-- soffer code -->
 
                     <div class="form-group fixModal">
-                        <div class="col-sm-4" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" 
+                     
+                     <div class="col-sm-4" style="padding-top: 10px;">
+                        <input type="text" class="form-control" id="highBloodPressure" 
                          onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="3" placeholder="נמוך" ng-model="braceId">
+                          maxlength="3" placeholder="גבוה" ng-model="highBloodPressure">
                         </div>
                         <div class="col-sm-2" style="padding-top: 10px;">
-                            <label for="highBloodPressure" class="control-label">/</label>
+                            <label for="lowBloodPressure" class="control-label">/</label>
                         </div>
-                        <div class="col-sm-4" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" 
+                           <div class="col-sm-4" style="padding-top: 10px;">
+                        <input type="text" class="form-control" id="lowBloodPressure" 
                          onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="3" placeholder="גבוה" ng-model="braceId">
+                          maxlength="3" placeholder="נמוך" ng-model="lowBloodPressure">
                         </div>
-                        <label for="braceId" class="col-sm-2 control-label">לחץ דם</label>
+                         
+                        
+                        <label for="highBloodPressure" class="col-sm-2 control-label">לחץ דם</label>
                     </div>
 
                      <div class="form-group fixModal">
                         <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" 
+                        <input type="text" class="form-control" id="heartbeat" 
                          onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="דופק" ng-model="braceId">
+                          maxlength="10" placeholder="דופק" ng-model="heartbeat">
                         </div>
-                        <label for="braceId" class="col-sm-2 control-label" style="padding-top: 15">דופק</label>
+                        <label for="heartbeat" class="col-sm-2 control-label" style="padding-top: 15">דופק</label>
                     </div>
 
                     <div class="form-group fixModal">
                         <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" 
+                        <input type="text" class="form-control" id="tempreature" 
                          onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="חום" ng-model="braceId">
+                          maxlength="10" placeholder="חום" ng-model="tempreature">
                         </div>
-                        <label for="braceId" class="col-sm-2 control-label" style="padding-top: 15">חום</label>
+                        <label for="tempreature" class="col-sm-2 control-label" style="padding-top: 15">חום</label>
                     </div>
 
                      <div class="form-group">
                         <div class="col-sm-10" style="padding-top: 10px;">
-                        <input type="text" class="form-control" id="braceId" 
+                        <input type="text" class="form-control" id="storation" 
                          onkeypress='return event.charCode >= 48 && event.charCode <= 57' 
-                          maxlength="10" placeholder="סטורציה" ng-model="braceId">
+                          maxlength="10" placeholder="סטורציה" ng-model="storation">
                         </div>
-                        <label for="braceId" class="col-sm-2 control-label" style="padding-top: 15">סטורציה</label>
+                        <label for="storation" class="col-sm-2 control-label" style="padding-top: 15">סטורציה</label>
                     </div>
 
                     </form>

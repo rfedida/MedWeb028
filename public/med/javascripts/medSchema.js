@@ -156,7 +156,7 @@ function($scope, medAppFactory, $location, $interval,$sce,ModalService)
                    "temp": $scope.currentInj.measurements.temperatures[$scope.currentInj
                             .measurements.temperatures.length-1].tempreature,
                    "HeartBeat": $scope.currentInj.measurements
-                        .heartbeat[$scope.currentInj.measurements.heartbeat.length-1].Heartbeat,
+                        .heartbeat[$scope.currentInj.measurements.heartbeat.length-1].heartbeat,
                    "BloodPressure":  $scope.currentInj.measurements
                         .bloodPressures[$scope.currentInj.measurements.bloodPressures.length-1].bloodPressure,
                    "Storation":  $scope.currentInj.measurements
@@ -180,7 +180,6 @@ angular.module("medApp").controller('ComplexControllerSchema', [
   '$scope', '$element', '$filter', 'title', 'data','letter', 'close', 
   function($scope, $element, $filter, title, data,letter, close) {
 
-debugger;
   $scope.title = title;
   $scope.treatments = data;
    $scope.letter = letter;
