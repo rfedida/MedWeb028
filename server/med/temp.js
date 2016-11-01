@@ -49,11 +49,11 @@ module.exports = {
             Doctors_num: unit.Doctors_num
         };
 
-        if(diskdb.TempUnits.update(query, dataToBeUpdate, options)) {
+        if(diskdb.TempUnits.update(query, dataToBeUpdate, options) == 1) {
             callback(true);
-        } else {
-            callback(false);
         }
+
+        callback(false);
     },
     insertPatient: (patient) => {
         diskdb.TempPatients.save(patient);

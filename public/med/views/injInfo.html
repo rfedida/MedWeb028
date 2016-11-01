@@ -61,8 +61,8 @@
                     </div>
                     <div class="col-md-3">
                         <h4>דופק:
-                            <small ng-class="{'redColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat >= 105, 'greenColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat < 105}">
-                                {{injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].Heartbeat}}
+                            <small ng-class="{'redColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat >= 105, 'greenColor': injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat < 105}">
+                                {{injured.measurements.heartbeat[injured.measurements.heartbeat.length-1].heartbeat}}
                             </small>
                         </h4>
                     </div>
@@ -194,17 +194,21 @@
 
     <!-- Med info tab -->
     <div class="row component basicInfo" ng-if="selectedTab == 3">תרופות שניתנו
-        <present-table data=i njured.medications tableTitle="תרופה" fieldName="medicationId">
+        <present-table data= injured.medications tableTitle="תרופה" fieldName="medicationId">
         </present-table>
     </div>
 
     <!-- Liquid info tab -->
     <div class="row component basicInfo" ng-if="selectedTab == 4">נוזלים שניתנו
-        <present-table data=i njured.liquids tabletitle="נוזל" fieldname="liquidId">
+        <present-table data= injured.liquids tabletitle="נוזל" fieldname="liquidId">
         </present-table>
     </div>
 
-    <!-- Megama tab -->
-    <div class="row component basicInfo" ng-if="selectedTab == 5">מגמות מדדים</div>
-</div>
+
+    <!-- Trends tab -->
+    <div class="row component basicInfo" dir="ltr" ng-if="selectedTab == 5">
+        <tr>
+            <td><nvd3 options='lineChartOptions' data='indicatorsTrendsData'/></td>
+        </tr>
+    </div>
 </div>

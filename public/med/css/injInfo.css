@@ -24,9 +24,9 @@ body {
 }
 
 .headBar{    
-    margin-bottom: 5px;
-    margin-top: 5px;
-    height: 80px;
+    margin-bottom: 37px;
+    margin-top: 34px;
+    height: 86px;
     border-radius: 15px;
 }
 
@@ -65,8 +65,9 @@ h4 small {
 }
 
 .basicInfo{
-    height: 400px;
+    height: 450px;
     padding: 10px;
+     padding-top: 30px;
     border-radius: 15px 0px 15px 15px;
     border-width: 0px 1px 1px 1px;
 }
@@ -130,4 +131,10 @@ li{
 .nav-tabs>li>a{
     color: black;
     margin: 0px;
+}
+
+.breadcrumb
+{
+    padding: 0;
+    padding-right: 5px;
 }

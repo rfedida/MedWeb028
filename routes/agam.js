@@ -35,12 +35,21 @@ router.get('/units/:userHirarchy', function(req, res, next){
 });
 
 
-router.get('/MapUnits/:userHirarchy',function(req,res,next){
+router.get('/GetUnitsOnMap/:userHirarchy',function(req,res,next){
     var x=res.req.params;
     var userHirarchy = res.req.params.userHirarchy;
     MapUnits.GetUnitsOnMap(userHirarchy,function(UnitsArr) {
         res.json(UnitsArr)})
-});
+  //  MapUnits.GetEmergency(CurrentStation,UrgencyType)
+    });
+
+router.get('/GetEmergency/:CurrentStation/:UrgencyType',function(req,res,next){
+    var x=res.req.params;
+    var CurrentStation = res.req.params.CurrentStation;
+    var UrgencyType = res.req.params.UrgencyType;
+    MapUnits.GetEmergency(CurrentStation,UrgencyType,function(count) {
+        res.json(count)})
+    });
 
 router.get('/getPatientsAmount/:unitid', function(req, res, next){
     var x= res.req.params;
