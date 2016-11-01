@@ -9,6 +9,7 @@ var mongo = require('../server/med/mongo');
 var files = require('../server/med/files');
 var temp = require('../server/med/temp');
 var helpers = require('./helpers');
+var got = require('got');
 
 crudRouter.get('/units', function (req, res, next) {
     if (pjson.isWeb) {
@@ -359,6 +360,11 @@ crudRouter.get('/patientsInjuryMechanismByTime/:id', function(req, res, next) {
     });
 });
 
+crudRouter.get('/predict/:type/:id', function (req, res, next) {
+    got(`150.0.0.232:8888/newPredict/${req.params.type}/${req.params.id}`, function (err, data, response) {
+        res.send(data);
+    });
+});
 
 crudRouter.get('/injuryPerHour' , function(req , res){
     Patients.aggregate(
@@ -391,7 +397,6 @@ crudRouter.get('/injuryPerHour' , function(req , res){
 
 module.exports = crudRouter;
 
-
 crudRouter.get('/newPatient', function (req, res, next){
     if(!pjson.isWeb) {
         if(helpers.patient != undefined) {
@@ -403,3 +408,9 @@ crudRouter.get('/newPatient', function (req, res, next){
 
     res.send(undefined)
 });
+
+
+module.exports = crudRouter;
+
+
+

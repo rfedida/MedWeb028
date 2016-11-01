@@ -203,17 +203,17 @@ if (!pjson.isWeb) {
         helpers.patient = patient;
 
         // write to file
-        files.writePatientOrUpdateFromUsb(patient);
+        files.writePatientOrUpdateFromUsb(helpers.patient);
 
         // write to db
         if (helpers.isOnline) {
-            mongo.writePatientOrUpdateFromUsb(patient);
+            mongo.writePatientOrUpdateFromUsb(helpers.patient);
         } else {
             // write to temp file
-            temp.writePatientOrUpdateFromUsb(patient);
+            temp.writePatientOrUpdateFromUsb(helpers.patient);
         }
-        console.log(patient);
-        helpers.sendToBracelet(patient);
+        console.log(helpers.patient);
+        helpers.sendToBracelet(helpers.patient);
     });
 
     udpServer.on('listening', () => {

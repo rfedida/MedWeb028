@@ -80,7 +80,8 @@ myApp.controller('unitsTreeController', function ($scope, $http, currentUser, un
         $http.get('/agam/units/'+ $scope.user_id).success(function(data){
              $scope.dataForTheTree = data;
              $scope.orgenizeHierarchy($scope.user_id);
-             $scope.loadPatients($scope.dataForTheTree.children[0])
+             $scope.loadPatients($scope.dataForTheTree.children[0]);
+             $scope.selected = $scope.dataForTheTree.children[0];
         });
     };
 

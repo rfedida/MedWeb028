@@ -40,7 +40,7 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
         };
 
 
-        /*************  Gil  ****************************************************************/
+/************* Start Gil  ****************************************************************/
         $scope.treat_Med = medAppFactory.treatmentsMed;
         $scope.allTreatmenrs = medAppFactory.gTreatments;
         $scope.treatments = $scope.injured.treatments;
@@ -100,28 +100,16 @@ angular.module("medApp").controller('InjuredController', ['$scope', 'medAppFacto
             });
         };
 
-/* 220.
-        $scope.close = function () {
-            close({
-                date: new Date(),
-                treatmentType: $scope.selectedTreatMed,
-                location: $scope.treatLocation,
-                bloodPressure: $scope.highBloodPressure + "/" + $scope.lowBloodPressure,
-                heartbeat: heartbeat,
-                temperature: temperature,
-                storation: storation
-            }, 500); // close, but give 500ms for bootstrap to animate
-        };
-
-*/
 
 /******************  SHIR *****************************************************************************************/
         $scope.medicationId = "medicationId";
         $scope.liquidId = "medicationId";
 /******************  SHIR *****************************************************************************************/    
+
 }]);
 
-/******************  Gil *****************************************************************************************/
+/****************** Start Gil *****************************************************************************************/
+
 angular.module("medApp").controller('ComplexControllerOperation', [
     '$scope', '$element', '$filter', 'title', 'close',
     function ($scope, $element, $filter, title, close) {
@@ -154,9 +142,10 @@ angular.module("medApp").controller('ComplexControllerOperation', [
 
         }
     }]);
-/******************  Gil *****************************************************************************************/
 
-/******************  SHIR *****************************************************************************************/
+/****************** End Gil *****************************************************************************************/
+
+/****************** Start SHIR *****************************************************************************************/
 angular.module("medApp").directive("presentTable", function () {
     return {
         restrict: 'E',
@@ -182,8 +171,6 @@ angular.module("medApp").controller("presentTableCtrl", function ($scope, medApp
     };
 
     $scope.calcDateDiff = function(dateTime){
-        debugger;
-    
         var dateBefore = new Date(parseInt(dateTime));
         var timeDiffByMinutes = Math.ceil(Math.abs((new Date().getTime() - 
                                             dateBefore.getTime()) * 
@@ -199,7 +186,7 @@ angular.module("medApp").controller("presentTableCtrl", function ($scope, medApp
                 length) + minutesDiff);
     }
 });
-/******************  SHIR *****************************************************************************************/
+/****************** End SHIR *****************************************************************************************/
 
 
 
