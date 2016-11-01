@@ -9,6 +9,7 @@ var mongo = require('../server/med/mongo');
 var files = require('../server/med/files');
 var temp = require('../server/med/temp');
 var helpers = require('./helpers');
+var got = require('got');
 
 crudRouter.get('/units', function (req, res, next) {
     if (pjson.isWeb) {
@@ -343,9 +344,11 @@ crudRouter.get('/patientsInjuryMechanismByTime', function(req, res, next) {
     });
 });
 
-
-module.exports = crudRouter;
-
+crudRouter.get('/predict/:type/:id', function (req, res, next) {
+    got(`localhost:8888/newPredict/${req.params.type}/${req.params.id}`, function (err, data, response) {
+        res.send(data);
+    });
+});
 
 crudRouter.get('/newPatient', function (req, res, next){
     if(!pjson.isWeb) {
@@ -358,3 +361,9 @@ crudRouter.get('/newPatient', function (req, res, next){
 
     res.send(undefined)
 });
+
+
+module.exports = crudRouter;
+
+
+
