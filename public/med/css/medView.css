@@ -18,14 +18,34 @@
     cursor: pointer;
 }
 
-.spanDesignTitle
-{
-    
-}
-
 .imgCss
 {
     height: 14px;
     margin-top: 13px;
     width: 47px;
+}
+
+.btnInBanner
+{
+    background-color: rgba(206, 214, 220, 0.75);
+    font-size: 13px;
+    border-color: rgba(22, 62, 97, 0.75)
+}
+
+.blackColor
+{
+    color:black;
+}
+
+.bannerColor
+{
+    background:rgba(231, 231, 236, 0.66); height:40px;
+}
+
+.commandNameDesign
+{
+    width: 75px;
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center; cursor: pointer;
 }
