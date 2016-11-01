@@ -62,10 +62,11 @@
         </div>
         <span  ng-controller="unitsTreeController">
         <div class="{{sizestatic}}">
-            <div class="row" style="background: #B3E5FC">
+            <div class="row" style="background: rgb(218, 221, 241);">
                 <span class="col-md-4">  
-            <button type="button" style=" background-color: white; font-size: 13px;" class="btn">
-               <a href="/med"> צפה בפרטים </a>
+            <button type="button" style="font-size: 13px;" class="btn hamalBtn">
+                <a href="/med"> צפה בפרטים </a>
+                <span class="glyphicon glyphicon-eye-open"></span>
                 </button>
               </span>
                 <span class="col-md-4 text-center" style="color:black; font-size: 17px">{{patientsNum.total}}   :סה"כ פצועים</span>
@@ -74,7 +75,7 @@
               
                 </div>
             </div>
-            <div class="row" style="background: #B3E5FC">
+            <div class="row" style="background: #B3E5FC;height: 20px;">
                 <div class="progress">
                     <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{(patientsNum.notEmergencyInjured/patientsNum.total)*100}}%">
                         {{patientsNum.notEmergencyInjured}}
@@ -91,7 +92,7 @@
                 </div>
             </div>
             <div class="row">
-                <nav class="navbar navbar-inverse">
+                <nav class="navbar navbar-inverse" style="background-color: #daddf1;border-color: #daddf1;">
                     <ul class="nav navbar-nav">
                         <li><a href="#typeOfInjury">גרף סוגי פגיעה</a></li>
                         <li><a href="#useOfDrugs">גרף שימוש תרופות </a></li>

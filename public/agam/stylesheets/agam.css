@@ -52,3 +52,6 @@ body
 {
     direction: rtl;
 }
+li a {
+    color:black !important;
+}
