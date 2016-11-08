@@ -146,12 +146,12 @@ angular.module("medApp").controller('ComplexController', [
 
     $scope.date = $filter('date')(Date.now(), 'yyyy-MM-dd');
 
-    $scope.braceId = null;
-    $scope.heartBeat = null;
-    $scope.lowBloodPressure = null;
-    $scope.highBloodPressure = null;
-    $scope.storation = null;
-    $scope.tempreature = null;
+    $scope.braceId = Math.floor(Math.random() * 10000000) + 1  ;
+    $scope.heartBeat = "1";
+    $scope.lowBloodPressure = "1";
+    $scope.highBloodPressure = "1";
+    $scope.storation = "1";
+    $scope.tempreature = "1";
     $scope.title = title;
 
     //  This close function doesn't need to use jQuery or bootstrap, because
