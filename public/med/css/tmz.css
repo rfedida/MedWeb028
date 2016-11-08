@@ -71,7 +71,9 @@ body {
 }
 
 .bodyhigh {
-    height: 650px;
+        height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .portfolio-item {
