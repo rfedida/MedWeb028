@@ -65,9 +65,11 @@ angular.module("medApp").controller('WoundedListController', ['$scope', 'ModalSe
         modal.close.then(function (result) {
 
           // get date by mili
-          var fullDate = result.date + ":" + result.time;
+         /* var fullDate = result.date + ":" + result.time;
           var dateBefore = new Date(fullDate);
-          var dateMili = dateBefore.getTime();
+          var dateMili = dateBefore.getTime();*/
+          
+          var dateMili = (new Date()).getTime();
 
           // create new patient object by factory
           var newInjured = angular.copy(medAppFactory.newInjured);
