@@ -128,7 +128,7 @@ server.listen(port, function() {
 helpers.isOnline = false;
 
 function connectToMongo () {
-    mongoose.connect('mongodb://150.0.0.56:27017/DB');
+    mongoose.connect('mongodb://heroku_tskgxps7:kmhbi6i27rctgcmf045db4up4e@ds013574.mlab.com:13574/heroku_tskgxps7');
     // Getting the data from the db
     var db = mongoose.connection;
     db.on('error', function(err) {
